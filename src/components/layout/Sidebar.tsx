@@ -1,24 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Avatar, Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/store";
 import { layoutActions } from "../../store/layout/layoutSlice";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import CategoryIcon from "@mui/icons-material/Category";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { authActions } from "../../store/auth/authSlice";
 
-const Item = ({ title, to, icon, selected, setSelected }: any) => {
+const Item = ({ title, to, icon, selected, setSelected, navigate }: any) => {
   return (
     <MenuItem
-      active={selected === title}
-      onClick={() => setSelected(title)}
+      active={selected.toLowerCase() === title.toLowerCase()}
+      onClick={() => {
+        setSelected(title);
+        navigate(to);
+      }}
       icon={icon}
     >
-      <Link to={to}>
-        <Typography>{title}</Typography>
-      </Link>
+      <Typography>{title}</Typography>
     </MenuItem>
   );
 };
@@ -26,12 +28,18 @@ const Item = ({ title, to, icon, selected, setSelected }: any) => {
 const SidebarCustom = () => {
   const theme = useTheme();
   const userInfo = useAppSelector((state) => state.auth.dataUser);
+  const location = useLocation();
+  const path = location.pathname.replace("/", "");
   const isCollapseSidebar = useAppSelector(
     (state) => state.layout.isCollapseSidebar
   );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [selected, setSelected] = useState("Dashboard");
+  const [selected, setSelected] = useState("");
+
+  useEffect(() => {
+    setSelected(path);
+  }, []);
 
   const handleLogout = async () => {
     dispatch(
@@ -66,6 +74,17 @@ const SidebarCustom = () => {
         "& .ps-menu-button": {
           borderRadius: 2,
           paddingLeft: "15px !important",
+        },
+        "& .ps-submenu-content": {
+          padding: "4px",
+          background: `${theme.palette.background.default} !important`,
+        },
+        "& .ps-submenu-content .ps-menuitem-root": {
+          border: "1px solid #ccc",
+        },
+        "& .ps-menuitem-root": {
+          marginBottom: "4px",
+          borderRadius: 2,
         },
         position: "fixed",
         top: 0,
@@ -126,8 +145,17 @@ const SidebarCustom = () => {
           <Box>
             <Item
               title="Dashboard"
+              navigate={navigate}
               to="/"
               icon={<HomeOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              navigate={navigate}
+              title="Product"
+              to="/product"
+              icon={<CategoryIcon />}
               selected={selected}
               setSelected={setSelected}
             />
