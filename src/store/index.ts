@@ -4,11 +4,13 @@ import alertReducer from "./alert/alertSlice";
 import rootSaga from "./rootSaga";
 import authReducer from "./auth/authSlice";
 import layoutReducer from "./layout/layoutSlice";
+import productReducer from "./product/productSlice";
 
 const reducers = combineReducers({
   alert: alertReducer,
   auth: authReducer,
   layout: layoutReducer,
+  product: productReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

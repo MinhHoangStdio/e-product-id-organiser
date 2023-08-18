@@ -2,6 +2,8 @@ import { Box, Paper, useTheme } from "@mui/material";
 import Navbar from "../../components/layout/Navbar";
 import SidebarCustom from "../../components/layout/Sidebar";
 import { useAppSelector } from "../../hooks/store";
+import CreateAndEditProductModal from "../../components/modal/product/CreateAndEditProduct";
+import LoadingOverLay from "../../components/LoadingOverLay";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const isCollapseSidebar = useAppSelector(
@@ -23,6 +25,8 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         <Box sx={{ px: 4, bgcolor: theme.palette.background.default }}>
           <Paper sx={{ minHeight: "85vh" }}>{children}</Paper>
         </Box>
+        <CreateAndEditProductModal />
+        <LoadingOverLay />
       </main>
     </>
   );
