@@ -1,12 +1,11 @@
 import {
-  Button,
   Card,
   CardActions,
   CardContent,
   CardMedia,
   Typography,
 } from "@mui/material";
-import React from "react";
+import CustomButton from "../share/CustomButton";
 
 type IProductCard = {
   img: string;
@@ -21,9 +20,15 @@ const ProductCard = ({
   img,
   productName,
   description,
-  onEdit,
-  onDelete,
-  onDetail,
+  onEdit = () => {
+    console.log("edit");
+  },
+  onDelete = () => {
+    console.log("delete");
+  },
+  onDetail = () => {
+    console.log("detail");
+  },
 }: IProductCard) => {
   return (
     <Card>
@@ -37,15 +42,11 @@ const ProductCard = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button variant="outlined" color="warning" onClick={onDetail}>
-          Detail
-        </Button>
-        <Button variant="outlined" color="primary" onClick={onEdit}>
-          Edit
-        </Button>
-        <Button variant="outlined" color="error" onClick={onDelete}>
-          Delete
-        </Button>
+        <CustomButton color="info" onClick={onDetail} label="Detail" />
+
+        <CustomButton color="primary" onClick={onEdit} label="Edit" />
+
+        <CustomButton color="error" onClick={onDelete} label="Delete" />
       </CardActions>
     </Card>
   );

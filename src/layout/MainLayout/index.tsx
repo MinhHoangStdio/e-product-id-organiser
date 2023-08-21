@@ -4,12 +4,17 @@ import SidebarCustom from "../../components/layout/Sidebar";
 import { useAppSelector } from "../../hooks/store";
 import CreateAndEditProductModal from "../../components/modal/product/CreateAndEditProduct";
 import LoadingOverLay from "../../components/LoadingOverLay";
+import { colorToken } from "../../theme/colorToken";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const isCollapseSidebar = useAppSelector(
     (state) => state.layout.isCollapseSidebar
   );
-  const theme = useTheme();
+
+  //test theme
+  const mode = useAppSelector((state) => state.layout.theme);
+  const colors = colorToken(mode);
+
   return (
     <>
       <SidebarCustom />
@@ -22,7 +27,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         }
       >
         <Navbar />
-        <Box sx={{ px: 4, bgcolor: theme.palette.background.default }}>
+        <Box sx={{ px: 4, pb: 4, bgcolor: colors.background.main }}>
           <Paper sx={{ minHeight: "85vh" }}>{children}</Paper>
         </Box>
         <CreateAndEditProductModal />

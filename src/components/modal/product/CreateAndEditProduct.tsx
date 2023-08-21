@@ -11,6 +11,7 @@ import { productActions } from "../../../store/product/productSlice";
 import DropzoneCustom from "../../share/dropzone/DropzoneCustom";
 import ImageUpload from "../../product/ImageUpload";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { countTotalElements } from "../../../utils/share";
 
 interface FieldValues {
   name: string;
@@ -110,8 +111,13 @@ const CreateAndEditProductModal = () => {
     } else if (typeModal == "edit") {
       const payload = {
         params: data,
-        id: productSelected?.id,
+        formData: listImage,
+        productImages: productSelected?.images,
+        productId: productSelected?.id,
         onReset() {
+          dispatch(productActions.resetTemporarylistImgUrl());
+          dispatch(layoutActions.closeModalProduct);
+          dispatch(productActions.resetSelectedProduct());
           reset();
         },
       };
@@ -183,7 +189,15 @@ const CreateAndEditProductModal = () => {
                   width="25%"
                   src={img}
                   onDelete={() => {
-                    console.log("yolo");
+                    const newSelectedProduct = {
+                      ...productSelected,
+                      images: productSelected.images.filter(
+                        (prod) => prod !== img
+                      ),
+                    };
+                    dispatch(
+                      productActions.selectedProduct(newSelectedProduct)
+                    );
                   }}
                 />
               ))
@@ -199,10 +213,15 @@ const CreateAndEditProductModal = () => {
                 />
               ))
             : null}
-          {!!listImage.length && listImage.length < 4 ? (
+          {(!!listImage.length || !!productSelected?.images.length) &&
+          countTotalElements(listImage, productSelected?.images) < 4 ? (
             <DropzoneCustom
               Icon={AddCircleOutlineIcon}
-              maxFile={4 - listImage.length > 1 ? 4 - listImage.length : 1}
+              maxFile={
+                4 - countTotalElements(listImage, productSelected?.images) > 1
+                  ? 4 - countTotalElements(listImage, productSelected?.images)
+                  : 1
+              }
               onUploadTemporaryImage={plusTemporaryImages}
               typeAppend={"files"}
               width="25%"
@@ -212,7 +231,7 @@ const CreateAndEditProductModal = () => {
           )}
         </Stack>
 
-        {!listImage.length || typeModal == "edit" ? (
+        {!listImage.length && !productSelected?.images.length ? (
           <DropzoneCustom
             maxFile={4}
             onUploadTemporaryImage={uploadTemporaryImages}
