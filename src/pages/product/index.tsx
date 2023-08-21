@@ -1,9 +1,10 @@
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/store";
 import { layoutActions } from "../../store/layout/layoutSlice";
 import ProductCard from "../../components/product/ProductCard";
 import { useEffect, useState } from "react";
 import { productActions } from "../../store/product/productSlice";
+import CustomButton from "../../components/share/CustomButton";
 
 const Product = () => {
   const [params, setParams] = useState({ limit: 15, page: 1 });
@@ -25,14 +26,12 @@ const Product = () => {
       <Grid item xs={12}>
         <Stack direction="row" justifyContent="space-between">
           <Typography variant="h3">Your Products</Typography>
-          <Button
-            variant="contained"
-            color="secondary"
-            size="large"
+
+          <CustomButton
+            color="primary"
             onClick={openProductModal}
-          >
-            Create a new product
-          </Button>
+            label="Create a new product"
+          />
         </Stack>
       </Grid>
       {listProducts.length ? (
@@ -44,7 +43,7 @@ const Product = () => {
               description={prod.description}
               onEdit={() => {
                 dispatch(productActions.selectedProduct(prod));
-                openProductModal()
+                openProductModal();
               }}
             />
           </Grid>

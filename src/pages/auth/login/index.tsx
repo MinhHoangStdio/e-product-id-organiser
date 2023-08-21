@@ -1,19 +1,14 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-  Button,
-  IconButton,
-  InputAdornment,
-  Stack,
-  TextField,
-} from "@mui/material";
+import { IconButton, InputAdornment, Stack, TextField } from "@mui/material";
 import Heading from "../../../components/Heading";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../../store/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import CustomButton from "../../../components/share/CustomButton";
 
 interface FormValues {
   email: string;
@@ -91,14 +86,7 @@ const Login = () => {
             ),
           }}
         />
-        <Button
-          color="secondary"
-          variant="contained"
-          type="submit"
-          tabIndex={0}
-        >
-          Login
-        </Button>
+        <CustomButton color="primary" type="submit" label="Login" />
       </Stack>
     </form>
   );
