@@ -13,11 +13,10 @@ function* handleGetListProducts(action: Action) {
     if (action.payload.limit) {
       params = action.payload;
     } else {
-      params = { page: 1, limit: 15 };
+      params = { page: 1, limit: 8 };
     }
     const response: { data: { data: Product[]; paginate: Pagination } } =
       yield call(productApi.getListProducts, params);
-    console.log(response);
     yield put(productActions.getListProductsSuccess(response.data));
   } catch (error) {
     yield put(productActions.getListProductsFailed());
@@ -113,10 +112,34 @@ function* handleEditProduct(action: Action) {
   }
 }
 
+function* handleDeleteProduct(action: Action) {
+  try {
+    const id = action.payload;
+    const response: { data: any } = yield call(productApi.removeProduct, id);
+    yield put(productActions.removeProductSuccess());
+    yield put(
+      alertActions.showAlert({
+        text: "Remove product success",
+        type: "success",
+      })
+    );
+    yield put(productActions.getListProducts({}));
+  } catch (error) {
+    yield put(productActions.removeProductFailed());
+    yield put(
+      alertActions.showAlert({
+        text: "Remove product failed",
+        type: "error",
+      })
+    );
+  }
+}
+
 function* watchLoginFlow() {
   yield all([
     takeLatest(productActions.createProduct.type, handleCreateProduct),
     takeLatest(productActions.editProduct.type, handleEditProduct),
+    takeLatest(productActions.removeProduct.type, handleDeleteProduct),
     takeLatest(productActions.getListProducts.type, handleGetListProducts),
   ]);
 }

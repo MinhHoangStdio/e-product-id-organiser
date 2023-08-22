@@ -9,7 +9,7 @@ import { layoutActions } from "../../../store/layout/layoutSlice";
 import { useEffect } from "react";
 import { productActions } from "../../../store/product/productSlice";
 import DropzoneCustom from "../../share/dropzone/DropzoneCustom";
-import ImageUpload from "../../product/ImageUpload";
+import ImageUpload from "../../organizer/product/ImageUpload";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { countTotalElements } from "../../../utils/share";
 

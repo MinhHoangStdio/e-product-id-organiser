@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
-import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
+import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Avatar, Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/store";
 import { layoutActions } from "../../store/layout/layoutSlice";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import ApartmentIcon from "@mui/icons-material/Apartment";
+import GroupIcon from "@mui/icons-material/Group";
 import CategoryIcon from "@mui/icons-material/Category";
 import LogoutIcon from "@mui/icons-material/Logout";
+import InfoIcon from "@mui/icons-material/Info";
 import { authActions } from "../../store/auth/authSlice";
 import { colorToken } from "../../theme/colorToken";
+import userImageDefault from "../../assets/user/user.png";
 
 const Item = ({ title, to, icon, selected, setSelected, navigate }: any) => {
   return (
@@ -28,6 +32,7 @@ const Item = ({ title, to, icon, selected, setSelected, navigate }: any) => {
 
 const SidebarCustom = () => {
   const theme = useTheme();
+  const [openOrganizerMenu, setOpenOrganizerMenu] = useState<boolean>(false);
 
   //test theme
   const mode = useAppSelector((state) => state.layout.theme);
@@ -45,7 +50,13 @@ const SidebarCustom = () => {
 
   useEffect(() => {
     setSelected(path);
-  }, []);
+  }, [path]);
+
+  useEffect(() => {
+    if (path == ("organizer/products" || "organizer/members")) {
+      setOpenOrganizerMenu(true);
+    }
+  }, [path]);
 
   const handleLogout = async () => {
     dispatch(
@@ -86,9 +97,9 @@ const SidebarCustom = () => {
         "& .ps-submenu-content": {
           padding: "4px",
           background: `${theme.palette.background.default} !important`,
-        },
-        "& .ps-submenu-content .ps-menuitem-root": {
-          border: "1px solid #ccc",
+          transition: `height 300ms !important`,
+          display: openOrganizerMenu ? `block !important` : `none !important`,
+          height: openOrganizerMenu ? `auto !important` : `0px !important`,
         },
         "& .ps-menuitem-root": {
           marginBottom: "4px",
@@ -135,7 +146,11 @@ const SidebarCustom = () => {
           {!isCollapseSidebar && (
             <Box mb="25px">
               <Box display="flex" justifyContent="center" alignItems="center">
-                <Avatar sx={{ width: 80, height: 80 }} alt={userInfo?.name} />
+                <Avatar
+                  sx={{ width: 80, height: 80 }}
+                  alt={userInfo?.name}
+                  src={userImageDefault}
+                />
               </Box>
               <Box textAlign="center">
                 <Typography
@@ -159,14 +174,54 @@ const SidebarCustom = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
+            {/* <Item
               navigate={navigate}
               title="Product"
               to="/product"
               icon={<CategoryIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
+            <SubMenu
+              defaultOpen={openOrganizerMenu}
+              open={openOrganizerMenu}
+              onOpenChange={() => {
+                setOpenOrganizerMenu(!openOrganizerMenu);
+              }}
+              icon={<ApartmentIcon />}
+              label={<Typography fontWeight="500">Your Organizer</Typography>}
+            >
+              <MenuItem
+                active={selected.toLowerCase() === "organizer/info"}
+                onClick={() => {
+                  setSelected("organizer/info");
+                  navigate("/organizer/info");
+                }}
+                icon={<InfoIcon />}
+              >
+                <Typography fontWeight="500">General Information</Typography>
+              </MenuItem>
+              <MenuItem
+                active={selected.toLowerCase() === "organizer/products"}
+                onClick={() => {
+                  setSelected("organizer/products");
+                  navigate("/organizer/products");
+                }}
+                icon={<CategoryIcon />}
+              >
+                <Typography fontWeight="500">Products</Typography>
+              </MenuItem>
+              <MenuItem
+                active={selected.toLowerCase() === "organizer/members"}
+                onClick={() => {
+                  setSelected("organizer/members");
+                  navigate("/organizer/members");
+                }}
+                icon={<GroupIcon />}
+              >
+                <Typography fontWeight="500">Members</Typography>
+              </MenuItem>
+            </SubMenu>
             {!isCollapseSidebar && (
               <Typography variant="h6" sx={{ m: "15px 0 5px 20px" }}>
                 Settings
