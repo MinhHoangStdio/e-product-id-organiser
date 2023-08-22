@@ -6,6 +6,7 @@ import CreateAndEditProductModal from "../../components/modal/product/CreateAndE
 import LoadingOverLay from "../../components/LoadingOverLay";
 import { colorToken } from "../../theme/colorToken";
 import ConfirmModal from "../../components/modal/ConfirmModal";
+import CreateConsignmentModal from "../../components/modal/consignment/CreateConsignment";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const isCollapseSidebar = useAppSelector(
@@ -32,6 +33,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
           <Paper sx={{ minHeight: "85vh" }}>{children}</Paper>
         </Box>
         <CreateAndEditProductModal />
+        <CreateConsignmentModal />
         <ConfirmModal />
         <LoadingOverLay />
       </main>

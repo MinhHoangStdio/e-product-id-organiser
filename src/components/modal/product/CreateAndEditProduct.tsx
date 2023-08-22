@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { FormHelperText, Stack, TextField, useTheme } from "@mui/material";
 import { layoutActions } from "../../../store/layout/layoutSlice";
 import { useEffect } from "react";
-import { productActions } from "../../../store/product/productSlice";
+import { productActions } from "../../../store/organizer/product/productSlice";
 import DropzoneCustom from "../../share/dropzone/DropzoneCustom";
 import ImageUpload from "../../organizer/product/ImageUpload";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";

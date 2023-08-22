@@ -7,6 +7,7 @@ import { layoutActions } from "../../store/layout/layoutSlice";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ApartmentIcon from "@mui/icons-material/Apartment";
+import WysiwygIcon from "@mui/icons-material/Wysiwyg";
 import GroupIcon from "@mui/icons-material/Group";
 import CategoryIcon from "@mui/icons-material/Category";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -210,6 +211,16 @@ const SidebarCustom = () => {
                 icon={<CategoryIcon />}
               >
                 <Typography fontWeight="500">Products</Typography>
+              </MenuItem>
+              <MenuItem
+                active={selected.toLowerCase() === "organizer/consignments"}
+                onClick={() => {
+                  setSelected("organizer/consignments");
+                  navigate("/organizer/consignments");
+                }}
+                icon={<WysiwygIcon />}
+              >
+                <Typography fontWeight="500">Consignment</Typography>
               </MenuItem>
               <MenuItem
                 active={selected.toLowerCase() === "organizer/members"}

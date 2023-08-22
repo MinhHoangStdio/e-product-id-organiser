@@ -10,13 +10,13 @@ import { Product } from "../../../types/product";
 import { modalActions } from "../../../store/modal/modalSlice";
 import { totalPagePagination } from "../../../utils/pagination";
 import AddIcon from "@mui/icons-material/Add";
+import { consignmentActions } from "../../../store/organizer/consignment/consignmentSlice";
 
-const ProductPage = () => {
+const ConsignmentPage = () => {
   const [params, setParams] = useState({ limit: 8, page: 1 });
   const dispatch = useAppDispatch();
-  const { listProducts, loadingGetProducts, pagination } = useAppSelector(
-    (state) => state.product
-  );
+  const { listConsignments, loadingGetConsignments, pagination } =
+    useAppSelector((state) => state.consignment);
 
   const openProductModal = () => {
     dispatch(layoutActions.openModalProduct());
@@ -46,14 +46,14 @@ const ProductPage = () => {
   };
 
   useEffect(() => {
-    dispatch(productActions.getListProducts(params));
+    dispatch(consignmentActions.getListConsignments({}));
   }, [dispatch, params]);
 
   return (
     <Grid sx={{ p: 2 }} container>
       <Grid item xs={12}>
         <Stack direction="row" justifyContent="space-between">
-          <Typography variant="h3">Your Products</Typography>
+          <Typography variant="h3">Your Consignments</Typography>
 
           <CustomButton
             Icon={<AddIcon />}
@@ -63,22 +63,13 @@ const ProductPage = () => {
           />
         </Stack>
       </Grid>
-      {listProducts.length ? (
-        listProducts.map((prod) => (
-          <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={prod.id}>
+      {listConsignments.length ? (
+        listConsignments.map((cons) => (
+          <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={cons.id}>
             <ProductCard
-              img={prod.images[0]}
-              productName={prod.name}
-              description={prod.description}
-              onDetail={() => {
-                dispatch(productActions.selectedProduct(prod));
-                openConsignmentModal();
-              }}
-              onEdit={() => {
-                dispatch(productActions.selectedProduct(prod));
-                openProductModal();
-              }}
-              onDelete={() => confirmDelete(prod)}
+              img=""
+              productName={cons.name}
+              description={cons.description}
             />
           </Grid>
         ))
@@ -98,4 +89,4 @@ const ProductPage = () => {
   );
 };
 
-export default ProductPage;
+export default ConsignmentPage;

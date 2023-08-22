@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Product } from "../../types/product";
-import { Pagination } from "../../types/pagination";
+import { Product } from "../../../types/product";
+import { Pagination } from "../../../types/pagination";
 
 interface productState {
   listProducts: Product[];

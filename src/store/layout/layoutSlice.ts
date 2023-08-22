@@ -5,6 +5,7 @@ interface LayoutType {
   isCollapseSidebar: boolean;
   authState: "login" | "register";
   isOpenProductModal: boolean;
+  isOpenConsignmentModal: boolean;
   isLayoutLoading: boolean;
 }
 
@@ -13,6 +14,7 @@ const initialState: LayoutType = {
   isCollapseSidebar: false,
   authState: "login",
   isOpenProductModal: false,
+  isOpenConsignmentModal: false,
   isLayoutLoading: false,
 };
 
@@ -39,6 +41,13 @@ const layoutSlice = createSlice({
     },
     closeModalProduct(state) {
       state.isOpenProductModal = false;
+    },
+
+    openModalConsignment(state) {
+      state.isOpenConsignmentModal = true;
+    },
+    closeModalConsignment(state) {
+      state.isOpenConsignmentModal = false;
     },
 
     startLayoutLoading(state) {
