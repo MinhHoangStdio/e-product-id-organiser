@@ -1,6 +1,6 @@
-import React from "react";
+import EmptyOrganizer from "../../components/organizer/EmptyOrganizer";
 
 const Dashboard = () => {
-  return <div>Dashboard</div>;
+  return <EmptyOrganizer labelBtn="Create Your Organizer" />;
 };
 export default Dashboard;

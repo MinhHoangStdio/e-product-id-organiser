@@ -11,6 +11,7 @@ interface productState {
   temporarylistImgUrl: any;
   loadingCreateProduct: boolean;
   loadingEditProduct: boolean;
+  loadingRemoveProduct: boolean;
   productSelected: Product | null;
 }
 
@@ -23,6 +24,7 @@ const initialState: productState = {
   temporarylistImgUrl: [],
   loadingCreateProduct: false,
   loadingEditProduct: false,
+  loadingRemoveProduct: false,
   productSelected: null,
 };
 
@@ -89,6 +91,16 @@ const productSlice = createSlice({
     },
     editProductFailed(state) {
       state.loadingEditProduct = false;
+    },
+
+    removeProduct(state, action) {
+      state.loadingRemoveProduct = true;
+    },
+    removeProductSuccess(state) {
+      state.loadingRemoveProduct = false;
+    },
+    removeProductFailed(state) {
+      state.loadingRemoveProduct = false;
     },
 
     selectedProduct(state, action) {

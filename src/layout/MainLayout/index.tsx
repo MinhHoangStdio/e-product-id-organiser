@@ -5,6 +5,7 @@ import { useAppSelector } from "../../hooks/store";
 import CreateAndEditProductModal from "../../components/modal/product/CreateAndEditProduct";
 import LoadingOverLay from "../../components/LoadingOverLay";
 import { colorToken } from "../../theme/colorToken";
+import ConfirmModal from "../../components/modal/ConfirmModal";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const isCollapseSidebar = useAppSelector(
@@ -22,8 +23,8 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         className="content"
         style={
           !isCollapseSidebar
-            ? { marginLeft: "250px", transition: "margin 0.3s ease" }
-            : { marginLeft: "80px", transition: "margin 0.3s ease" }
+            ? { paddingLeft: "250px", transition: "padding 0.3s ease" }
+            : { paddingLeft: "80px", transition: "padding 0.3s ease" }
         }
       >
         <Navbar />
@@ -31,6 +32,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
           <Paper sx={{ minHeight: "85vh" }}>{children}</Paper>
         </Box>
         <CreateAndEditProductModal />
+        <ConfirmModal />
         <LoadingOverLay />
       </main>
     </>

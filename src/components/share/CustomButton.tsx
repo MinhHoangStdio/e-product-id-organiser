@@ -8,6 +8,7 @@ type ICustomButton = {
   onClick?: () => void;
   label: string;
   type?: "submit" | "button";
+  Icon?: any;
 };
 
 const CustomButton = ({
@@ -17,6 +18,7 @@ const CustomButton = ({
   label,
   size = "large",
   type = "button",
+  Icon,
 }: ICustomButton) => {
   const mode = useAppSelector((state) => state.layout.theme);
   const colors = colorToken(mode);
@@ -24,11 +26,15 @@ const CustomButton = ({
   return (
     <Button
       variant="contained"
-      sx={{ bgcolor: `${colors.button[color]} !important` }}
+      sx={{
+        bgcolor: `${colors.button[color]} !important`,
+        textTransform: "none !important",
+      }}
       size={size}
       disabled={disabled}
       onClick={onClick}
       type={type}
+      startIcon={Icon ? Icon : null}
     >
       {label}
     </Button>

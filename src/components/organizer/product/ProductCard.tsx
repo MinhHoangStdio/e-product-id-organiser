@@ -5,7 +5,7 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-import CustomButton from "../share/CustomButton";
+import CustomButton from "../../share/CustomButton";
 
 type IProductCard = {
   img: string;
@@ -34,10 +34,27 @@ const ProductCard = ({
     <Card>
       <CardMedia sx={{ height: 250 }} image={img} />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+          gutterBottom
+          variant="h5"
+          component="div"
+        >
           {productName}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+          variant="body2"
+          color="text.secondary"
+        >
           {description}
         </Typography>
       </CardContent>
