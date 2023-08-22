@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import { colorToken } from "../../theme/colorToken";
 import { useAppSelector } from "../../hooks/store";
 type ICustomButton = {
+  fullWidth?: boolean;
   color: "primary" | "error" | "info";
   size?: "large" | "small" | "medium";
   disabled?: boolean;
@@ -12,6 +13,7 @@ type ICustomButton = {
 };
 
 const CustomButton = ({
+  fullWidth,
   color,
   disabled,
   onClick,
@@ -35,6 +37,7 @@ const CustomButton = ({
       onClick={onClick}
       type={type}
       startIcon={Icon ? Icon : null}
+      fullWidth={fullWidth}
     >
       {label}
     </Button>

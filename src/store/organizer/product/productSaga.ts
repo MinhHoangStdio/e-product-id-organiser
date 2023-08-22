@@ -1,11 +1,11 @@
 import { call, fork, put, takeLatest, all } from "redux-saga/effects";
-import { alertActions } from "../alert/alertSlice";
-import { Action } from "../../types/actions";
+import { alertActions } from "../../alert/alertSlice";
+import { Action } from "../../../types/actions";
 import { productActions } from "./productSlice";
-import productApi from "../../api/product";
-import { layoutActions } from "../layout/layoutSlice";
-import { Product } from "../../types/product";
-import { Pagination } from "../../types/pagination";
+import productApi from "../../../api/product";
+import { layoutActions } from "../../layout/layoutSlice";
+import { Product } from "../../../types/product";
+import { Pagination } from "../../../types/pagination";
 
 function* handleGetListProducts(action: Action) {
   try {
