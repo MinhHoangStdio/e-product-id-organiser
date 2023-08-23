@@ -19,12 +19,9 @@ function* handleLogin(action: Action) {
       organizerApi.getListOrganizer,
       {}
     );
-    localStorage.setItem(
-      "organizer_id",
-      JSON.stringify(response2.data.data[0])
-    );
+    localStorage.setItem("organizer_id", JSON.stringify(response2.data));
     yield put(authActions.loginSuccess(response.data.user));
-    yield put(organizerActions.getOrganizerSuccess(response2.data.data[0]));
+    yield put(organizerActions.getOrganizerSuccess(response2.data));
     onNavigate?.();
 
     // yield call(getBasicInfo);

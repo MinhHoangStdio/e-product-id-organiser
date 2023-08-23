@@ -1,9 +1,9 @@
 import axiosClient from "../axiosClient";
 import axiosWithOrganizer from "../axiosWithOrganizer";
 
-const productApi = {
+const chainsApi = {
   upload(formData: any) {
-    const url = "/products/uploads";
+    const url = "/chains/uploads";
     return axiosClient.post(url, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -12,7 +12,7 @@ const productApi = {
     const url = "/chains/";
     return axiosWithOrganizer.get(url, { params });
   },
-  createChain(params: any) {
+  createChains(params: any) {
     const url = "/chains/";
     return axiosWithOrganizer.post(url, params);
   },
@@ -20,10 +20,10 @@ const productApi = {
   //     const url = `/Chains/${id}`;
   //     return axiosWithOrganizer.put(url, params);
   //   },
-  removeChain(id: any) {
+  removeChains(id: any) {
     const url = `/chains/${id}`;
     return axiosWithOrganizer.delete(url);
   },
 };
 
-export default productApi;
+export default chainsApi;
