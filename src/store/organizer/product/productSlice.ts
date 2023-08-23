@@ -13,6 +13,7 @@ interface productState {
   loadingEditProduct: boolean;
   loadingRemoveProduct: boolean;
   productSelected: Product | null;
+  listImgWillDelete: any[];
 }
 
 const initialState: productState = {
@@ -26,6 +27,7 @@ const initialState: productState = {
   loadingEditProduct: false,
   loadingRemoveProduct: false,
   productSelected: null,
+  listImgWillDelete: [],
 };
 
 const productSlice = createSlice({
@@ -71,6 +73,16 @@ const productSlice = createSlice({
     },
     resetTemporarylistImgUrl(state) {
       state.temporarylistImgUrl = [];
+    },
+
+    setListImgWillDelete(state, action) {
+      state.listImgWillDelete = action.payload;
+    },
+    resetListImgWillDelete(state) {
+      state.listImgWillDelete = [];
+    },
+    plusListImgWillDelete(state, action) {
+      state.listImgWillDelete = [...state.listImgWillDelete, action.payload];
     },
 
     createProduct(state, action) {

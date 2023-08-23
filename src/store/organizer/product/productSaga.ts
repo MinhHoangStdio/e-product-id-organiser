@@ -96,9 +96,13 @@ function* handleEditProduct(action: Action) {
         type: "success",
       })
     );
-    yield put(layoutActions.closeModalProduct());
     yield put(productActions.getListProducts({}));
-    yield put(productActions.resetSelectedProduct());
+    if (action.payload.listImgWillDelete.length) {
+      yield call(productApi.deleteImg, {
+        images: action.payload.listImgWillDelete,
+      });
+    }
+
     action.payload.onReset();
   } catch (error) {
     yield put(layoutActions.endLayoutLoading());

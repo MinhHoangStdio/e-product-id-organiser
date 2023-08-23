@@ -29,8 +29,12 @@ const CreateAndEditProductModal = () => {
     (state) => state.product.temporarylistImgUrl
   );
 
-  const { loadingCreateProduct, loadingEditProduct, productSelected } =
-    useAppSelector((state) => state.product);
+  const {
+    loadingCreateProduct,
+    loadingEditProduct,
+    productSelected,
+    listImgWillDelete,
+  } = useAppSelector((state) => state.product);
   const isOpenModal = useAppSelector(
     (state) => state.layout.isOpenProductModal
   );
@@ -41,6 +45,7 @@ const CreateAndEditProductModal = () => {
     dispatch(layoutActions.closeModalProduct());
     dispatch(productActions.resetTemporarylistImgUrl());
     dispatch(productActions.resetSelectedProduct());
+    dispatch(productActions.resetListImgWillDelete());
   };
 
   const uploadTemporaryImages = (listImg: any) => {
@@ -115,10 +120,12 @@ const CreateAndEditProductModal = () => {
         formData: listImage,
         productImages: productSelected?.images,
         productId: productSelected?.id,
+        listImgWillDelete,
         onReset() {
           dispatch(productActions.resetTemporarylistImgUrl());
-          dispatch(layoutActions.closeModalProduct);
+          dispatch(layoutActions.closeModalProduct());
           dispatch(productActions.resetSelectedProduct());
+          dispatch(productActions.resetListImgWillDelete());
           reset();
         },
       };
@@ -196,6 +203,7 @@ const CreateAndEditProductModal = () => {
                         (prod) => prod !== img
                       ),
                     };
+                    dispatch(productActions.plusListImgWillDelete(img));
                     dispatch(
                       productActions.selectedProduct(newSelectedProduct)
                     );

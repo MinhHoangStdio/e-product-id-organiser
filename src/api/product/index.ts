@@ -8,6 +8,10 @@ const productApi = {
       headers: { "Content-Type": "multipart/form-data" },
     });
   },
+  deleteImg(params: any) {
+    const url = "/products/images";
+    return axiosClient.delete(url, { data: params });
+  },
   getListProducts(params: any) {
     const url = "/products/";
     return axiosWithOrganizer.get(url, { params });
