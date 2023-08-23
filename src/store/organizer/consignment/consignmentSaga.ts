@@ -15,10 +15,8 @@ function* handleGetListConsignments(action: Action) {
     } else {
       params = { page: 1, limit: 8 };
     }
-    const response: { data: Consignment[] } = yield call(
-      consignmentApi.getListConsignments,
-      params
-    );
+    const response: { data: { data: Consignment[]; paginate: Pagination } } =
+      yield call(consignmentApi.getListConsignments, params);
     yield put(consignmentActions.getListConsignmentsSuccess(response.data));
   } catch (error) {
     yield put(consignmentActions.getListConsignmentsFailed());

@@ -22,22 +22,18 @@ type IProductCard = {
   description: string;
   onEdit?: () => void;
   onDelete?: () => void;
-  onDetail?: () => void;
+  onAction?: () => void;
+  labelAction?: string;
 };
 
 const ProductCard = ({
   img,
   productName,
   description,
-  onEdit = () => {
-    console.log("edit");
-  },
-  onDelete = () => {
-    console.log("delete");
-  },
-  onDetail = () => {
-    console.log("detail");
-  },
+  labelAction,
+  onEdit,
+  onDelete,
+  onAction,
 }: IProductCard) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -86,22 +82,26 @@ const ProductCard = ({
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem
-              onClick={() => {
-                handleClose();
-                onEdit();
-              }}
-            >
-              Edit
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleClose();
-                onDelete();
-              }}
-            >
-              Delete
-            </MenuItem>
+            {onEdit && (
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  onEdit();
+                }}
+              >
+                Edit
+              </MenuItem>
+            )}
+            {onDelete && (
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  onDelete();
+                }}
+              >
+                Delete
+              </MenuItem>
+            )}
           </Menu>
         </div>
       </Stack>
@@ -144,9 +144,9 @@ const ProductCard = ({
           <CustomButton
             fullWidth
             color="info"
-            onClick={onDetail}
+            onClick={onAction}
             Icon={<AddIcon />}
-            label="Create A Consignment"
+            label={labelAction ? labelAction : "Create A Consignment"}
           />
         </Stack>
       </CardActions>

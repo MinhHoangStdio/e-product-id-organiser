@@ -1,6 +1,6 @@
-import EmptyOrganizer from "../../components/organizer/EmptyOrganizer";
-import { useAppDispatch, useAppSelector } from "../../hooks/store";
-import { layoutActions } from "../../store/layout/layoutSlice";
+import EmptyOrganizer from "../../../components/organizer/EmptyOrganizer";
+import { useAppDispatch, useAppSelector } from "../../../hooks/store";
+import { layoutActions } from "../../../store/layout/layoutSlice";
 const InfoPage = () => {
   const dispatch = useAppDispatch();
   const organizer = useAppSelector((state) => state.organizer.userOrganizer);

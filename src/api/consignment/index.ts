@@ -1,17 +1,18 @@
 import axiosClient from "../axiosClient";
+import axiosWithOrganizer from "../axiosWithOrganizer";
 
 const consignmentApi = {
   getListConsignments(params: any) {
     const url = "/consignments/";
-    return axiosClient.get(url, { params });
+    return axiosWithOrganizer.get(url, { params });
   },
   createConsignment(params: any) {
     const url = "/consignments/";
-    return axiosClient.post(url, params);
+    return axiosWithOrganizer.post(url, params);
   },
   removeConsignment(id: any) {
     const url = `/consignments/${id}`;
-    return axiosClient.delete(url);
+    return axiosWithOrganizer.delete(url);
   },
 };
 

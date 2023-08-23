@@ -7,6 +7,7 @@ import layoutReducer from "./layout/layoutSlice";
 import productReducer from "./organizer/product/productSlice";
 import modalReducer from "./modal/modalSlice";
 import consignmentReducer from "./organizer/consignment/consignmentSlice";
+import organizerReducer from "./organizer/info/organizerSlice";
 
 const reducers = combineReducers({
   alert: alertReducer,
@@ -15,6 +16,7 @@ const reducers = combineReducers({
   product: productReducer,
   modal: modalReducer,
   consignment: consignmentReducer,
+  organizer: organizerReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();
