@@ -70,7 +70,7 @@ const ProductPage = () => {
               img={prod.images[0]}
               productName={prod.name}
               description={prod.description}
-              onDetail={() => {
+              onAction={() => {
                 dispatch(productActions.selectedProduct(prod));
                 openConsignmentModal();
               }}

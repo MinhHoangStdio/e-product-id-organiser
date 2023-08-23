@@ -8,7 +8,7 @@ interface consignmentState {
   loadingGetConsignments: boolean;
   loadingCreateConsignment: boolean;
   loadingRemoveConsignment: boolean;
-  //   consignmentSelected: Product | null;
+  consignmentSelected: Consignment | null;
 }
 
 const initialState: consignmentState = {
@@ -17,7 +17,7 @@ const initialState: consignmentState = {
   loadingGetConsignments: false,
   loadingCreateConsignment: false,
   loadingRemoveConsignment: false,
-  //   consignmentSelected
+  consignmentSelected: null,
 };
 
 const consignmentSlice = createSlice({
@@ -28,8 +28,8 @@ const consignmentSlice = createSlice({
       state.loadingGetConsignments = true;
     },
     getListConsignmentsSuccess(state, action) {
-      state.listConsignments = action.payload;
-      //   state.pagination = action.payload.paginate;
+      state.listConsignments = action.payload.data;
+      state.pagination = action.payload.paginate;
       state.loadingGetConsignments = true;
     },
     getListConsignmentsFailed(state) {
@@ -56,12 +56,12 @@ const consignmentSlice = createSlice({
       state.loadingRemoveConsignment = false;
     },
 
-    // selectedConsignment(state, action) {
-    //   state.consignmentSelected = action.payload;
-    // },
-    // resetSelectedConsignment(state) {
-    //   state.consignmentSelected = null;
-    // },
+    selectedConsignment(state, action) {
+      state.consignmentSelected = action.payload;
+    },
+    resetSelectedConsignment(state) {
+      state.consignmentSelected = null;
+    },
   },
 });
 

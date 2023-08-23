@@ -66,14 +66,13 @@ const CreateConsignmentModal = () => {
   };
 
   const onCloseModal = () => {
-    dispatch(productActions.resetSelectedProduct());
-    dispatch(layoutActions.closeModalConsignment());
     reset();
+    dispatch(layoutActions.closeModalConsignment());
+    dispatch(productActions.resetSelectedProduct());
   };
 
   useEffect(() => {
     if (productSelected?.name) {
-      console.log("updateeeeee");
       setValue("name", productSelected.name);
       setValue("product_id", productSelected.id);
     }

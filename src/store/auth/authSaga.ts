@@ -5,6 +5,8 @@ import { alertActions } from "../alert/alertSlice";
 import { ResponseLoginAdmin } from "../../types/user";
 import { Action } from "../../types/actions";
 import { layoutActions } from "../layout/layoutSlice";
+import organizerApi from "../../api/organizer";
+import { organizerActions } from "../organizer/info/organizerSlice";
 
 function* handleLogin(action: Action) {
   try {
@@ -13,7 +15,16 @@ function* handleLogin(action: Action) {
     console.log(response);
     localStorage.setItem("access_token", JSON.stringify(response.data.token));
     localStorage.setItem("current_user", JSON.stringify(response.data.user));
+    const response2: { data: any } = yield call(
+      organizerApi.getListOrganizer,
+      {}
+    );
+    localStorage.setItem(
+      "organizer_id",
+      JSON.stringify(response2.data.data[0])
+    );
     yield put(authActions.loginSuccess(response.data.user));
+    yield put(organizerActions.getOrganizerSuccess(response2.data.data[0]));
     onNavigate?.();
 
     // yield call(getBasicInfo);
@@ -57,7 +68,8 @@ function* handleLogout(action: Action) {
   yield delay(500);
   localStorage.removeItem("access_token");
   localStorage.removeItem("current_user");
-
+  localStorage.removeItem("organizer_id");
+  yield put(organizerActions.resetOrganizer());
   action.payload.onNavigate?.();
 }
 

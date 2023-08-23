@@ -63,12 +63,12 @@ const CreateAndEditProductModal = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      name: productSelected?.name || "",
-      price: productSelected?.price || undefined,
-      description: productSelected?.description || "",
-      images: productSelected?.images || [],
-      payload: productSelected?.payload || null,
-      category_id: productSelected?.category?.parent_id || null,
+      name: "",
+      price: undefined,
+      description: "",
+      images: [],
+      payload: null,
+      category_id: null,
     },
     resolver: yupResolver(
       yup.object().shape({
@@ -83,12 +83,13 @@ const CreateAndEditProductModal = () => {
 
   useEffect(() => {
     if (productSelected?.name) {
-      console.log("updateeeeee");
       setValue("name", productSelected.name);
       setValue("price", productSelected.price as number);
       setValue("description", productSelected.description);
       setValue("category_id", productSelected.category.id);
       setValue("images", productSelected.images);
+    } else {
+      reset();
     }
   }, [productSelected, setValue]);
 

@@ -21,12 +21,33 @@ const getAuth = () => {
   }
 };
 
+const getOrganizer = () => {
+  if (!localStorage) {
+    return;
+  }
+
+  const lsValue = localStorage.getItem("organizer_id");
+  if (!lsValue) {
+    return;
+  }
+
+  try {
+    const organizer = JSON.parse(lsValue);
+    if (organizer) {
+      return organizer.id;
+    }
+  } catch (error) {
+    console.error("Get organizer error", error);
+  }
+};
+
 const handleLogout = () => {
   if (window.location.pathname !== "/login") {
     localStorage.removeItem("access_token");
     localStorage.removeItem("current_user");
+    localStorage.removeItem("organizer_id");
     history.replace("/login");
   }
 };
 
-export { getAuth, handleLogout };
+export { getAuth, handleLogout, getOrganizer };

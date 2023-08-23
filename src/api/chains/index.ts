@@ -8,20 +8,20 @@ const productApi = {
       headers: { "Content-Type": "multipart/form-data" },
     });
   },
-  getListProducts(params: any) {
-    const url = "/products/";
+  getListChains(params: any) {
+    const url = "/chains/";
     return axiosWithOrganizer.get(url, { params });
   },
-  createProduct(params: any) {
-    const url = "/products/";
+  createChain(params: any) {
+    const url = "/chains/";
     return axiosWithOrganizer.post(url, params);
   },
-  editProduct(params: any, id: any) {
-    const url = `/products/${id}`;
-    return axiosWithOrganizer.put(url, params);
-  },
-  removeProduct(id: any) {
-    const url = `/products/${id}`;
+  //   editChain(params: any, id: any) {
+  //     const url = `/Chains/${id}`;
+  //     return axiosWithOrganizer.put(url, params);
+  //   },
+  removeChain(id: any) {
+    const url = `/chains/${id}`;
     return axiosWithOrganizer.delete(url);
   },
 };

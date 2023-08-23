@@ -166,8 +166,10 @@ const BaseModal: React.FC<ModalProps> = ({
                 <div className="flex flex-row items-center justify-between gap-4 w-full">
                   <CustomButton
                     color="error"
-                    onClick={handleClose}
-                    label="Cancel"
+                    onClick={secondaryAction ? secondaryAction : handleClose}
+                    label={
+                      secondaryActionLabel ? secondaryActionLabel : "Cancel"
+                    }
                     disabled={disabled}
                   />
 

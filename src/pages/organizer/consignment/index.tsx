@@ -3,14 +3,13 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { layoutActions } from "../../../store/layout/layoutSlice";
 import ProductCard from "../../../components/organizer/product/ProductCard";
 import { useEffect, useState } from "react";
-import { productActions } from "../../../store/organizer/product/productSlice";
 import CustomButton from "../../../components/share/CustomButton";
 import { ParamsModalConfirm } from "../../../types/modal";
-import { Product } from "../../../types/product";
 import { modalActions } from "../../../store/modal/modalSlice";
 import { totalPagePagination } from "../../../utils/pagination";
 import AddIcon from "@mui/icons-material/Add";
 import { consignmentActions } from "../../../store/organizer/consignment/consignmentSlice";
+import { Consignment } from "../../../types/consignment";
 
 const ConsignmentPage = () => {
   const [params, setParams] = useState({ limit: 8, page: 1 });
@@ -25,15 +24,15 @@ const ConsignmentPage = () => {
     dispatch(layoutActions.openModalConsignment());
   };
 
-  const confirmDelete = (data: Product) => {
+  const confirmDelete = (data: Consignment) => {
     const params: ParamsModalConfirm = {
       title: "Confirm",
       content: (
         <span>
-          Do you want to delete a product <b>"{data.name}"</b>?
+          Do you want to delete a consignment<b> "{data.name}"</b>?
         </span>
       ),
-      onAction: () => dispatch(productActions.removeProduct(data.id)),
+      onAction: () => dispatch(consignmentActions.removeConsignment(data.id)),
       buttonText: "Delete",
     };
     dispatch(modalActions.showModal(params));
@@ -70,6 +69,12 @@ const ConsignmentPage = () => {
               img=""
               productName={cons.name}
               description={cons.description}
+              onAction={() => {
+                dispatch(consignmentActions.selectedConsignment(cons));
+                dispatch(layoutActions.openModalChains());
+              }}
+              labelAction="Create A Chain"
+              onDelete={() => confirmDelete(cons)}
             />
           </Grid>
         ))
