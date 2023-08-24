@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Pagination } from "../../../types/pagination";
-import { Consignment } from "../../../types/consignment";
+import { Consignment, ConsignmentDetail } from "../../../types/consignment";
 
 interface consignmentState {
   listConsignments: Consignment[];
@@ -9,6 +9,8 @@ interface consignmentState {
   loadingCreateConsignment: boolean;
   loadingRemoveConsignment: boolean;
   consignmentSelected: Consignment | null;
+  consignmentDetail?: ConsignmentDetail;
+  loadingConsignmentDetail: boolean;
 }
 
 const initialState: consignmentState = {
@@ -18,6 +20,8 @@ const initialState: consignmentState = {
   loadingCreateConsignment: false,
   loadingRemoveConsignment: false,
   consignmentSelected: null,
+  consignmentDetail: undefined,
+  loadingConsignmentDetail: false,
 };
 
 const consignmentSlice = createSlice({
@@ -61,6 +65,17 @@ const consignmentSlice = createSlice({
     },
     resetSelectedConsignment(state) {
       state.consignmentSelected = null;
+    },
+
+    getConsignmentDetail(state, action) {
+      state.loadingConsignmentDetail = true;
+    },
+    getConsignmentDetailSuccess(state, action) {
+      state.consignmentDetail = action.payload;
+      state.loadingConsignmentDetail = false;
+    },
+    getConsignmentDetailFailed(state) {
+      state.loadingConsignmentDetail = false;
     },
   },
 });

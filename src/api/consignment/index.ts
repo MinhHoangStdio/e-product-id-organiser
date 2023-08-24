@@ -14,6 +14,10 @@ const consignmentApi = {
     const url = `/consignments/${id}`;
     return axiosWithOrganizer.delete(url);
   },
+  getDetailConsignment(id: any) {
+    const url = `/consignments/${id}`;
+    return axiosWithOrganizer.get(url);
+  },
 };
 
 export default consignmentApi;

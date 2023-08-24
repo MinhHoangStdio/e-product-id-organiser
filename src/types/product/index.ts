@@ -7,7 +7,7 @@ export interface Product {
   category_id: number;
   id: number;
   approval_status: string;
-  organizer_id: number;
+  organization_id?: number;
   category: {
     name: string;
     parent_id: number;

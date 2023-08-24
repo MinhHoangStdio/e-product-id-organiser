@@ -28,6 +28,10 @@ const productApi = {
     const url = `/products/${id}`;
     return axiosWithOrganizer.delete(url);
   },
+  getDetailProduct(id: any) {
+    const url = `/products/${id}`;
+    return axiosWithOrganizer.get(url);
+  },
 };
 
 export default productApi;

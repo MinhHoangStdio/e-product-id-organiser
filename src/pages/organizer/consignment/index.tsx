@@ -10,6 +10,7 @@ import { totalPagePagination } from "../../../utils/pagination";
 import AddIcon from "@mui/icons-material/Add";
 import { consignmentActions } from "../../../store/organizer/consignment/consignmentSlice";
 import { Consignment } from "../../../types/consignment";
+import history from "../../../routes/history";
 
 const ConsignmentPage = () => {
   const [params, setParams] = useState({ limit: 8, page: 1 });
@@ -75,6 +76,9 @@ const ConsignmentPage = () => {
               }}
               labelAction="Create A Chain"
               onDelete={() => confirmDelete(cons)}
+              onClick={() => {
+                history.push("/organizer/consignments/" + cons.id);
+              }}
             />
           </Grid>
         ))

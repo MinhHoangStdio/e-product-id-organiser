@@ -10,6 +10,7 @@ import { Product } from "../../../types/product";
 import { modalActions } from "../../../store/modal/modalSlice";
 import { totalPagePagination } from "../../../utils/pagination";
 import AddIcon from "@mui/icons-material/Add";
+import history from "../../../routes/history";
 
 const ProductPage = () => {
   const [params, setParams] = useState({ limit: 8, page: 1 });
@@ -79,6 +80,9 @@ const ProductPage = () => {
                 openProductModal();
               }}
               onDelete={() => confirmDelete(prod)}
+              onClick={() => {
+                history.push("/organizer/products/" + prod.id);
+              }}
             />
           </Grid>
         ))
