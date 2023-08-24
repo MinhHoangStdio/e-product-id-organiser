@@ -3,7 +3,7 @@ import { alertActions } from "../../alert/alertSlice";
 import { Action } from "../../../types/actions";
 import { layoutActions } from "../../layout/layoutSlice";
 import { Pagination } from "../../../types/pagination";
-import { Consignment } from "../../../types/consignment";
+import { Consignment, ConsignmentDetail } from "../../../types/consignment";
 import consignmentApi from "../../../api/consignment";
 import { consignmentActions } from "./consignmentSlice";
 
@@ -85,6 +85,27 @@ function* handleDeleteConsignment(action: Action) {
   }
 }
 
+function* handleGetConsignmentDetail(action: Action) {
+  try {
+    const id = action.payload;
+
+    const response: { data: ConsignmentDetail } = yield call(
+      consignmentApi.getDetailConsignment,
+      id
+    );
+
+    yield put(consignmentActions.getConsignmentDetailSuccess(response.data));
+  } catch (error) {
+    yield put(consignmentActions.getConsignmentDetailFailed());
+    yield put(
+      alertActions.showAlert({
+        text: "Cannot get detail consignment",
+        type: "error",
+      })
+    );
+  }
+}
+
 function* watchLoginFlow() {
   yield all([
     takeLatest(
@@ -98,6 +119,10 @@ function* watchLoginFlow() {
     takeLatest(
       consignmentActions.getListConsignments.type,
       handleGetListConsignments
+    ),
+    takeLatest(
+      consignmentActions.getConsignmentDetail.type,
+      handleGetConsignmentDetail
     ),
   ]);
 }

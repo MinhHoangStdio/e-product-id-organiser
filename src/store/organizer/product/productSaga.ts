@@ -139,12 +139,34 @@ function* handleDeleteProduct(action: Action) {
   }
 }
 
+function* handleGetDetailProduct(action: Action) {
+  try {
+    const id = action.payload;
+
+    const response: { data: Product } = yield call(
+      productApi.getDetailProduct,
+      id
+    );
+
+    yield put(productActions.getDetailProductSuccess(response.data));
+  } catch (error) {
+    yield put(productActions.getDetailProductFailed());
+    yield put(
+      alertActions.showAlert({
+        text: "Cannot get detail product",
+        type: "error",
+      })
+    );
+  }
+}
+
 function* watchLoginFlow() {
   yield all([
     takeLatest(productActions.createProduct.type, handleCreateProduct),
     takeLatest(productActions.editProduct.type, handleEditProduct),
     takeLatest(productActions.removeProduct.type, handleDeleteProduct),
     takeLatest(productActions.getListProducts.type, handleGetListProducts),
+    takeLatest(productActions.getDetailProduct.type, handleGetDetailProduct),
   ]);
 }
 

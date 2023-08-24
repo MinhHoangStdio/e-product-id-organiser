@@ -44,7 +44,10 @@ const CustomButton = ({
       }
       size={size}
       disabled={disabled}
-      onClick={onClick}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick ? onClick() : console.log("clicked");
+      }}
       type={type}
       startIcon={Icon ? Icon : null}
       fullWidth={fullWidth}

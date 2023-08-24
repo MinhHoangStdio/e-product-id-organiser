@@ -7,6 +7,12 @@ import ConsignmentPage from "../pages/organizer/consignment";
 const PrivateRoutes = () => {
   const Dashboard = Loadable(lazy(() => import("../pages/dashboard")));
   const Product = Loadable(lazy(() => import("../pages/organizer/product")));
+  const ProductDetail = Loadable(
+    lazy(() => import("../pages/organizer/product/detail"))
+  );
+  const ConsignmentDetail = Loadable(
+    lazy(() => import("../pages/organizer/consignment/detail"))
+  );
   return (
     <MainLayout>
       <Routes>
@@ -14,7 +20,12 @@ const PrivateRoutes = () => {
         <Route path="/login" element={<Navigate to="/dashboard" />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/organizer/products" element={<Product />} />
+        <Route path="/organizer/products/:id" element={<ProductDetail />} />
         <Route path="/organizer/consignments" element={<ConsignmentPage />} />
+        <Route
+          path="/organizer/consignments/:id"
+          element={<ConsignmentDetail />}
+        />
       </Routes>
     </MainLayout>
   );

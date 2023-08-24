@@ -24,6 +24,7 @@ type IProductCard = {
   onDelete?: () => void;
   onAction?: () => void;
   labelAction?: string;
+  onClick?: () => void;
 };
 
 const ProductCard = ({
@@ -34,10 +35,12 @@ const ProductCard = ({
   onEdit,
   onDelete,
   onAction,
+  onClick,
 }: IProductCard) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -45,12 +48,13 @@ const ProductCard = ({
   };
 
   return (
-    <Card>
+    <Card onClick={onClick}>
       <Stack
-        sx={{ py: 1, pl: 1, bgcolor: "transparent" }}
+        sx={{ py: 1, pl: 1, bgcolor: "transparent", cursor: "pointer" }}
         direction="row"
         justifyContent="space-between"
         alignItems="center"
+        onClick={onClick}
       >
         <Typography
           variant="h5"
@@ -63,7 +67,6 @@ const ProductCard = ({
         >
           {productName}
         </Typography>
-
         <div>
           <IconButton
             aria-controls={open ? "action_menu" : undefined}
@@ -84,7 +87,8 @@ const ProductCard = ({
           >
             {onEdit && (
               <MenuItem
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   handleClose();
                   onEdit();
                 }}
@@ -94,7 +98,8 @@ const ProductCard = ({
             )}
             {onDelete && (
               <MenuItem
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   handleClose();
                   onDelete();
                 }}
@@ -106,7 +111,10 @@ const ProductCard = ({
         </div>
       </Stack>
       <Box sx={{ px: 1 }}>
-        <CardMedia sx={{ height: 250, borderRadius: "4px" }} image={img} />
+        <CardMedia
+          sx={{ height: 250, borderRadius: "4px", cursor: "pointer" }}
+          image={img}
+        />
       </Box>
 
       {/* <CardContent>
