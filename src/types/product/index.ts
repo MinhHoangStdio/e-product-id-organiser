@@ -14,3 +14,9 @@ export interface Product {
     id: number;
   };
 }
+
+export interface Category {
+  name: string;
+  parent_id: number | null;
+  id: number;
+}

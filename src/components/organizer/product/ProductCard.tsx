@@ -114,12 +114,14 @@ const ProductCard = ({
           </Menu>
         </div>
       </Stack>
-      <Box sx={{ px: 1 }}>
-        <CardMedia
-          sx={{ height: 250, borderRadius: "4px", cursor: "pointer" }}
-          image={img}
-        />
-      </Box>
+      {img && (
+        <Box sx={{ px: 1 }}>
+          <CardMedia
+            sx={{ height: 250, borderRadius: "4px", cursor: "pointer" }}
+            image={img}
+          />
+        </Box>
+      )}
 
       <CardContent>
         <Typography

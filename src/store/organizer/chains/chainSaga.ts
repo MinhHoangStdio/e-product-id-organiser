@@ -113,8 +113,9 @@ function* handleCreateChains(action: Action) {
 
 function* handleDeleteChains(action: Action) {
   try {
-    const id = action.payload;
-    const response: { data: any } = yield call(productApi.removeProduct, id);
+    const { chainId, consignmentId } = action.payload;
+    const response: { data: any } = yield call(chainsApi.removeChains, chainId);
+    yield put(consignmentActions.getConsignmentDetail(consignmentId));
     yield put(chainsActions.removeChainsSuccess());
     yield put(
       alertActions.showAlert({
@@ -122,7 +123,6 @@ function* handleDeleteChains(action: Action) {
         type: "success",
       })
     );
-    // yield put(chainsActions.getListChains({}));
   } catch (error) {
     yield put(chainsActions.removeChainsFailed());
     yield put(

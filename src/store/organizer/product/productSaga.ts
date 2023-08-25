@@ -4,7 +4,7 @@ import { Action } from "../../../types/actions";
 import { productActions } from "./productSlice";
 import productApi from "../../../api/product";
 import { layoutActions } from "../../layout/layoutSlice";
-import { Product } from "../../../types/product";
+import { Category, Product } from "../../../types/product";
 import { Pagination } from "../../../types/pagination";
 
 function* handleGetListProducts(action: Action) {
@@ -39,6 +39,22 @@ function* handleGetAllListProducts(action: Action) {
     yield put(
       alertActions.showAlert({
         text: "Cannot get list products",
+        type: "error",
+      })
+    );
+  }
+}
+
+function* handleGetListCategories(action: Action) {
+  try {
+    const response: { data: { data: Category[]; paginate: Pagination } } =
+      yield call(productApi.getListCategories);
+    yield put(productActions.getAllListCategoriesSuccess(response.data));
+  } catch (error) {
+    yield put(productActions.getAllListCategoriesFailed());
+    yield put(
+      alertActions.showAlert({
+        text: "Cannot get list categories",
         type: "error",
       })
     );
@@ -182,6 +198,10 @@ function* watchLoginFlow() {
     takeLatest(productActions.editProduct.type, handleEditProduct),
     takeLatest(productActions.removeProduct.type, handleDeleteProduct),
     takeLatest(productActions.getListProducts.type, handleGetListProducts),
+    takeLatest(
+      productActions.getAllListCategories.type,
+      handleGetListCategories
+    ),
     takeLatest(
       productActions.getAllListProducts.type,
       handleGetAllListProducts
