@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import dayjs, { Dayjs } from "dayjs";
 import BaseModal from "../BaseModal";
 import Heading from "../../Heading";
 import {
@@ -9,7 +10,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
@@ -23,45 +24,59 @@ import { countTotalElements } from "../../../utils/share";
 import DropzoneCustom from "../../share/dropzone/DropzoneCustom";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { chainsActions } from "../../../store/organizer/chains/chainsSlice";
+import TimePicker from "../../share/input/TimePicker";
 
-enum STEPS {
-  DESCRIPTION = 0,
-  CHAIN = 1,
-  REVIEW = 2,
-}
+// enum STEPS {
+//   DESCRIPTION = 0,
+//   CHAIN = 1,
+//   REVIEW = 2,
+// }
 
 interface FieldValues {
   name: string;
   description: string;
   images: any;
   consignment_id?: any;
-  payload: { name: string; description: string }[];
+  payload: { date: any };
 }
 const CreateChainsModal = () => {
   const theme = useTheme();
+  const [date, setDate] = useState(dayjs(new Date()));
   const isOpenModal = useAppSelector((state) => state.layout.isOpenChainsModal);
   const consignmentSelected = useAppSelector(
     (state) => state.consignment.consignmentSelected
   );
   const dispatch = useAppDispatch();
-  const [step, setStep] = useState(STEPS.DESCRIPTION);
-  const [fields, setFields] = useState([{ id: 0, deleted: false }]); // Mảng các field
+  // const [step, setStep] = useState(STEPS.DESCRIPTION);
+  // const [fields, setFields] = useState([{ id: 0, deleted: false }]); // Mảng các field
 
   //==========================================================handle upload imgs//==========================================================
   const listImage = useAppSelector((state) => state.chains.temporarylistImgUrl);
+  const listStepImage = useAppSelector(
+    (state) => state.chains.temporarylistStepImgUrl
+  );
   const loadingCreateChains = useAppSelector(
     (state) => state.chains.loadingCreateChains
   );
-  const deleteImageUpload = (file: any) => {
-    dispatch(chainsActions.deleteATemporaryImgUrl(file));
-  };
-  const plusTemporaryImages = (listImg: any) => {
-    dispatch(chainsActions.plusTemporaryListImgUrl(listImg));
-  };
   const uploadTemporaryImages = (listImg: any) => {
     setValue("images", listImg);
     dispatch(chainsActions.settemporarylistImgUrl(listImg));
   };
+  // const uploadTemporaryStepImages = (listImg: any, id: number) => {
+  //   dispatch(chainsActions.setTemporarylistStepImgUrl({ id, data: listImg }));
+  // };
+  const plusTemporaryImages = (listImg: any) => {
+    dispatch(chainsActions.plusTemporaryListImgUrl(listImg));
+  };
+  // const plusTemporaryStepImages = (listImg: any, id: number) => {
+  //   dispatch(chainsActions.plusTemporarylistStepImgUrl({ id, data: listImg }));
+  // };
+  const deleteImageUpload = (file: any) => {
+    dispatch(chainsActions.deleteATemporaryImgUrl(file));
+  };
+  // const deleteImageStepUpload = (file: any, id: number) => {
+  //   dispatch(chainsActions.deleteATemporarylistStepImgUrl({ id, data: file }));
+  // };
 
   const {
     register,
@@ -72,30 +87,34 @@ const CreateChainsModal = () => {
     trigger,
     unregister,
     getValues,
+    control,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
       name: "",
       description: "",
       images: [],
-      payload: [{ name: "", description: "" }],
       consignment_id: null,
+      payload: { date: dayjs(new Date()) },
     },
     resolver: yupResolver(
       yup.object().shape({
         name: yup.string().required("Insert name"),
         description: yup.string().required("Insert description"),
         images: yup.array().min(1, "Insert images").required("Insert images"),
-        payload: yup
-          .array()
-          .of(
-            yup.object().shape({
-              name: yup.string().required("Insert name"),
-              description: yup.string().required("Insert description"),
-            })
-          )
-          .min(1, "Insert Chain")
-          .required("Insert images"),
+        payload: yup.object().shape({
+          date: yup.date().required("Insert Date"),
+        }),
+        // payload: yup
+        //   .array()
+        //   .of(
+        //     yup.object().shape({
+        //       name: yup.string().required("Insert name"),
+        //       description: yup.string().required("Insert description"),
+        //     })
+        //   )
+        //   .min(1, "Insert Chain")
+        //   .required("Insert images"),
       })
     ),
   });
@@ -112,64 +131,63 @@ const CreateChainsModal = () => {
     }
   }, [consignmentSelected, setValue]);
 
-  const addField = () => {
-    setFields([...fields, { id: fields.length, deleted: false }]);
-  };
+  // const addField = () => {
+  //   setFields([...fields, { id: fields.length, deleted: false }]);
+  // };
 
-  const removeField = (id: number) => {
-    setFields(fields.filter((field) => field.id !== id));
-  };
+  // const removeField = (id: number) => {
+  //   setFields(fields.filter((field) => field.id !== id));
+  // };
 
-  const resetField = () => {
-    setFields([{ id: 0, deleted: false }]);
-  };
+  // const resetField = () => {
+  //   setFields([{ id: 0, deleted: false }]);
+  // };
 
-  const onSubmitOrNext = async () => {
-    if (step == STEPS.DESCRIPTION) {
-      const result = await trigger(["name", "description", "images"]);
-      if (result) {
-        setStep(step + 1);
-      }
-    } else if (step == STEPS.CHAIN) {
-      const result = await trigger(["payload"]);
-      if (result) {
-        setStep(step + 1);
-      }
-    } else {
-      const payload = {
-        params: formValues,
-        formData: listImage,
-        onReset() {
-          dispatch(chainsActions.resetTemporarylistImgUrl());
-          dispatch(layoutActions.closeModalChains());
-          reset();
-        },
-      };
-      dispatch(chainsActions.createChains(payload));
-    }
+  const onSubmitOrNext: SubmitHandler<FieldValues> = async (data) => {
+    // if (step == STEPS.DESCRIPTION) {
+    //   const result = await trigger(["name", "description", "images"]);
+    //   if (result) {
+    //     setStep(step + 1);
+    //   }
+    // } else if (step == STEPS.CHAIN) {
+    //   const result = await trigger(["payload"]);
+    //   if (result) {
+    //     setStep(step + 1);
+    //   }
+    // } else {
+    const payload = {
+      params: data,
+      formData: listImage,
+      onReset() {
+        dispatch(chainsActions.resetTemporarylistImgUrl());
+        dispatch(layoutActions.closeModalChains());
+        reset();
+      },
+    };
+    dispatch(chainsActions.createChains(payload));
   };
 
   const onCloseModal = () => {
     reset();
-    setStep(STEPS.DESCRIPTION);
-    resetField();
+    // setStep(STEPS.DESCRIPTION);
+    // resetField();
     dispatch(layoutActions.closeModalChains());
     dispatch(chainsActions.resetTemporarylistImgUrl());
     dispatch(consignmentActions.resetSelectedConsignment());
   };
 
-  const onSecondaryAction = () => {
-    if (step !== STEPS.DESCRIPTION) {
-      setStep(step - 1);
-    } else {
-      onCloseModal();
-    }
-  };
+  // const onSecondaryAction = () => {
+  //   if (step !== STEPS.DESCRIPTION) {
+  //     setStep(step - 1);
+  //   } else {
+  //     onCloseModal();
+  //   }
+  // };
 
   const formValues = getValues();
 
   //==========================================================DESCRIPTION//==========================================================
-  let bodyContent = (
+  const bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading title="Create a new chain" />
       <TextField
@@ -196,6 +214,30 @@ const CreateChainsModal = () => {
           if (errors.description) {
             clearErrors("description");
           }
+        }}
+      />
+
+      <Controller
+        control={control}
+        name="payload.date"
+        rules={{ required: true }}
+        render={({ field }) => {
+          return (
+            <TimePicker
+              label="Date"
+              value={field.value}
+              inputRef={field.ref}
+              onChange={(date) => {
+                field.onChange(date);
+              }}
+              slotProps={{
+                textField: {
+                  error: !!errors?.payload?.date,
+                  helperText: errors?.payload?.date ? "Invalid date" : null,
+                },
+              }}
+            />
+          );
         }}
       />
       <Stack
@@ -261,142 +303,220 @@ const CreateChainsModal = () => {
   );
 
   //==========================================================CHAINS//==========================================================
-  if (step === STEPS.CHAIN) {
-    bodyContent = (
-      <div className="flex flex-col gap-8">
-        <Heading title="Add your step" />
-        {fields.map((field, i) => {
-          return (
-            <Grid container key={field.id}>
-              <Grid item xs={12} sx={{ mb: 1 }}>
-                <Typography variant="h4" fontWeight="500">{`Step ${
-                  i + 1
-                }`}</Typography>
-              </Grid>
-              <Grid item xs={11}>
-                <Stack gap={1}>
-                  <TextField
-                    id="name"
-                    label="Step name"
-                    inputProps={{ ...register(`payload.${field.id}.name`) }}
-                    error={
-                      !!errors.payload &&
-                      !!errors.payload[field.id] &&
-                      !!errors.payload[field.id]?.name
-                    }
-                    required
-                    helperText={
-                      !!errors.payload &&
-                      !!errors.payload[field.id] &&
-                      !!errors.payload[field.id]?.name &&
-                      errors.payload[field.id]?.name?.message
-                    }
-                    onChange={() => {
-                      if (
-                        !!errors.payload &&
-                        !!errors.payload[field.id] &&
-                        !!errors.payload[field.id]?.name
-                      ) {
-                        clearErrors(`payload.${field.id}.name`);
-                      }
-                    }}
-                  />
+  // if (step === STEPS.CHAIN) {
+  //   bodyContent = (
+  //     <div className="flex flex-col gap-8">
+  //       <Heading title="Add your step" />
+  //       {fields.map((field, i) => {
+  //         return (
+  //           <Grid container key={field.id}>
+  //             <Grid item xs={12} sx={{ mb: 1 }}>
+  //               <Stack
+  //                 direction="row"
+  //                 gap={1}
+  //                 justifyContent="space-between"
+  //                 alignItems="center"
+  //               >
+  //                 <Typography variant="h4" fontWeight="500">{`Step ${
+  //                   i + 1
+  //                 }`}</Typography>
+  //                 {field.id > 0 && (
+  //                   <CustomButton
+  //                     onClick={() => {
+  //                       dispatch(
+  //                         chainsActions.setTemporarylistStepImgUrl({
+  //                           id: i,
+  //                           data: [],
+  //                         })
+  //                       );
+  //                       console.log({ formValues });
+  //                       removeField(field.id);
+  //                       unregister(`payload.${field.id}`);
+  //                     }}
+  //                     label="Remove"
+  //                     color="error"
+  //                     Icon={<DeleteIcon />}
+  //                   />
+  //                 )}
+  //               </Stack>
+  //             </Grid>
+  //             <Grid item xs={12}>
+  //               <Stack gap={1}>
+  //                 <TextField
+  //                   id="name"
+  //                   label="Step name"
+  //                   inputProps={{ ...register(`payload.${field.id}.name`) }}
+  //                   error={
+  //                     !!errors.payload &&
+  //                     !!errors.payload[field.id] &&
+  //                     !!errors.payload[field.id]?.name
+  //                   }
+  //                   required
+  //                   helperText={
+  //                     !!errors.payload &&
+  //                     !!errors.payload[field.id] &&
+  //                     !!errors.payload[field.id]?.name &&
+  //                     errors.payload[field.id]?.name?.message
+  //                   }
+  //                   onChange={() => {
+  //                     if (
+  //                       !!errors.payload &&
+  //                       !!errors.payload[field.id] &&
+  //                       !!errors.payload[field.id]?.name
+  //                     ) {
+  //                       clearErrors(`payload.${field.id}.name`);
+  //                     }
+  //                   }}
+  //                 />
 
-                  <TextField
-                    fullWidth
-                    id="name"
-                    label="Description"
-                    inputProps={{
-                      ...register(`payload.${field.id}.description`),
-                    }}
-                    error={
-                      !!errors.payload &&
-                      !!errors.payload[field.id] &&
-                      !!errors.payload[field.id]?.description
-                    }
-                    required
-                    helperText={
-                      !!errors.payload &&
-                      !!errors.payload[field.id] &&
-                      !!errors.payload[field.id]?.description &&
-                      errors.payload[field.id]?.description?.message
-                    }
-                    onChange={() => {
-                      if (
-                        !!errors.payload &&
-                        !!errors.payload[field.id] &&
-                        !!errors.payload[field.id]?.description
-                      ) {
-                        clearErrors(`payload.${field.id}.description`);
-                      }
-                    }}
-                  />
-                </Stack>
-              </Grid>
-              {field.id > 0 && (
-                <Grid item xs={1} sx={{ p: 1 }} alignSelf="center">
-                  <CustomButton
-                    onClick={() => {
-                      console.log({ formValues });
-                      removeField(field.id);
-                      unregister(`payload.${field.id}`);
-                    }}
-                    label=""
-                    color="error"
-                    Icon={<DeleteIcon />}
-                  />
-                </Grid>
-              )}
-            </Grid>
-          );
-        })}
-        <CustomButton
-          width="180px"
-          onClick={addField}
-          label="ADD A NEW STEP"
-          color="primary"
-          Icon={<AddIcon />}
-        />
-      </div>
-    );
-  }
+  //                 <TextField
+  //                   fullWidth
+  //                   id="name"
+  //                   label="Description"
+  //                   inputProps={{
+  //                     ...register(`payload.${field.id}.description`),
+  //                   }}
+  //                   error={
+  //                     !!errors.payload &&
+  //                     !!errors.payload[field.id] &&
+  //                     !!errors.payload[field.id]?.description
+  //                   }
+  //                   required
+  //                   helperText={
+  //                     !!errors.payload &&
+  //                     !!errors.payload[field.id] &&
+  //                     !!errors.payload[field.id]?.description &&
+  //                     errors.payload[field.id]?.description?.message
+  //                   }
+  //                   onChange={() => {
+  //                     if (
+  //                       !!errors.payload &&
+  //                       !!errors.payload[field.id] &&
+  //                       !!errors.payload[field.id]?.description
+  //                     ) {
+  //                       clearErrors(`payload.${field.id}.description`);
+  //                     }
+  //                   }}
+  //                 />
+  //                 <Stack
+  //                   gap={1}
+  //                   sx={{
+  //                     border: `1px solid #ccc`,
+  //                     p: 2,
+  //                     borderRadius: 1,
+  //                   }}
+  //                 >
+  //                   <b>{`Insert images*(Max:4)`}</b>
+  //                   <Stack direction="row" gap={1}>
+  //                     {listStepImage?.[i]?.length
+  //                       ? listStepImage?.[i].map((img: any, i: number) => (
+  //                           <ImageUpload
+  //                             key={i}
+  //                             width="25%"
+  //                             src={img.preview}
+  //                             onDelete={() => {
+  //                               deleteImageUpload(img);
+  //                             }}
+  //                           />
+  //                         ))
+  //                       : null}
+  //                     {!!listStepImage?.[i]?.length &&
+  //                     countTotalElements(listStepImage?.[i]) < 4 ? (
+  //                       <DropzoneCustom
+  //                         id={i}
+  //                         Icon={AddCircleOutlineIcon}
+  //                         maxFile={
+  //                           4 - countTotalElements(listStepImage?.[i]) > 1
+  //                             ? 4 - countTotalElements(listStepImage?.[i])
+  //                             : 1
+  //                         }
+  //                         onUploadTemporaryImage={plusTemporaryStepImages}
+  //                         typeAppend={"files"}
+  //                         width="25%"
+  //                       />
+  //                     ) : (
+  //                       <></>
+  //                     )}
+  //                   </Stack>
+
+  //                   {!listStepImage?.[i]?.length ? (
+  //                     <DropzoneCustom
+  //                       id={i}
+  //                       maxFile={4}
+  //                       onUploadTemporaryImage={uploadTemporaryStepImages}
+  //                       typeAppend={"files"}
+  //                     />
+  //                   ) : (
+  //                     <></>
+  //                   )}
+  //                 </Stack>
+  //               </Stack>
+  //             </Grid>
+  //             {/* {field.id > 0 && (
+  //               <Grid item xs={1} sx={{ p: 1 }} alignSelf="center">
+  //                 <CustomButton
+  //                   onClick={() => {
+  //                     console.log({ formValues });
+  //                     removeField(field.id);
+  //                     unregister(`payload.${field.id}`);
+  //                   }}
+  //                   label=""
+  //                   color="error"
+  //                   Icon={<DeleteIcon />}
+  //                 />
+  //               </Grid>
+  //             )} */}
+  //           </Grid>
+  //         );
+  //       })}
+  //       <CustomButton
+  //         width="180px"
+  //         onClick={addField}
+  //         label="ADD A NEW STEP"
+  //         color="primary"
+  //         Icon={<AddIcon />}
+  //       />
+  //     </div>
+  //   );
+  // }
 
   //==========================================================REVIEW//==========================================================
-  if (step == STEPS.REVIEW) {
-    bodyContent = (
-      <div className="flex flex-col gap-2">
-        <Heading title="Review your chains" />
-        <Stack>
-          <Typography variant="h4">{formValues.name}</Typography>
-          <Typography variant="h5" sx={{ color: "#595959" }}>
-            {formValues.description}
-          </Typography>
-        </Stack>
+  // if (step == STEPS.REVIEW) {
+  //   bodyContent = (
+  //     <div className="flex flex-col gap-2">
+  //       <Heading title="Review your chains" />
+  //       <Stack>
+  //         <Typography variant="h4">{formValues.name}</Typography>
+  //         <Typography variant="h5" sx={{ color: "#595959" }}>
+  //           {formValues.description}
+  //         </Typography>
+  //       </Stack>
 
-        {formValues.payload.map((data, i) => (
-          <Stack key={i}>
-            <Typography variant="h5" fontWeight={500}>
-              step {i + 1} : {data.name}
-            </Typography>
-            <Typography sx={{ color: "#595959" }}>
-              description: {data.description}
-            </Typography>
-          </Stack>
-        ))}
-      </div>
-    );
-  }
+  //       {formValues.payload.map((data, i) => (
+  //         <Stack key={i}>
+  //           <Typography variant="h5" fontWeight={500}>
+  //             step {i + 1} : {data.name}
+  //           </Typography>
+  //           <Typography sx={{ color: "#595959" }}>
+  //             description: {data.description}
+  //           </Typography>
+  //         </Stack>
+  //       ))}
+  //     </div>
+  //   );
+  // }
 
   return (
     <BaseModal
       disabled={loadingCreateChains}
       isOpen={isOpenModal}
       title="Create a new Chains"
-      actionLabel={step !== STEPS.REVIEW ? "Next" : "Create"}
-      secondaryActionLabel={step == STEPS.DESCRIPTION ? "Cancel" : "Back"}
+      // actionLabel={step !== STEPS.REVIEW ? "Next" : "Create"}
+      actionLabel="Create"
+      // secondaryActionLabel={step == STEPS.DESCRIPTION ? "Cancel" : "Back"}
       onClose={onCloseModal}
-      secondaryAction={onSecondaryAction}
-      onSubmit={onSubmitOrNext}
+      // secondaryAction={onSecondaryAction}
+      onSubmit={handleSubmit(onSubmitOrNext)}
       body={bodyContent}
     />
   );

@@ -11,9 +11,8 @@ function* handleGetOrganizer(action: Action) {
       organizerApi.getListOrganizer,
       {}
     );
-    console.log(response.data.data[0]);
-    localStorage.setItem("organizer_id", JSON.stringify(response.data.data[0]));
-    yield put(organizerActions.getOrganizerSuccess(response.data.data[0]));
+    localStorage.setItem("organizer_id", JSON.stringify(response.data));
+    yield put(organizerActions.getOrganizerSuccess(response.data));
   } catch (error) {
     yield put(organizerActions.getOrganizerFailed());
     yield put(

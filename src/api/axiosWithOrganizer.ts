@@ -24,10 +24,10 @@ axiosWithOrganizer.interceptors.request.use(
         Authorization: `Bearer ${token}`,
       };
     }
-    if (organizerId) {
+    if (organizerId.id) {
       config.params = {
         ...config.params,
-        organization_id: organizerId,
+        organization_id: organizerId.id,
       };
     }
 

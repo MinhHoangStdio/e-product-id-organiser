@@ -11,6 +11,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { consignmentActions } from "../../../store/organizer/consignment/consignmentSlice";
 import { Consignment } from "../../../types/consignment";
 import history from "../../../routes/history";
+import { productActions } from "../../../store/organizer/product/productSlice";
 
 const ConsignmentPage = () => {
   const [params, setParams] = useState({ limit: 8, page: 1 });
@@ -18,9 +19,6 @@ const ConsignmentPage = () => {
   const { listConsignments, loadingGetConsignments, pagination } =
     useAppSelector((state) => state.consignment);
 
-  const openProductModal = () => {
-    dispatch(layoutActions.openModalProduct());
-  };
   const openConsignmentModal = () => {
     dispatch(layoutActions.openModalConsignment());
   };
@@ -49,6 +47,10 @@ const ConsignmentPage = () => {
     dispatch(consignmentActions.getListConsignments({}));
   }, [dispatch, params]);
 
+  useEffect(() => {
+    dispatch(productActions.getAllListProducts());
+  }, [dispatch]);
+
   return (
     <Grid sx={{ p: 2 }} container>
       <Grid item xs={12}>
@@ -58,8 +60,8 @@ const ConsignmentPage = () => {
           <CustomButton
             Icon={<AddIcon />}
             color="primary"
-            onClick={openProductModal}
-            label="Create a new product"
+            onClick={openConsignmentModal}
+            label="Create a new Consignment"
           />
         </Stack>
       </Grid>
@@ -67,14 +69,16 @@ const ConsignmentPage = () => {
         listConsignments.map((cons) => (
           <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={cons.id}>
             <ProductCard
-              img=""
-              productName={cons.name}
+              img={cons.product.images[0]}
+              name={cons.name}
+              amount={cons.amount}
+              productName={cons.product.name}
               description={cons.description}
               onAction={() => {
                 dispatch(consignmentActions.selectedConsignment(cons));
                 dispatch(layoutActions.openModalChains());
               }}
-              labelAction="Create A Chain"
+              labelAction="Create Chains"
               onDelete={() => confirmDelete(cons)}
               onClick={() => {
                 history.push("/organizer/consignments/" + cons.id);

@@ -9,6 +9,7 @@ interface chainsState {
   loadingRemoveChains: boolean;
   isUpload: boolean;
   temporarylistImgUrl: any;
+  temporarylistStepImgUrl: any;
   listImgUrl: any[];
 }
 
@@ -21,6 +22,7 @@ const initialState: chainsState = {
   isUpload: false,
   temporarylistImgUrl: [],
   listImgUrl: [],
+  temporarylistStepImgUrl: {},
 };
 
 const chainsSlice = createSlice({
@@ -66,6 +68,36 @@ const chainsSlice = createSlice({
     },
     resetTemporarylistImgUrl(state) {
       state.temporarylistImgUrl = [];
+    },
+
+    setTemporarylistStepImgUrl(
+      state,
+      action: { payload: { id: number; data: any } }
+    ) {
+      const { id, data } = action.payload;
+      state.temporarylistStepImgUrl[`slot ${id}`] = data;
+    },
+    plusTemporarylistStepImgUrl(state, action) {
+      const { id, data } = action.payload;
+      if (state.temporarylistStepImgUrl[id] === undefined) {
+        state.temporarylistStepImgUrl[id] = [];
+      }
+      state.temporarylistStepImgUrl[id] = [
+        ...state.temporarylistStepImgUrl[id],
+        ...data,
+      ];
+    },
+    deleteATemporarylistStepImgUrl(state, action) {
+      const { id, data } = action.payload;
+      if (state.temporarylistStepImgUrl[id] === undefined) {
+        return;
+      }
+      state.temporarylistStepImgUrl[id] = [
+        ...state.temporarylistStepImgUrl[id],
+      ].filter((item) => item.preview !== data.preview);
+    },
+    resetTemporarylistStepImgUrl(state) {
+      state.temporarylistStepImgUrl = [];
     },
 
     createChains(state, action) {

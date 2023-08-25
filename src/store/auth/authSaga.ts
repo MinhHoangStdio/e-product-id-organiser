@@ -7,6 +7,8 @@ import { Action } from "../../types/actions";
 import { layoutActions } from "../layout/layoutSlice";
 import organizerApi from "../../api/organizer";
 import { organizerActions } from "../organizer/info/organizerSlice";
+import { productActions } from "../organizer/product/productSlice";
+import { consignmentActions } from "../organizer/consignment/consignmentSlice";
 
 function* handleLogin(action: Action) {
   try {
@@ -67,6 +69,8 @@ function* handleLogout(action: Action) {
   localStorage.removeItem("current_user");
   localStorage.removeItem("organizer_id");
   yield put(organizerActions.resetOrganizer());
+  yield put(productActions.reset());
+  yield put(consignmentActions.reset());
   action.payload.onNavigate?.();
 }
 

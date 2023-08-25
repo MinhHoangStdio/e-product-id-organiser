@@ -4,6 +4,7 @@ import { Pagination } from "../../../types/pagination";
 
 interface productState {
   listProducts: Product[];
+  listAllProducts: Product[];
   pagination: Pagination | null;
   loadingGetProducts: boolean;
   isUpload: boolean;
@@ -20,6 +21,7 @@ interface productState {
 
 const initialState: productState = {
   listProducts: [],
+  listAllProducts: [],
   pagination: null,
   loadingGetProducts: false,
   isUpload: false,
@@ -47,6 +49,17 @@ const productSlice = createSlice({
       state.loadingGetProducts = true;
     },
     getListProductsFailed(state) {
+      state.loadingGetProducts = true;
+    },
+
+    getAllListProducts(state) {
+      state.loadingGetProducts = true;
+    },
+    getAllListProductsSuccess(state, action) {
+      state.listAllProducts = action.payload.data;
+      state.loadingGetProducts = true;
+    },
+    getAllListProductsFailed(state) {
       state.loadingGetProducts = true;
     },
 
@@ -135,6 +148,11 @@ const productSlice = createSlice({
     },
     getDetailProductFailed(state) {
       state.loadingDetailProduct = false;
+    },
+
+    reset(state) {
+      state.listAllProducts = [];
+      state.listProducts = [];
     },
   },
 });
