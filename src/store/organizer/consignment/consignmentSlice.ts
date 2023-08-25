@@ -34,10 +34,10 @@ const consignmentSlice = createSlice({
     getListConsignmentsSuccess(state, action) {
       state.listConsignments = action.payload.data;
       state.pagination = action.payload.paginate;
-      state.loadingGetConsignments = true;
+      state.loadingGetConsignments = false;
     },
     getListConsignmentsFailed(state) {
-      state.loadingGetConsignments = true;
+      state.loadingGetConsignments = false;
     },
 
     createConsignment(state, action) {

@@ -12,15 +12,22 @@ import { consignmentActions } from "../../../store/organizer/consignment/consign
 import { Consignment } from "../../../types/consignment";
 import history from "../../../routes/history";
 import { productActions } from "../../../store/organizer/product/productSlice";
+import EmptyOrganizer from "../../../components/organizer/EmptyOrganizer";
+import LoadingPage from "../../../components/LoadingPage";
 
 const ConsignmentPage = () => {
   const [params, setParams] = useState({ limit: 8, page: 1 });
   const dispatch = useAppDispatch();
   const { listConsignments, loadingGetConsignments, pagination } =
     useAppSelector((state) => state.consignment);
+  const organizer = useAppSelector((state) => state.organizer.userOrganizer);
 
   const openConsignmentModal = () => {
     dispatch(layoutActions.openModalConsignment());
+  };
+
+  const openOrganizerModal = () => {
+    dispatch(layoutActions.openModalOrganizer());
   };
 
   const confirmDelete = (data: Consignment) => {
@@ -44,14 +51,20 @@ const ConsignmentPage = () => {
   };
 
   useEffect(() => {
-    dispatch(consignmentActions.getListConsignments({}));
-  }, [dispatch, params]);
+    if (organizer?.id) {
+      dispatch(consignmentActions.getListConsignments({}));
+    }
+  }, [dispatch, params, organizer]);
 
   useEffect(() => {
-    dispatch(productActions.getAllListProducts());
-  }, [dispatch]);
+    if (organizer?.id) {
+      dispatch(productActions.getAllListProducts());
+    }
+  }, [dispatch, organizer]);
 
-  return (
+  return loadingGetConsignments ? (
+    <LoadingPage />
+  ) : organizer?.id ? (
     <Grid sx={{ p: 2 }} container>
       <Grid item xs={12}>
         <Stack direction="row" justifyContent="space-between">
@@ -66,39 +79,49 @@ const ConsignmentPage = () => {
         </Stack>
       </Grid>
       {listConsignments.length ? (
-        listConsignments.map((cons) => (
-          <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={cons.id}>
-            <ProductCard
-              img={cons?.product?.images[0]}
-              name={cons?.name}
-              amount={cons?.amount}
-              productName={cons?.product?.name}
-              description={cons?.description}
-              onAction={() => {
-                dispatch(consignmentActions.selectedConsignment(cons));
-                dispatch(layoutActions.openModalChains());
-              }}
-              labelAction="Create Chains"
-              onDelete={() => confirmDelete(cons)}
-              onClick={() => {
-                history.push("/organizer/consignments/" + cons.id);
-              }}
-            />
+        <>
+          {listConsignments.map((cons) => (
+            <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={cons.id}>
+              <ProductCard
+                img={cons?.product?.images[0]}
+                name={cons?.name}
+                amount={cons?.amount}
+                productName={cons?.product?.name}
+                description={cons?.description}
+                onAction={() => {
+                  dispatch(consignmentActions.selectedConsignment(cons));
+                  dispatch(layoutActions.openModalChains());
+                }}
+                labelAction="Create Chains"
+                onDelete={() => confirmDelete(cons)}
+                onClick={() => {
+                  history.push("/organizer/consignments/" + cons.id);
+                }}
+              />
+            </Grid>
+          ))}
+          <Grid item xs={12}>
+            <Stack sx={{ py: "20px" }}>
+              <Pagination
+                count={pagination ? totalPagePagination(pagination) : 1}
+                page={pagination?.page || 1}
+                onChange={handlePagination}
+              />
+            </Stack>
           </Grid>
-        ))
+        </>
       ) : (
-        <></>
+        <EmptyOrganizer
+          onAction={openConsignmentModal}
+          labelBtn="Create Your Consignment"
+        />
       )}
-      <Grid item xs={12}>
-        <Stack sx={{ py: "20px" }}>
-          <Pagination
-            count={pagination ? totalPagePagination(pagination) : 1}
-            page={pagination?.page || 1}
-            onChange={handlePagination}
-          />
-        </Stack>
-      </Grid>
     </Grid>
+  ) : (
+    <EmptyOrganizer
+      onAction={openOrganizerModal}
+      labelBtn="Create Your Organizer"
+    />
   );
 };
 

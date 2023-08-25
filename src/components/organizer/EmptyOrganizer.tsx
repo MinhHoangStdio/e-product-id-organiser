@@ -11,7 +11,11 @@ interface IEmptyOrganizer {
 
 const EmptyOrganizer = ({ text, onAction, labelBtn }: IEmptyOrganizer) => {
   return (
-    <Stack justifyContent="center" alignItems="center" sx={{ height: "85vh" }}>
+    <Stack
+      justifyContent="center"
+      alignItems="center"
+      sx={{ height: "85vh", width: "100%" }}
+    >
       <img src={EmptyImg} alt="empty" width="300" />
       <Typography
         sx={{ fontSize: "24px", fontWeight: 600, color: "#A5A5A5", mb: 1 }}
