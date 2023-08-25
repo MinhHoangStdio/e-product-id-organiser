@@ -48,10 +48,10 @@ const productSlice = createSlice({
     getListProductsSuccess(state, action) {
       state.listProducts = action.payload.data;
       state.pagination = action.payload.paginate;
-      state.loadingGetProducts = true;
+      state.loadingGetProducts = false;
     },
     getListProductsFailed(state) {
-      state.loadingGetProducts = true;
+      state.loadingGetProducts = false;
     },
 
     getAllListProducts(state) {

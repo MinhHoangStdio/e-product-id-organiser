@@ -183,7 +183,7 @@ const ProductCard = ({
         >
           <CustomButton
             fullWidth
-            color="info"
+            color="primary"
             onClick={onAction}
             Icon={<AddIcon />}
             label={labelAction ? labelAction : "Create A Consignment"}
