@@ -77,6 +77,10 @@ const consignmentSlice = createSlice({
     getConsignmentDetailFailed(state) {
       state.loadingConsignmentDetail = false;
     },
+
+    reset(state) {
+      state.listConsignments = [];
+    },
   },
 });
 

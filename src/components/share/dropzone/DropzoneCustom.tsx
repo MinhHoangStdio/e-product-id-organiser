@@ -28,6 +28,7 @@ interface IDropzone {
   typeAppend: string;
   Icon?: any;
   width?: any;
+  id?: number;
 }
 
 const DropzoneCustom = ({
@@ -37,6 +38,7 @@ const DropzoneCustom = ({
   onUploadTemporaryImage,
   Icon,
   width,
+  id,
 }: IDropzone) => {
   const onDrop = useCallback((acceptedFiles: any) => {
     try {
@@ -48,7 +50,14 @@ const DropzoneCustom = ({
       console.log({ newFiles });
       const formdata: any = new FormData();
       newFiles.forEach((file: File) => formdata.append(typeAppend, file));
-      onUploadTemporaryImage(newFiles);
+
+      //id = 0 cx false nha may, dcm hay quen qua
+      if (id) {
+        onUploadTemporaryImage(newFiles, id);
+        console.log(id);
+      } else {
+        onUploadTemporaryImage(newFiles);
+      }
       onUploadImage(formdata);
     } catch (error) {
       console.log(error);

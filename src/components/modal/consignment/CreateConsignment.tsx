@@ -2,9 +2,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Heading from "../../Heading";
-import { TextField } from "@mui/material";
+import { MenuItem, TextField } from "@mui/material";
 import { consignmentActions } from "../../../store/organizer/consignment/consignmentSlice";
 import BaseModal from "../BaseModal";
 import { layoutActions } from "../../../store/layout/layoutSlice";
@@ -23,12 +23,16 @@ const CreateConsignmentModal = () => {
   const productSelected = useAppSelector(
     (state) => state.product.productSelected
   );
+  const listAllProduct = useAppSelector(
+    (state) => state.product.listAllProducts
+  );
   const loadingCreateConsignment = useAppSelector(
     (state) => state.consignment.loadingCreateConsignment
   );
   const isOpenModal = useAppSelector(
     (state) => state.layout.isOpenConsignmentModal
   );
+  const [productIdLabel, setProductIdLabel] = useState<any>(null);
 
   const {
     register,
@@ -67,6 +71,7 @@ const CreateConsignmentModal = () => {
 
   const onCloseModal = () => {
     reset();
+    setProductIdLabel(null);
     dispatch(layoutActions.closeModalConsignment());
     dispatch(productActions.resetSelectedProduct());
   };
@@ -81,6 +86,32 @@ const CreateConsignmentModal = () => {
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading title="Create a new consignment" />
+
+      {!productSelected?.name && (
+        <TextField
+          variant="outlined"
+          select
+          id="product_id"
+          label="Product"
+          value={productIdLabel}
+          InputLabelProps={{ shrink: !!productIdLabel }}
+          onChange={(e: any) => {
+            setProductIdLabel(e.target.value);
+            if (e.target.value === -1) {
+              setValue("product_id", null);
+            } else {
+              setValue("product_id", e.target.value);
+            }
+          }}
+        >
+          <MenuItem value={-1}>None</MenuItem>
+          {listAllProduct.map((prod) => (
+            <MenuItem key={prod.id} value={prod.id}>
+              {prod.name}
+            </MenuItem>
+          ))}
+        </TextField>
+      )}
       <TextField
         id="name"
         label="Consignment Name"

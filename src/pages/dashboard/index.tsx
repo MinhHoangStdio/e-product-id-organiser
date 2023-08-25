@@ -8,7 +8,7 @@ const InfoPage = () => {
     dispatch(layoutActions.openModalOrganizer());
   };
 
-  return organizer ? (
+  return organizer?.id ? (
     <>Hello world</>
   ) : (
     <EmptyOrganizer

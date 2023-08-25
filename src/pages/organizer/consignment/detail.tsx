@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { Typography, Grid, Box } from "@mui/material";
+import { Typography, Grid, Box, Stack, Chip } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { consignmentActions } from "../../../store/organizer/consignment/consignmentSlice";
+import moment from "moment";
+import { convertDateMui } from "../../../utils/convertDate";
 
 const ConsignmentDetail = () => {
   const { id } = useParams();
@@ -94,11 +96,16 @@ const ConsignmentDetail = () => {
           </Typography>
           {chains?.map((chain, index) => (
             <Box p={4} key={index} pt={0}>
-              <Typography sx={{ fontSize: "18px", marginTop: "20px" }}>
-                <b>
-                  {index + 1 + ". "} {chain.name}
-                </b>
-              </Typography>
+              <Stack mt={1} direction="row" gap={1} alignItems="center">
+                <Typography sx={{ fontSize: "18px" }}>
+                  <b>
+                    {index + 1 + ". "} {chain.name}
+                  </b>
+                </Typography>
+                {chain?.payload?.data?.date && (
+                  <Chip label={convertDateMui(chain?.payload?.data?.date)} />
+                )}
+              </Stack>
               <Typography sx={{ fontSize: "16px", mt: 1 }}>
                 {chain.description}
               </Typography>

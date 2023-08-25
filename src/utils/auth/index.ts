@@ -34,7 +34,7 @@ const getOrganizer = () => {
   try {
     const organizer = JSON.parse(lsValue);
     if (organizer) {
-      return organizer.id;
+      return organizer;
     }
   } catch (error) {
     console.error("Get organizer error", error);

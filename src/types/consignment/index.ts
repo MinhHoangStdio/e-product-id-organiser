@@ -10,6 +10,7 @@ export interface Consignment {
   id: number;
   organizer_id: number;
   is_sold_out: boolean;
+  product: Product;
 }
 
 export interface ConsignmentDetail {

@@ -29,6 +29,22 @@ function* handleGetListProducts(action: Action) {
   }
 }
 
+function* handleGetAllListProducts(action: Action) {
+  try {
+    const response: { data: { data: Product[]; paginate: Pagination } } =
+      yield call(productApi.getListProducts, { limit: 100, page: 1 });
+    yield put(productActions.getAllListProductsSuccess(response.data));
+  } catch (error) {
+    yield put(productActions.getAllListProductsFailed());
+    yield put(
+      alertActions.showAlert({
+        text: "Cannot get list products",
+        type: "error",
+      })
+    );
+  }
+}
+
 function* handleCreateProduct(action: Action) {
   try {
     yield put(layoutActions.startLayoutLoading());
@@ -166,6 +182,10 @@ function* watchLoginFlow() {
     takeLatest(productActions.editProduct.type, handleEditProduct),
     takeLatest(productActions.removeProduct.type, handleDeleteProduct),
     takeLatest(productActions.getListProducts.type, handleGetListProducts),
+    takeLatest(
+      productActions.getAllListProducts.type,
+      handleGetAllListProducts
+    ),
     takeLatest(productActions.getDetailProduct.type, handleGetDetailProduct),
   ]);
 }

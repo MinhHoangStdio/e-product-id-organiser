@@ -69,7 +69,7 @@ const ProductPage = () => {
           <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={prod.id}>
             <ProductCard
               img={prod.images[0]}
-              productName={prod.name}
+              name={prod.name}
               description={prod.description}
               onAction={() => {
                 dispatch(productActions.selectedProduct(prod));

@@ -18,9 +18,11 @@ import { useState } from "react";
 
 type IProductCard = {
   img: string;
-  productName: string;
+  name: string;
+  productName?: string;
   description: string;
   onEdit?: () => void;
+  amount?: number;
   onDelete?: () => void;
   onAction?: () => void;
   labelAction?: string;
@@ -36,6 +38,8 @@ const ProductCard = ({
   onDelete,
   onAction,
   onClick,
+  amount,
+  name,
 }: IProductCard) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -65,7 +69,7 @@ const ProductCard = ({
             whiteSpace: "nowrap",
           }}
         >
-          {productName}
+          {name}
         </Typography>
         <div>
           <IconButton
@@ -117,7 +121,7 @@ const ProductCard = ({
         />
       </Box>
 
-      {/* <CardContent>
+      <CardContent>
         <Typography
           sx={{
             overflow: "hidden",
@@ -128,7 +132,7 @@ const ProductCard = ({
           variant="h5"
           component="div"
         >
-          {productName}
+          {name}
         </Typography>
         <Typography
           sx={{
@@ -139,9 +143,35 @@ const ProductCard = ({
           variant="body2"
           color="text.secondary"
         >
-          {description}
+          Description: {description}
         </Typography>
-      </CardContent> */}
+        {productName && (
+          <Typography
+            sx={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+            variant="body2"
+            color="text.secondary"
+          >
+            Product name: {productName}
+          </Typography>
+        )}
+        {amount && (
+          <Typography
+            sx={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+            variant="body2"
+            color="text.secondary"
+          >
+            Amount: {amount}
+          </Typography>
+        )}
+      </CardContent>
       <CardActions>
         <Stack
           sx={{ width: "100%" }}
