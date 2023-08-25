@@ -69,11 +69,11 @@ const ConsignmentPage = () => {
         listConsignments.map((cons) => (
           <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={cons.id}>
             <ProductCard
-              img={cons.product.images[0]}
-              name={cons.name}
-              amount={cons.amount}
-              productName={cons.product.name}
-              description={cons.description}
+              img={cons?.product?.images[0]}
+              name={cons?.name}
+              amount={cons?.amount}
+              productName={cons?.product?.name}
+              description={cons?.description}
               onAction={() => {
                 dispatch(consignmentActions.selectedConsignment(cons));
                 dispatch(layoutActions.openModalChains());

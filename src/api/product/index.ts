@@ -16,6 +16,11 @@ const productApi = {
     const url = "/products/";
     return axiosWithOrganizer.get(url, { params });
   },
+  getListCategories() {
+    const params = { page: 1, limit: 100 };
+    const url = "/categories/";
+    return axiosWithOrganizer.get(url, { params });
+  },
   createProduct(params: any) {
     const url = "/products/";
     return axiosWithOrganizer.post(url, params);

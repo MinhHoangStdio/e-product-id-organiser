@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Product } from "../../../types/product";
+import { Category, Product } from "../../../types/product";
 import { Pagination } from "../../../types/pagination";
 
 interface productState {
   listProducts: Product[];
   listAllProducts: Product[];
+  listCategories: Category[];
   pagination: Pagination | null;
   loadingGetProducts: boolean;
   isUpload: boolean;
@@ -22,6 +23,7 @@ interface productState {
 const initialState: productState = {
   listProducts: [],
   listAllProducts: [],
+  listCategories: [],
   pagination: null,
   loadingGetProducts: false,
   isUpload: false,
@@ -60,6 +62,17 @@ const productSlice = createSlice({
       state.loadingGetProducts = true;
     },
     getAllListProductsFailed(state) {
+      state.loadingGetProducts = true;
+    },
+
+    getAllListCategories(state) {
+      state.loadingGetProducts = true;
+    },
+    getAllListCategoriesSuccess(state, action) {
+      state.listCategories = action.payload.data;
+      state.loadingGetProducts = true;
+    },
+    getAllListCategoriesFailed(state) {
       state.loadingGetProducts = true;
     },
 

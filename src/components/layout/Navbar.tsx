@@ -27,7 +27,7 @@ const Navbar = () => {
   return (
     <Box display="flex" justifyContent="space-between" sx={{ px: 4, py: 2 }}>
       {/* SEARCH BAR */}
-      <Box display="flex">
+      <Box display="flex" sx={{ bgcolor: "#fff" }}>
         <TextField
           InputProps={{
             startAdornment: (

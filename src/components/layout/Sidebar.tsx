@@ -54,7 +54,13 @@ const SidebarCustom = () => {
   }, [path]);
 
   useEffect(() => {
-    if (path == ("organizer/products" || "organizer/members")) {
+    if (
+      path === "organizer/info" ||
+      path === "organizer/products" ||
+      path === "organizer/consignments" ||
+      path.includes("organizer/products") ||
+      path.includes("organizer/consignments")
+    ) {
       setOpenOrganizerMenu(true);
     }
   }, [path]);
@@ -203,7 +209,7 @@ const SidebarCustom = () => {
                 <Typography fontWeight="500">General Information</Typography>
               </MenuItem>
               <MenuItem
-                active={selected.toLowerCase() === "organizer/products"}
+                active={selected.toLowerCase().includes("organizer/products")}
                 onClick={() => {
                   setSelected("organizer/products");
                   navigate("/organizer/products");
@@ -213,7 +219,10 @@ const SidebarCustom = () => {
                 <Typography fontWeight="500">Products</Typography>
               </MenuItem>
               <MenuItem
-                active={selected.toLowerCase() === "organizer/consignments"}
+                active={
+                  selected.toLowerCase() === "organizer/consignments" ||
+                  selected.toLowerCase().includes("organizer/consignments")
+                }
                 onClick={() => {
                   setSelected("organizer/consignments");
                   navigate("/organizer/consignments");

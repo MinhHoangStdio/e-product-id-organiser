@@ -4,9 +4,15 @@ import * as yup from "yup";
 import BaseModal from "../BaseModal";
 import Heading from "../../Heading";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
-import { FormHelperText, Stack, TextField, useTheme } from "@mui/material";
+import {
+  FormHelperText,
+  MenuItem,
+  Stack,
+  TextField,
+  useTheme,
+} from "@mui/material";
 import { layoutActions } from "../../../store/layout/layoutSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { productActions } from "../../../store/organizer/product/productSlice";
 import DropzoneCustom from "../../share/dropzone/DropzoneCustom";
 import ImageUpload from "../../organizer/product/ImageUpload";
@@ -28,7 +34,9 @@ const CreateAndEditProductModal = () => {
   const listImage = useAppSelector(
     (state) => state.product.temporarylistImgUrl
   );
-
+  const listCategories = useAppSelector(
+    (state) => state.product.listCategories
+  );
   const {
     loadingCreateProduct,
     loadingEditProduct,
@@ -38,10 +46,13 @@ const CreateAndEditProductModal = () => {
   const isOpenModal = useAppSelector(
     (state) => state.layout.isOpenProductModal
   );
+
+  const [categoryIdLabel, setCategoryIdLabel] = useState<any>(null);
   const typeModal = productSelected?.name ? "edit" : "create";
 
   const onCloseModal = () => {
     reset();
+    setCategoryIdLabel(null);
     dispatch(layoutActions.closeModalProduct());
     dispatch(productActions.resetTemporarylistImgUrl());
     dispatch(productActions.resetSelectedProduct());
@@ -97,6 +108,10 @@ const CreateAndEditProductModal = () => {
       reset();
     }
   }, [productSelected, setValue]);
+
+  useEffect(() => {
+    dispatch(productActions.getAllListCategories());
+  }, []);
 
   useEffect(() => {
     setValue("images", listImage);
@@ -163,14 +178,39 @@ const CreateAndEditProductModal = () => {
         required
         helperText={errors.description?.message}
       />
-      <TextField
+      {/* <TextField
         id="category_id"
         label="Category"
         inputProps={{ ...register("category_id") }}
         error={!!errors.category_id?.message}
         required
         helperText={errors.category_id?.message as string}
-      />
+      /> */}
+      <TextField
+        variant="outlined"
+        select
+        id="category_id"
+        label="Category"
+        value={categoryIdLabel}
+        InputLabelProps={{ shrink: !!categoryIdLabel }}
+        onChange={(e: any) => {
+          setCategoryIdLabel(e.target.value);
+          if (e.target.value === -1) {
+            setValue("category_id", null);
+          } else {
+            setValue("category_id", e.target.value);
+          }
+        }}
+        error={!!errors.category_id?.message}
+        helperText={errors.category_id?.message as string}
+      >
+        <MenuItem value={-1}>None</MenuItem>
+        {listCategories.map((cate) => (
+          <MenuItem key={cate.id} value={cate.id}>
+            {cate.name}
+          </MenuItem>
+        ))}
+      </TextField>
       <Stack
         gap={1}
         sx={{

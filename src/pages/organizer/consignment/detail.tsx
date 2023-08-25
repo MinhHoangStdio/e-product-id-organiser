@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { Typography, Grid, Box, Stack, Chip } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { consignmentActions } from "../../../store/organizer/consignment/consignmentSlice";
-import moment from "moment";
 import { convertDateMui } from "../../../utils/convertDate";
+import CustomButton from "../../../components/share/CustomButton";
+import { modalActions } from "../../../store/modal/modalSlice";
+import { Chain } from "../../../types/chain";
+import { ParamsModalConfirm } from "../../../types/modal";
+import { chainsActions } from "../../../store/organizer/chains/chainsSlice";
 
 const ConsignmentDetail = () => {
   const { id } = useParams();
@@ -15,6 +19,23 @@ const ConsignmentDetail = () => {
   const product = consignment?.product;
   const chains = consignment?.chains;
   const [urlSelected, setUrlSelected] = useState<any>(product?.images?.[0]);
+
+  const confirmDelete = (data: Chain) => {
+    const params: ParamsModalConfirm = {
+      title: "Confirm",
+      content: (
+        <span>
+          Do you want to delete a chain <b>"{data.name}"</b>?
+        </span>
+      ),
+      onAction: () =>
+        dispatch(
+          chainsActions.removeChains({ chainId: data.id, consignmentId: id })
+        ),
+      buttonText: "Delete",
+    };
+    dispatch(modalActions.showModal(params));
+  };
 
   useEffect(() => {
     dispatch(consignmentActions.getConsignmentDetail(id));
@@ -34,6 +55,19 @@ const ConsignmentDetail = () => {
           <Typography sx={{ fontSize: "16px", mt: 1 }}>
             <b>Consignment name:</b> {consignment.name}
           </Typography>
+          {consignment.product && (
+            <Link to={`/organizer/products/${consignment.product.id}`}>
+              <Typography
+                sx={{
+                  fontSize: "16px",
+                  mt: 1,
+                  "&:hover": { color: "#00B3D5" },
+                }}
+              >
+                <b>Product:</b> {consignment.product?.name}
+              </Typography>
+            </Link>
+          )}
           <Typography sx={{ fontSize: "16px", mt: 1 }}>
             <b>Amount:</b> {consignment.amount}
           </Typography>
@@ -49,7 +83,7 @@ const ConsignmentDetail = () => {
           Consignment not found.
         </Typography>
       )}
-      {product && (
+      {/* {product && (
         <Grid
           sx={{ width: "100%", alignItems: "center" }}
           p={4}
@@ -87,7 +121,7 @@ const ConsignmentDetail = () => {
             </Box>
           </Grid>
         </Grid>
-      )}
+      )} */}
 
       {(chains?.length || "") && (
         <>
@@ -105,16 +139,22 @@ const ConsignmentDetail = () => {
                 {chain?.payload?.data?.date && (
                   <Chip label={convertDateMui(chain?.payload?.data?.date)} />
                 )}
+                <CustomButton
+                  label="Delete"
+                  color="error"
+                  onClick={() => confirmDelete(chain)}
+                />
               </Stack>
               <Typography sx={{ fontSize: "16px", mt: 1 }}>
                 {chain.description}
               </Typography>
 
               {(chain?.images?.length || "") && (
-                <Box
-                  display={"flex"}
-                  justifyContent={"space-around"}
-                  overflow={"hidden"}
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  gap={1}
+                  alignItems="center"
                   mt={2}
                 >
                   {chain.images?.map((image, index) => (
@@ -128,7 +168,7 @@ const ConsignmentDetail = () => {
                       key={index}
                     />
                   ))}
-                </Box>
+                </Stack>
               )}
             </Box>
           ))}
