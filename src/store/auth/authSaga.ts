@@ -53,10 +53,34 @@ function* handleRegister(action: Action) {
     );
     yield put(layoutActions.changeAuthState());
   } catch (error) {
-    yield put(authActions.loginFailed());
+    yield put(authActions.registerFailed());
     yield put(
       alertActions.showAlert({
         text: "Register failed!",
+        type: "error",
+      })
+    );
+  }
+}
+
+function* handleChangePwd(action: Action) {
+  try {
+    const params = action.payload;
+    console.log({ params });
+    // const response: ResponseLoginAdmin = yield call(authApi.register, params);
+    // console.log(response);
+    yield put(authActions.changePwdSuccess());
+    yield put(
+      alertActions.showAlert({
+        text: "Change password success!",
+        type: "success",
+      })
+    );
+  } catch (error) {
+    yield put(authActions.changePwdFailed());
+    yield put(
+      alertActions.showAlert({
+        text: "Change password failed!",
         type: "error",
       })
     );
@@ -78,6 +102,7 @@ function* watchLoginFlow() {
   yield all([
     takeLatest(authActions.login.type, handleLogin),
     takeLatest(authActions.register.type, handleRegister),
+    takeLatest(authActions.changePwd.type, handleChangePwd),
     takeLatest(authActions.logout.type, handleLogout),
   ]);
 }

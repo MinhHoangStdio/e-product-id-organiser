@@ -36,10 +36,12 @@ const CustomButton = ({
               bgcolor: `${colors.button[color]} !important`,
               textTransform: "none !important",
               width: width,
+              cursor: disabled ? "not-allowed !important" : "pointer",
             }
           : {
               bgcolor: `${colors.button[color]} !important`,
               textTransform: "none !important",
+              cursor: disabled ? "not-allowed  !important" : "pointer",
             }
       }
       size={size}
