@@ -52,13 +52,12 @@ const ProductCard = ({
   };
 
   return (
-    <Card onClick={onClick}>
+    <Card onClick={onClick} sx={{ cursor: "pointer" }}>
       <Stack
         sx={{ py: 1, pl: 1, bgcolor: "transparent", cursor: "pointer" }}
         direction="row"
         justifyContent="space-between"
         alignItems="center"
-        onClick={onClick}
       >
         <Typography
           variant="h5"
@@ -71,7 +70,11 @@ const ProductCard = ({
         >
           {name}
         </Typography>
-        <div>
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           <IconButton
             aria-controls={open ? "action_menu" : undefined}
             aria-haspopup="true"

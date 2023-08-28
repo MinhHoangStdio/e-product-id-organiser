@@ -108,6 +108,9 @@ const SidebarCustom = () => {
           display: openOrganizerMenu ? `block !important` : `none !important`,
           height: openOrganizerMenu ? `auto !important` : `0px !important`,
         },
+        "& .ps-submenu-content.ps-open": {
+          marginTop: isCollapseSidebar ? "80px !important" : "0",
+        },
         "& .ps-menuitem-root": {
           marginBottom: "4px",
           borderRadius: 2,
@@ -173,14 +176,14 @@ const SidebarCustom = () => {
           )}
 
           <Box>
-            <Item
+            {/* <Item
               title="Dashboard"
               navigate={navigate}
               to="/"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
             {/* <Item
               navigate={navigate}
               title="Product"

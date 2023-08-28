@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,12 +10,18 @@ body,
 .content {
   height: 100%;
   width: 100%;
-  font-family: "Rubik", sans-serif;
+  font-family: "Noto Sans", sans-serif;
 }
 
 .app {
   display: flex;
   position: relative;
+}
+
+.react-code-input {
+  width: 100% !important;
+  margin: auto;
+  text-align: center !important;
 }
 
 ::-webkit-scrollbar {

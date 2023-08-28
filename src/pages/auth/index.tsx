@@ -4,8 +4,10 @@ import Login from "./login";
 import Register from "./register";
 import { useAppDispatch, useAppSelector } from "../../hooks/store";
 import { layoutActions } from "../../store/layout/layoutSlice";
+import { useNavigate } from "react-router-dom";
 
 const AuthPage = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const authState = useAppSelector((state) => state.layout.authState);
   return (
@@ -42,6 +44,18 @@ const AuthPage = () => {
             {" "}
             {authState == "login" ? "Create an account" : "Login"}
           </span>
+        </p>
+        <p
+          onClick={() => {
+            navigate("/forgot-password");
+          }}
+          className="
+              text-neutral-800
+              cursor-pointer 
+              hover:underline
+            "
+        >
+          Forgot password?
         </p>
       </div>
     </Paper>
