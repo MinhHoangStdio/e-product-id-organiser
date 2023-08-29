@@ -12,7 +12,6 @@ import { productActions } from "../../../store/organizer/product/productSlice";
 import AddIcon from "@mui/icons-material/Add";
 import CustomButton from "../../share/CustomButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-
 interface FieldValues {
   name: string;
   amount: number;
@@ -23,9 +22,7 @@ interface FieldValues {
 
 const CreateConsignmentModal = () => {
   const dispatch = useAppDispatch();
-  const productSelected = useAppSelector(
-    (state) => state.product.productSelected
-  );
+  const productDetail = useAppSelector((state) => state.product.detailProduct);
   const listAllProduct = useAppSelector(
     (state) => state.product.listAllProducts
   );
@@ -62,11 +59,11 @@ const CreateConsignmentModal = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      name: productSelected?.name || "",
+      name: productDetail?.name || "",
       amount: 1,
-      description: productSelected?.description || "",
+      description: productDetail?.description || "",
       payload: null,
-      product_id: productSelected?.id || null,
+      product_id: productDetail?.id || null,
     },
     resolver: yupResolver(
       yup.object().shape({
@@ -89,6 +86,9 @@ const CreateConsignmentModal = () => {
       metadata,
       onReset() {
         onCloseModal();
+        if (productDetail?.id) {
+          dispatch(productActions.getDetailProduct(productDetail?.id));
+        }
       },
     };
     dispatch(consignmentActions.createConsignment(payload));
@@ -100,20 +100,27 @@ const CreateConsignmentModal = () => {
     resetField();
     dispatch(layoutActions.closeModalConsignment());
     dispatch(productActions.resetSelectedProduct());
+    if (productDetail?.name) {
+      setValue("name", productDetail.name);
+      setValue("product_id", productDetail.id);
+    }
   };
 
   useEffect(() => {
-    if (productSelected?.name) {
-      setValue("name", productSelected.name);
-      setValue("product_id", productSelected.id);
+    if (productDetail?.name) {
+      setValue("name", productDetail.name);
+      setValue("product_id", productDetail.id);
+    } else {
+      setValue("name", "");
+      setValue("product_id", null);
     }
-  }, [productSelected, setValue]);
+  }, [productDetail, setValue]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading title="Create a new consignment" />
 
-      {!productSelected?.name && (
+      {!productDetail?.name && (
         <TextField
           variant="outlined"
           select

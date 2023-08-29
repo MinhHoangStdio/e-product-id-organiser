@@ -15,6 +15,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
+import NoImg from "../../../assets/emptyData/no-picture.png";
 
 type IProductCard = {
   img: string;
@@ -117,14 +118,13 @@ const ProductCard = ({
           </Menu>
         </div>
       </Stack>
-      {img && (
-        <Box sx={{ px: 1 }}>
-          <CardMedia
-            sx={{ height: 250, borderRadius: "4px", cursor: "pointer" }}
-            image={img}
-          />
-        </Box>
-      )}
+
+      <Box sx={{ px: 1 }}>
+        <CardMedia
+          sx={{ height: 250, borderRadius: "4px", cursor: "pointer" }}
+          image={img ? img : NoImg}
+        />
+      </Box>
 
       <CardContent>
         <Typography
@@ -177,7 +177,7 @@ const ProductCard = ({
           </Typography>
         )}
       </CardContent>
-      <CardActions>
+      {/* <CardActions>
         <Stack
           sx={{ width: "100%" }}
           direction="row"
@@ -192,7 +192,7 @@ const ProductCard = ({
             label={labelAction ? labelAction : "Create A Consignment"}
           />
         </Stack>
-      </CardActions>
+      </CardActions> */}
     </Card>
   );
 };

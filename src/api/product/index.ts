@@ -37,6 +37,10 @@ const productApi = {
     const url = `/products/${id}`;
     return axiosWithOrganizer.get(url);
   },
+  requestProduct(id: any) {
+    const url = `/products/request-approval/${id}`;
+    return axiosWithOrganizer.post(url);
+  },
 };
 
 export default productApi;

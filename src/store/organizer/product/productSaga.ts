@@ -194,6 +194,32 @@ function* handleGetDetailProduct(action: Action) {
   }
 }
 
+function* handleSendRequestProduct(action: Action) {
+  try {
+    const id = action.payload;
+    const response: { data: Product } = yield call(
+      productApi.requestProduct,
+      id
+    );
+    yield put(productActions.requestProductSuccess());
+    yield put(productActions.getDetailProduct(id));
+    yield put(
+      alertActions.showAlert({
+        text: "Gửi yêu cầu thành công",
+        type: "success",
+      })
+    );
+  } catch (error) {
+    yield put(productActions.requestProductFailed());
+    yield put(
+      alertActions.showAlert({
+        text: "Gửi yêu cầu thất bại",
+        type: "error",
+      })
+    );
+  }
+}
+
 function* watchLoginFlow() {
   yield all([
     takeLatest(productActions.createProduct.type, handleCreateProduct),
@@ -209,6 +235,7 @@ function* watchLoginFlow() {
       handleGetAllListProducts
     ),
     takeLatest(productActions.getDetailProduct.type, handleGetDetailProduct),
+    takeLatest(productActions.requestProduct.type, handleSendRequestProduct),
   ]);
 }
 

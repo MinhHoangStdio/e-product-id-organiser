@@ -62,6 +62,10 @@ const ConsignmentPage = () => {
     }
   }, [dispatch, organizer]);
 
+  useEffect(() => {
+    dispatch(productActions.resetDetailProduct());
+  }, []);
+
   return loadingGetConsignments ? (
     <LoadingPage />
   ) : organizer?.id ? (
@@ -86,7 +90,7 @@ const ConsignmentPage = () => {
                 img={cons?.product?.images[0]}
                 name={cons?.name}
                 amount={cons?.amount}
-                productName={cons?.product?.name}
+                productName={cons?.product?.name ? cons?.product?.name : "None"}
                 description={cons?.description}
                 onAction={() => {
                   dispatch(consignmentActions.selectedConsignment(cons));
