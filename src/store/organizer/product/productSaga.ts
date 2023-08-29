@@ -75,6 +75,7 @@ function* handleCreateProduct(action: Action) {
     const response: { data: any } = yield call(productApi.createProduct, {
       ...action.payload.params,
       images: listImagesUrl.data.image,
+      payload: action.payload.metadata,
     });
     yield put(layoutActions.endLayoutLoading());
     yield put(productActions.createProductSuccess());
@@ -114,6 +115,7 @@ function* handleEditProduct(action: Action) {
       productApi.editProduct,
       {
         ...action.payload.params,
+        payload: action.payload.metadata,
         images: listImagesUrl
           ? [...action.payload.productImages, ...listImagesUrl.data.image]
           : [...action.payload.productImages],

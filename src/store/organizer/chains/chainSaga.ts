@@ -41,7 +41,7 @@ function* handleCreateChains(action: Action) {
     const listImagesUrl: { data: any } = yield call(chainsApi.upload, formdata);
     const response: { data: any } = yield call(chainsApi.createChains, {
       ...action.payload.params,
-      payload: { data: action.payload.params.payload },
+      payload: action.payload.metadata,
       images: listImagesUrl.data.image,
     });
     yield put(layoutActions.endLayoutLoading());

@@ -4,11 +4,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useEffect, useState } from "react";
 import Heading from "../../Heading";
-import { MenuItem, TextField } from "@mui/material";
+import { MenuItem, Stack, TextField } from "@mui/material";
 import { consignmentActions } from "../../../store/organizer/consignment/consignmentSlice";
 import BaseModal from "../BaseModal";
 import { layoutActions } from "../../../store/layout/layoutSlice";
 import { productActions } from "../../../store/organizer/product/productSlice";
+import AddIcon from "@mui/icons-material/Add";
+import CustomButton from "../../share/CustomButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface FieldValues {
   name: string;
@@ -33,6 +36,23 @@ const CreateConsignmentModal = () => {
     (state) => state.layout.isOpenConsignmentModal
   );
   const [productIdLabel, setProductIdLabel] = useState<any>(null);
+  const [metadataFields, setMetadataFields] = useState<
+    { id: number; key: string; value: string }[]
+  >([]);
+  const addField = () => {
+    setMetadataFields([
+      ...metadataFields,
+      { id: metadataFields.length, key: "", value: "" },
+    ]);
+  };
+
+  const removeField = (id: number) => {
+    setMetadataFields(metadataFields.filter((field) => field.id !== id));
+  };
+
+  const resetField = () => {
+    setMetadataFields([]);
+  };
 
   const {
     register,
@@ -58,11 +78,16 @@ const CreateConsignmentModal = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const metadata = metadataFields.reduce((result: any, field) => {
+      if (field.key && field.value) {
+        result[field.key] = field.value;
+      }
+      return result;
+    }, {});
     const payload = {
       params: data,
+      metadata,
       onReset() {
-        // dispatch(layoutActions.closeModalProduct);
-        // dispatch(productActions.resetSelectedProduct());
         onCloseModal();
       },
     };
@@ -72,6 +97,7 @@ const CreateConsignmentModal = () => {
   const onCloseModal = () => {
     reset();
     setProductIdLabel(null);
+    resetField();
     dispatch(layoutActions.closeModalConsignment());
     dispatch(productActions.resetSelectedProduct());
   };
@@ -136,6 +162,46 @@ const CreateConsignmentModal = () => {
         error={!!errors.description?.message}
         required
         helperText={errors.description?.message}
+      />
+      {/* Option fields */}
+      {metadataFields.map((field, i) => (
+        <Stack direction="row" gap={1} alignItems="center">
+          {" "}
+          <TextField
+            label="Tên trường"
+            value={field.key}
+            onChange={(e) => {
+              const updatedFields = [...metadataFields];
+              updatedFields[i].key = e.target.value;
+              setMetadataFields(updatedFields);
+            }}
+          />
+          <TextField
+            sx={{ flex: 1 }}
+            label="Giá trị"
+            value={field.value}
+            onChange={(e) => {
+              const updatedFields = [...metadataFields];
+              updatedFields[i].value = e.target.value;
+              setMetadataFields(updatedFields);
+            }}
+          />
+          <CustomButton
+            onClick={() => {
+              removeField(field.id);
+            }}
+            label=""
+            color="error"
+            Icon={<DeleteIcon />}
+          />
+        </Stack>
+      ))}
+      <CustomButton
+        width="220px"
+        onClick={addField}
+        label="Thêm trường tùy chọn"
+        color="primary"
+        Icon={<AddIcon />}
       />
     </div>
   );

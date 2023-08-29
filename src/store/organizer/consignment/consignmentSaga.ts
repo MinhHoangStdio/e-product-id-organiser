@@ -31,11 +31,11 @@ function* handleGetListConsignments(action: Action) {
 
 function* handleCreateConsignment(action: Action) {
   try {
-    const { params, onReset } = action.payload;
+    const { params, onReset, metadata } = action.payload;
     yield put(layoutActions.startLayoutLoading());
     const response: { data: any } = yield call(
       consignmentApi.createConsignment,
-      params
+      { ...params, payload: metadata }
     );
     yield put(layoutActions.endLayoutLoading());
     yield put(consignmentActions.createConsignmentSuccess());

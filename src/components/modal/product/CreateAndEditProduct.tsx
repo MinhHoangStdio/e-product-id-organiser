@@ -18,6 +18,9 @@ import DropzoneCustom from "../../share/dropzone/DropzoneCustom";
 import ImageUpload from "../../organizer/product/ImageUpload";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { countTotalElements } from "../../../utils/share";
+import AddIcon from "@mui/icons-material/Add";
+import CustomButton from "../../share/CustomButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface FieldValues {
   name: string;
@@ -48,10 +51,28 @@ const CreateAndEditProductModal = () => {
   );
 
   const [categoryIdLabel, setCategoryIdLabel] = useState<any>(null);
+  const [metadataFields, setMetadataFields] = useState<
+    { id: number; key: string; value: string }[]
+  >([]);
+  const addField = () => {
+    setMetadataFields([
+      ...metadataFields,
+      { id: metadataFields.length, key: "", value: "" },
+    ]);
+  };
+
+  const removeField = (id: number) => {
+    setMetadataFields(metadataFields.filter((field) => field.id !== id));
+  };
+
+  const resetField = () => {
+    setMetadataFields([]);
+  };
   const typeModal = productSelected?.name ? "edit" : "create";
 
   const onCloseModal = () => {
     reset();
+    resetField();
     setCategoryIdLabel(null);
     dispatch(layoutActions.closeModalProduct());
     dispatch(productActions.resetTemporarylistImgUrl());
@@ -104,6 +125,17 @@ const CreateAndEditProductModal = () => {
       setValue("description", productSelected.description);
       setValue("category_id", productSelected.category.id);
       setValue("images", productSelected.images);
+      setCategoryIdLabel(productSelected?.category.id);
+      if (productSelected.payload) {
+        const transformedArray = Object.keys(productSelected.payload).map(
+          (key, index) => ({
+            id: index,
+            key,
+            value: productSelected.payload[key],
+          })
+        );
+        setMetadataFields(transformedArray);
+      }
     } else {
       reset();
     }
@@ -118,13 +150,22 @@ const CreateAndEditProductModal = () => {
   }, [listImage]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const metadata = metadataFields.reduce((result: any, field) => {
+      if (field.key && field.value) {
+        result[field.key] = field.value;
+      }
+      return result;
+    }, {});
     if (typeModal == "create") {
       const payload = {
         params: data,
         formData: listImage,
+        metadata,
         onReset() {
           dispatch(productActions.resetTemporarylistImgUrl());
-          dispatch(layoutActions.closeModalProduct);
+          dispatch(layoutActions.closeModalProduct());
+          setCategoryIdLabel(null);
+          resetField();
           reset();
         },
       };
@@ -133,6 +174,7 @@ const CreateAndEditProductModal = () => {
       const payload = {
         params: data,
         formData: listImage,
+        metadata,
         productImages: productSelected?.images,
         productId: productSelected?.id,
         listImgWillDelete,
@@ -141,6 +183,8 @@ const CreateAndEditProductModal = () => {
           dispatch(layoutActions.closeModalProduct());
           dispatch(productActions.resetSelectedProduct());
           dispatch(productActions.resetListImgWillDelete());
+          setCategoryIdLabel(null);
+          resetField();
           reset();
         },
       };
@@ -211,6 +255,46 @@ const CreateAndEditProductModal = () => {
           </MenuItem>
         ))}
       </TextField>
+      {/* Option fields */}
+      {metadataFields.map((field, i) => (
+        <Stack direction="row" gap={1} alignItems="center">
+          {" "}
+          <TextField
+            label="Tên trường"
+            value={field.key}
+            onChange={(e) => {
+              const updatedFields = [...metadataFields];
+              updatedFields[i].key = e.target.value;
+              setMetadataFields(updatedFields);
+            }}
+          />
+          <TextField
+            sx={{ flex: 1 }}
+            label="Giá trị"
+            value={field.value}
+            onChange={(e) => {
+              const updatedFields = [...metadataFields];
+              updatedFields[i].value = e.target.value;
+              setMetadataFields(updatedFields);
+            }}
+          />
+          <CustomButton
+            onClick={() => {
+              removeField(field.id);
+            }}
+            label=""
+            color="error"
+            Icon={<DeleteIcon />}
+          />
+        </Stack>
+      ))}
+      <CustomButton
+        width="220px"
+        onClick={addField}
+        label="Thêm trường tùy chọn"
+        color="primary"
+        Icon={<AddIcon />}
+      />
       <Stack
         gap={1}
         sx={{
