@@ -65,11 +65,11 @@ function* handleRegister(action: Action) {
 
 function* handleChangePwd(action: Action) {
   try {
-    const params = action.payload;
-    console.log({ params });
-    // const response: ResponseLoginAdmin = yield call(authApi.register, params);
-    // console.log(response);
+    const { params, onReset } = action.payload;
+    const response: { data: any } = yield call(authApi.changePwd, params);
+    console.log(response);
     yield put(authActions.changePwdSuccess());
+    onReset();
     yield put(
       alertActions.showAlert({
         text: "Change password success!",
@@ -81,6 +81,61 @@ function* handleChangePwd(action: Action) {
     yield put(
       alertActions.showAlert({
         text: "Change password failed!",
+        type: "error",
+      })
+    );
+  }
+}
+
+function* handleSendEmail(action: Action) {
+  try {
+    const { params, onNext } = action.payload;
+    const response: { data: any } = yield call(authApi.forgotPwd, params);
+    console.log(response);
+    yield put(authActions.sendEmailSuccess(response.data.token));
+    onNext();
+  } catch (error) {
+    yield put(authActions.sendEmailFailed());
+    yield put(
+      alertActions.showAlert({
+        text: "Lỗi!",
+        type: "error",
+      })
+    );
+  }
+}
+
+function* handleVerifyOtp(action: Action) {
+  try {
+    const { params, onNext } = action.payload;
+    const response: { data: any } = yield call(authApi.verifyForgotPwd, params);
+    console.log(response);
+    yield put(authActions.verifyOtpSuccess(response.data.token));
+    onNext();
+  } catch (error: any) {
+    console.log({ error });
+    yield put(authActions.verifyOtpFailed());
+    yield put(
+      alertActions.showAlert({
+        text: `${error?.response?.data?.message}`,
+        type: "error",
+      })
+    );
+  }
+}
+
+function* handleResetPwd(action: Action) {
+  try {
+    const { params, onNext } = action.payload;
+    const response: { data: any } = yield call(authApi.resetPwd, params);
+    console.log(response);
+    yield put(authActions.resetPwdSuccess(response.data.token));
+    onNext();
+  } catch (error: any) {
+    yield put(authActions.resetPwdFailed());
+    yield put(
+      alertActions.showAlert({
+        text: `${error?.response?.data?.message}`,
         type: "error",
       })
     );
@@ -103,6 +158,9 @@ function* watchLoginFlow() {
     takeLatest(authActions.login.type, handleLogin),
     takeLatest(authActions.register.type, handleRegister),
     takeLatest(authActions.changePwd.type, handleChangePwd),
+    takeLatest(authActions.sendEmail.type, handleSendEmail),
+    takeLatest(authActions.verifyOtp.type, handleVerifyOtp),
+    takeLatest(authActions.resetPwd.type, handleResetPwd),
     takeLatest(authActions.logout.type, handleLogout),
   ]);
 }

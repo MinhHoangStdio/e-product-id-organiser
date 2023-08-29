@@ -32,16 +32,14 @@ const SendEmail = ({ onNext }: { onNext: () => void }) => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
-    // dispatch(
-    //   authActions.login({
-    //     params: data,
-    //     onNavigate: () => {
-    //       navigate("/home");
-    //     },
-    //   })
-    // );
-    console.log({ data });
-    onNext();
+    const payload = {
+      params: { ...data },
+      onNext() {
+        onNext();
+      },
+    };
+    console.log(payload);
+    dispatch(authActions.sendEmail(payload));
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
