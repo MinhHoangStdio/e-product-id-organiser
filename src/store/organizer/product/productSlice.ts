@@ -18,6 +18,7 @@ interface productState {
   listImgWillDelete: any[];
   detailProduct?: Product;
   loadingDetailProduct: boolean;
+  loadingRequestProduct: boolean;
 }
 
 const initialState: productState = {
@@ -36,6 +37,7 @@ const initialState: productState = {
   listImgWillDelete: [],
   detailProduct: undefined,
   loadingDetailProduct: false,
+  loadingRequestProduct: false,
 };
 
 const productSlice = createSlice({
@@ -161,6 +163,19 @@ const productSlice = createSlice({
     },
     getDetailProductFailed(state) {
       state.loadingDetailProduct = false;
+    },
+    resetDetailProduct(state) {
+      state.detailProduct = undefined;
+    },
+
+    requestProduct(state, action) {
+      state.loadingRequestProduct = true;
+    },
+    requestProductSuccess(state) {
+      state.loadingRequestProduct = false;
+    },
+    requestProductFailed(state) {
+      state.loadingRequestProduct = false;
     },
 
     reset(state) {

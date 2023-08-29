@@ -9,6 +9,8 @@ import { modalActions } from "../../../store/modal/modalSlice";
 import { Chain } from "../../../types/chain";
 import { ParamsModalConfirm } from "../../../types/modal";
 import { chainsActions } from "../../../store/organizer/chains/chainsSlice";
+import AddIcon from "@mui/icons-material/Add";
+import { layoutActions } from "../../../store/layout/layoutSlice";
 
 const ConsignmentDetail = () => {
   const { id } = useParams();
@@ -47,6 +49,12 @@ const ConsignmentDetail = () => {
     }
   }, [consignment, product]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(consignmentActions.resetDetailConsignment());
+    };
+  }, []);
+
   return (
     <>
       {(consignment && (
@@ -77,6 +85,12 @@ const ConsignmentDetail = () => {
           <Typography sx={{ fontSize: "16px", mt: 1 }}>
             <b>Status:</b> {consignment?.is_sold_out ? "Sold out" : "In stock"}
           </Typography>
+          <CustomButton
+            label="Thêm chuỗi mới"
+            color="primary"
+            Icon={<AddIcon />}
+            onClick={() => dispatch(layoutActions.openModalChains())}
+          />
         </Box>
       )) || (
         <Typography variant="h2" paddingTop={"25px"} textAlign={"center"}>

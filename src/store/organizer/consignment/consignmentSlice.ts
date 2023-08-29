@@ -78,6 +78,10 @@ const consignmentSlice = createSlice({
       state.loadingConsignmentDetail = false;
     },
 
+    resetDetailConsignment(state) {
+      state.consignmentDetail = undefined;
+    },
+
     reset(state) {
       state.listConsignments = [];
     },

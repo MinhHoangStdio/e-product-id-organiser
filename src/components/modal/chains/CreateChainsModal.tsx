@@ -43,8 +43,8 @@ const CreateChainsModal = () => {
   const theme = useTheme();
   const [date, setDate] = useState(dayjs(new Date()));
   const isOpenModal = useAppSelector((state) => state.layout.isOpenChainsModal);
-  const consignmentSelected = useAppSelector(
-    (state) => state.consignment.consignmentSelected
+  const consignmentDetail = useAppSelector(
+    (state) => state.consignment.consignmentDetail
   );
   const dispatch = useAppDispatch();
   // const [step, setStep] = useState(STEPS.DESCRIPTION);
@@ -141,12 +141,12 @@ const CreateChainsModal = () => {
     clearErrors("images");
   }, [listImage]);
   useEffect(() => {
-    if (consignmentSelected?.name) {
-      setValue("consignment_id", consignmentSelected?.id);
+    if (consignmentDetail?.name) {
+      setValue("consignment_id", consignmentDetail?.id);
     } else {
       reset();
     }
-  }, [consignmentSelected, setValue]);
+  }, [consignmentDetail, setValue]);
 
   // const addField = () => {
   //   setFields([...fields, { id: fields.length, deleted: false }]);
@@ -183,9 +183,12 @@ const CreateChainsModal = () => {
       formData: listImage,
       metadata,
       onReset() {
-        dispatch(chainsActions.resetTemporarylistImgUrl());
-        dispatch(layoutActions.closeModalChains());
-        reset();
+        onCloseModal();
+        if (consignmentDetail?.id) {
+          dispatch(
+            consignmentActions.getConsignmentDetail(consignmentDetail?.id)
+          );
+        }
       },
     };
     dispatch(chainsActions.createChains(payload));
@@ -198,6 +201,9 @@ const CreateChainsModal = () => {
     dispatch(layoutActions.closeModalChains());
     dispatch(chainsActions.resetTemporarylistImgUrl());
     dispatch(consignmentActions.resetSelectedConsignment());
+    if (consignmentDetail?.name) {
+      setValue("consignment_id", consignmentDetail?.id);
+    }
   };
 
   // const onSecondaryAction = () => {

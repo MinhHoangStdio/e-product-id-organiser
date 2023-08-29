@@ -26,7 +26,7 @@ function ImageSlider({
       </Box>
       <Grid container>
         {imagesUrl.map((url, i) => (
-          <Grid item xs={3} sx={{ px: "4px" }}>
+          <Grid key={url} item xs={3} sx={{ px: "4px" }}>
             <Box
               onClick={() => setSelected(url)}
               sx={{
