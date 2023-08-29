@@ -49,6 +49,23 @@ const CreateChainsModal = () => {
   const dispatch = useAppDispatch();
   // const [step, setStep] = useState(STEPS.DESCRIPTION);
   // const [fields, setFields] = useState([{ id: 0, deleted: false }]); // Mảng các field
+  const [metadataFields, setMetadataFields] = useState<
+    { id: number; key: string; value: string }[]
+  >([]);
+  const addField = () => {
+    setMetadataFields([
+      ...metadataFields,
+      { id: metadataFields.length, key: "", value: "" },
+    ]);
+  };
+
+  const removeField = (id: number) => {
+    setMetadataFields(metadataFields.filter((field) => field.id !== id));
+  };
+
+  const resetField = () => {
+    setMetadataFields([]);
+  };
 
   //==========================================================handle upload imgs//==========================================================
   const listImage = useAppSelector((state) => state.chains.temporarylistImgUrl);
@@ -155,9 +172,16 @@ const CreateChainsModal = () => {
     //     setStep(step + 1);
     //   }
     // } else {
+    const metadata = metadataFields.reduce((result: any, field) => {
+      if (field.key && field.value) {
+        result[field.key] = field.value;
+      }
+      return result;
+    }, {});
     const payload = {
       params: data,
       formData: listImage,
+      metadata,
       onReset() {
         dispatch(chainsActions.resetTemporarylistImgUrl());
         dispatch(layoutActions.closeModalChains());
@@ -170,7 +194,7 @@ const CreateChainsModal = () => {
   const onCloseModal = () => {
     reset();
     // setStep(STEPS.DESCRIPTION);
-    // resetField();
+    resetField();
     dispatch(layoutActions.closeModalChains());
     dispatch(chainsActions.resetTemporarylistImgUrl());
     dispatch(consignmentActions.resetSelectedConsignment());
@@ -188,7 +212,7 @@ const CreateChainsModal = () => {
 
   //==========================================================DESCRIPTION//==========================================================
   const bodyContent = (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-4">
       <Heading title="Create a new chain" />
       <TextField
         id="name"
@@ -239,6 +263,46 @@ const CreateChainsModal = () => {
             />
           );
         }}
+      />
+      {/* Option fields */}
+      {metadataFields.map((field, i) => (
+        <Stack direction="row" gap={1} alignItems="center">
+          {" "}
+          <TextField
+            label="Tên trường"
+            value={field.key}
+            onChange={(e) => {
+              const updatedFields = [...metadataFields];
+              updatedFields[i].key = e.target.value;
+              setMetadataFields(updatedFields);
+            }}
+          />
+          <TextField
+            sx={{ flex: 1 }}
+            label="Giá trị"
+            value={field.value}
+            onChange={(e) => {
+              const updatedFields = [...metadataFields];
+              updatedFields[i].value = e.target.value;
+              setMetadataFields(updatedFields);
+            }}
+          />
+          <CustomButton
+            onClick={() => {
+              removeField(field.id);
+            }}
+            label=""
+            color="error"
+            Icon={<DeleteIcon />}
+          />
+        </Stack>
+      ))}
+      <CustomButton
+        width="220px"
+        onClick={addField}
+        label="Thêm trường tùy chọn"
+        color="primary"
+        Icon={<AddIcon />}
       />
       <Stack
         gap={1}

@@ -160,9 +160,11 @@ const BaseModal: React.FC<ModalProps> = ({
                 <h3 className="text-lg font-semibold">{title}</h3>
               </div>
               {/*body*/}
-              <div className="relative p-6 flex-auto">{body}</div>
+              <div className="relative p-6 flex-auto max-h-[70vh] overflow-auto">
+                {body}
+              </div>
               {/*footer*/}
-              <div className="flex flex-col gap-2 p-6">
+              <div className="flex flex-col gap-2 p-6 border-t-[1px]">
                 <div className="flex flex-row items-center justify-between gap-4 w-full">
                   <CustomButton
                     color="error"
