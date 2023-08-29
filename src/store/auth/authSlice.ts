@@ -8,6 +8,11 @@ interface authState {
   loadingRegister: boolean;
   dataUser: CurrentUser | undefined;
   loadingChangePwd: boolean;
+  loadingSendEmail: boolean;
+  loadingVerifyOtp: boolean;
+  loadingResetPwd: boolean;
+  tokenVerifyPwd: string;
+  tokenResetPwd: string;
 }
 
 const token = getAuth();
@@ -18,6 +23,11 @@ const initialState: authState = {
   loadingRegister: false, //loading register
   dataUser: JSON.parse(localStorage.getItem("current_user") as string) || {},
   loadingChangePwd: false,
+  loadingSendEmail: false,
+  loadingVerifyOtp: false,
+  loadingResetPwd: false,
+  tokenVerifyPwd: "",
+  tokenResetPwd: "",
 };
 
 const authSlice = createSlice({
@@ -62,6 +72,38 @@ const authSlice = createSlice({
     },
     changePwdFailed(state) {
       state.loadingChangePwd = false;
+    },
+
+    sendEmail(state, action) {
+      state.loadingSendEmail = true;
+    },
+    sendEmailSuccess(state, action) {
+      state.loadingSendEmail = false;
+      state.tokenVerifyPwd = action.payload;
+    },
+    sendEmailFailed(state) {
+      state.loadingSendEmail = false;
+    },
+
+    verifyOtp(state, action) {
+      state.loadingVerifyOtp = true;
+    },
+    verifyOtpSuccess(state, action) {
+      state.loadingVerifyOtp = false;
+      state.tokenResetPwd = action.payload;
+    },
+    verifyOtpFailed(state) {
+      state.loadingVerifyOtp = false;
+    },
+
+    resetPwd(state, action) {
+      state.loadingResetPwd = true;
+    },
+    resetPwdSuccess(state) {
+      state.loadingResetPwd = false;
+    },
+    resetPwdFailed(state) {
+      state.loadingResetPwd = false;
     },
   },
 });

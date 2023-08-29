@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import CustomButton from "../../../../components/share/CustomButton";
 import style from "./verifyCode.module.scss";
 import { useCallback, useState } from "react";
+import { useAppSelector } from "../../../../hooks/store";
+import { authActions } from "../../../../store/auth/authSlice";
 
 interface FormValues {
   code: string;
@@ -18,6 +20,7 @@ interface FormValues {
 const VerifyCode = ({ onNext }: { onNext: () => void }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const tokenVerify = useAppSelector((state) => state.auth.tokenVerifyPwd);
   const [otp, setOtp] = useState("");
   const [expiryTime, setExpiryTime] = useState(Date.now() + 60000 * 5);
 
@@ -90,16 +93,14 @@ const VerifyCode = ({ onNext }: { onNext: () => void }) => {
   //     );
   //   };
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
-    // dispatch(
-    //   authActions.login({
-    //     params: data,
-    //     onNavigate: () => {
-    //       navigate("/home");
-    //     },
-    //   })
-    // );
-    console.log({ data });
-    onNext();
+    const payload = {
+      params: { code: data.code, token: tokenVerify },
+      onNext() {
+        onNext();
+      },
+    };
+    console.log({ payload });
+    dispatch(authActions.verifyOtp(payload));
   };
   return (
     // <form onSubmit={handleSubmit(onSubmit)}>

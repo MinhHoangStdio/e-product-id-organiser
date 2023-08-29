@@ -5,10 +5,26 @@ const authApi = {
     const url = "/auth/login";
     return axiosClient.post(url, params);
   },
-  register(params:any) {
-    const url = "/auth/register"
+  register(params: any) {
+    const url = "/auth/register";
     return axiosClient.post(url, params);
-  }
+  },
+  changePwd(params: any) {
+    const url = "/auth/change-password";
+    return axiosClient.post(url, params);
+  },
+  forgotPwd(params: any) {
+    const url = "/auth/forgot-password";
+    return axiosClient.post(url, params);
+  },
+  verifyForgotPwd(params: any) {
+    const url = "/auth/verify-forgot-password";
+    return axiosClient.post(url, params);
+  },
+  resetPwd(params: any) {
+    const url = "/auth/reset-password";
+    return axiosClient.post(url, params);
+  },
 };
 
 export default authApi;

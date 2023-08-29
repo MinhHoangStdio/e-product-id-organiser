@@ -48,11 +48,16 @@ const ChangePwd = () => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
-    const params = {
-      currentPwd: data.currentPwd,
-      newPwd: data.newPwd,
+    const payload = {
+      params: {
+        current_password: data.currentPwd,
+        password: data.newPwd,
+      },
+      onReset() {
+        reset();
+      },
     };
-    dispatch(authActions.changePwd(params));
+    dispatch(authActions.changePwd(payload));
   };
 
   return (
