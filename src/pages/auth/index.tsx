@@ -29,8 +29,8 @@ const AuthPage = () => {
       >
         <p>
           {authState == "login"
-            ? "First time using this app?"
-            : "Already have an account?"}
+            ? "Lần đầu sử dụng ứng dụng?"
+            : "Đã có tài khoản?"}
           <span
             onClick={() => {
               dispatch(layoutActions.changeAuthState());
@@ -42,7 +42,7 @@ const AuthPage = () => {
             "
           >
             {" "}
-            {authState == "login" ? "Create an account" : "Login"}
+            {authState == "login" ? "Tạo tài khoản" : "Đăng nhập"}
           </span>
         </p>
         <p
@@ -55,7 +55,7 @@ const AuthPage = () => {
               hover:underline
             "
         >
-          Forgot password?
+          Quên mật khẩu?
         </p>
       </div>
     </Paper>

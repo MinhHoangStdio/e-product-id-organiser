@@ -32,7 +32,7 @@ const CreateOrganizerModal = () => {
     },
     resolver: yupResolver(
       yup.object().shape({
-        name: yup.string().required("Insert name"),
+        name: yup.string().required("Vui lòng nhập tên tổ chức"),
       })
     ),
   });
@@ -48,10 +48,10 @@ const CreateOrganizerModal = () => {
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
-      <Heading title="Create Your Organizer" />
+      <Heading title="Tạo tổ chức của bạn" />
       <TextField
         id="name"
-        label="Organizer Name"
+        label="Tên tổ chức"
         inputProps={{ ...register("name") }}
         error={!!errors.name?.message}
         required
@@ -64,8 +64,8 @@ const CreateOrganizerModal = () => {
     <BaseModal
       disabled={loadingCreateOrganizer}
       isOpen={isOpenModal}
-      title="Create a new Organizer"
-      actionLabel="Create"
+      title="Tạo tổ chức của bạn"
+      actionLabel="Tạo"
       onClose={onCloseModal}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}

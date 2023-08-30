@@ -33,13 +33,16 @@ const Register = () => {
     },
     resolver: yupResolver(
       yup.object().shape({
-        email: yup.string().email("Invalid email").required("Insert email"),
-        name: yup.string().required("Insert name"),
-        password: yup.string().required("Insert password"),
+        email: yup
+          .string()
+          .email("Email không hợp lệ")
+          .required("Vui lòng nhập email"),
+        name: yup.string().required("Vui lòng nhập tên"),
+        password: yup.string().required("Vui lòng nhập mật khẩu"),
         confirmPassword: yup
           .string()
-          .required("Insert confirm password")
-          .oneOf([yup.ref("password")], "Your passwords do not match."),
+          .required("Vui lòng nhập xác nhận mật khẩu")
+          .oneOf([yup.ref("password")], "Mật khẩu không khớp"),
       })
     ),
   });
@@ -56,7 +59,10 @@ const Register = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack direction="column" gap="16px">
-        <Heading title="Welcome to this app" subtitle="Create an account!" />
+        <Heading
+          title="Chào mừng đến với E-Product ID"
+          subtitle="Tạo tài khoản của bạn ngay!"
+        />
         <TextField
           id="email"
           label="Email"
@@ -67,7 +73,7 @@ const Register = () => {
         />
         <TextField
           id="name"
-          label="Name"
+          label="Tên"
           inputProps={{ ...register("name") }}
           error={!!errors.name?.message}
           required
@@ -75,7 +81,7 @@ const Register = () => {
         />
         <TextField
           id="password"
-          label="Password"
+          label="Mật khẩu"
           type={showPassword ? "text" : "password"}
           inputProps={{ ...register("password") }}
           error={!!errors.password?.message}
@@ -96,7 +102,7 @@ const Register = () => {
         />{" "}
         <TextField
           id="confirm-password"
-          label="Confirm password"
+          label="Xác nhận mật khẩu"
           type={showPassword ? "text" : "password"}
           inputProps={{ ...register("confirmPassword") }}
           error={!!errors.confirmPassword?.message}
@@ -115,7 +121,7 @@ const Register = () => {
             ),
           }}
         />
-        <CustomButton color="primary" label="Register" type="submit" />
+        <CustomButton color="primary" label="Đăng ký" type="submit" />
       </Stack>
     </form>
   );

@@ -45,8 +45,8 @@ const SendEmail = ({ onNext }: { onNext: () => void }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack direction="column" gap="16px">
         <Heading
-          title="Forgot password?"
-          subtitle="Don't worry, enter your email"
+          title="Quên mật khẩu?"
+          subtitle="Đừng lo lắng, hãy nhập email đăng ký của bạn."
         />
         <TextField
           id="email"
@@ -56,7 +56,7 @@ const SendEmail = ({ onNext }: { onNext: () => void }) => {
           required
           helperText={errors.email?.message}
         />
-        <CustomButton color="primary" type="submit" label="Send" />
+        <CustomButton color="primary" type="submit" label="Gửi" />
       </Stack>
     </form>
   );

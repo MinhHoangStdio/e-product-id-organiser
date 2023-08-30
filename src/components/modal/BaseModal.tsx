@@ -170,7 +170,7 @@ const BaseModal: React.FC<ModalProps> = ({
                     color="error"
                     onClick={secondaryAction ? secondaryAction : handleClose}
                     label={
-                      secondaryActionLabel ? secondaryActionLabel : "Cancel"
+                      secondaryActionLabel ? secondaryActionLabel : "Hủy bỏ"
                     }
                     disabled={disabled}
                   />

@@ -28,7 +28,7 @@ const ConsignmentDetail = () => {
       title: "Confirm",
       content: (
         <span>
-          Do you want to delete a chain <b>"{data.name}"</b>?
+          Bạn có chắc chắn muốn xóa công đoạn <b>"{data.name}"</b>?
         </span>
       ),
       onAction: () =>
@@ -60,9 +60,9 @@ const ConsignmentDetail = () => {
     <>
       {(consignment && (
         <Box p={4}>
-          <Typography variant="h1">Consignment Information</Typography>
+          <Typography variant="h1">Thông tin lô hàng</Typography>
           <Typography sx={{ fontSize: "16px", mt: 1 }}>
-            <b>Consignment name:</b> {consignment.name}
+            <b>Tên lô hàng:</b> {consignment.name}
           </Typography>
           {consignment.product && (
             <Link to={`/organizer/products/${consignment.product.id}`}>
@@ -73,18 +73,19 @@ const ConsignmentDetail = () => {
                   "&:hover": { color: "#00B3D5" },
                 }}
               >
-                <b>Product:</b> {consignment.product?.name}
+                <b>Sản phẩm:</b> {consignment.product?.name}
               </Typography>
             </Link>
           )}
           <Typography sx={{ fontSize: "16px", mt: 1 }}>
-            <b>Amount:</b> {consignment.amount}
+            <b>Số lượng:</b> {consignment.amount}
           </Typography>
           <Typography sx={{ fontSize: "16px", mt: 1 }}>
-            <b>Description:</b> {consignment?.description}
+            <b>Mô tả:</b> {consignment?.description}
           </Typography>
           <Typography sx={{ fontSize: "16px", mt: 1 }}>
-            <b>Status:</b> {consignment?.is_sold_out ? "Sold out" : "In stock"}
+            <b>Trạng thái:</b>{" "}
+            {consignment?.is_sold_out ? "Cháy hàng" : "Còn sản phẩm"}
           </Typography>
           {Object.keys(consignment?.payload).length ? (
             Object.keys(consignment?.payload).map((key, i) => (
@@ -96,7 +97,7 @@ const ConsignmentDetail = () => {
             <></>
           )}
           <CustomButton
-            label="Thêm chuỗi mới"
+            label="Thêm công đoạn mới"
             color="primary"
             Icon={<AddIcon />}
             onClick={() => dispatch(layoutActions.openModalChains())}
@@ -110,7 +111,7 @@ const ConsignmentDetail = () => {
         </Box>
       )) || (
         <Typography variant="h2" paddingTop={"25px"} textAlign={"center"}>
-          Consignment not found.
+          Không tìm thấy lô hàng
         </Typography>
       )}
       {/* {product && (
@@ -156,7 +157,7 @@ const ConsignmentDetail = () => {
       {(chains?.length || "") && (
         <>
           <Typography variant="h2" pl={4}>
-            List chains
+            Công đoạn
           </Typography>
           {chains?.map((chain, index) => (
             <Box p={4} key={index} pt={0}>

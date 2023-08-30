@@ -31,8 +31,11 @@ const Login = () => {
     },
     resolver: yupResolver(
       yup.object().shape({
-        email: yup.string().email("Invalid email").required("Insert email"),
-        password: yup.string().required("Insert password"),
+        email: yup
+          .string()
+          .email("Email không hợp lệ")
+          .required("Vui lòng nhập email"),
+        password: yup.string().required("Vui lòng nhập mật khẩu"),
       })
     ),
   });
@@ -47,16 +50,14 @@ const Login = () => {
       })
     );
   };
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (event.key === "Enter") {
-      console.log("Phím Enter đã được nhấn trên nút!");
-    }
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack direction="column" gap="16px">
-        <Heading title="Welcome back" subtitle="Login to your account!" />
+        <Heading
+          title="Chào mừng trở lại E-Product ID"
+          subtitle="Đăng nhập với tài khoản của bạn!"
+        />
         <TextField
           id="email"
           label="Email"
@@ -67,7 +68,7 @@ const Login = () => {
         />
         <TextField
           id="password"
-          label="Password"
+          label="Mật khẩu"
           type={showPassword ? "text" : "password"}
           inputProps={{ ...register("password") }}
           error={!!errors.password?.message}
@@ -86,7 +87,7 @@ const Login = () => {
             ),
           }}
         />
-        <CustomButton color="primary" type="submit" label="Login" />
+        <CustomButton color="primary" type="submit" label="Đăng nhập" />
       </Stack>
     </form>
   );

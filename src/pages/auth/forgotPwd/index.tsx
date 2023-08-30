@@ -48,7 +48,7 @@ const ForgotPwd = () => {
               hover:underline
             "
         >
-          Back to login
+          Trở lại đăng nhập
         </p>
       </div>
     </Paper>

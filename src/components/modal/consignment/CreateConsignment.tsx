@@ -67,9 +67,9 @@ const CreateConsignmentModal = () => {
     },
     resolver: yupResolver(
       yup.object().shape({
-        name: yup.string().required("Insert name"),
-        amount: yup.number().required("Insert amount"),
-        description: yup.string().required("Insert description"),
+        name: yup.string().required("Vui lòng nhập tên lô hàng"),
+        amount: yup.number().required("Vui lòng nhập số lượng"),
+        description: yup.string().required("Vui lòng nhập mô tả"),
       })
     ),
   });
@@ -118,14 +118,14 @@ const CreateConsignmentModal = () => {
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
-      <Heading title="Create a new consignment" />
+      <Heading title="Tạo lô hàng mới" />
 
       {!productDetail?.name && (
         <TextField
           variant="outlined"
           select
           id="product_id"
-          label="Product"
+          label="Sản phẩm"
           value={productIdLabel}
           InputLabelProps={{ shrink: !!productIdLabel }}
           onChange={(e: any) => {
@@ -137,7 +137,7 @@ const CreateConsignmentModal = () => {
             }
           }}
         >
-          <MenuItem value={-1}>None</MenuItem>
+          <MenuItem value={-1}>Chưa xác định</MenuItem>
           {listAllProduct.map((prod) => (
             <MenuItem key={prod.id} value={prod.id}>
               {prod.name}
@@ -147,7 +147,7 @@ const CreateConsignmentModal = () => {
       )}
       <TextField
         id="name"
-        label="Consignment Name"
+        label="Tên lô hàng"
         inputProps={{ ...register("name") }}
         error={!!errors.name?.message}
         required
@@ -156,7 +156,7 @@ const CreateConsignmentModal = () => {
       <TextField
         type="number"
         id="amount"
-        label="Amount"
+        label="Số lượng"
         inputProps={{ ...register("amount") }}
         error={!!errors.amount?.message}
         required
@@ -164,7 +164,7 @@ const CreateConsignmentModal = () => {
       />
       <TextField
         id="description"
-        label="Description"
+        label="Mô tả"
         inputProps={{ ...register("description") }}
         error={!!errors.description?.message}
         required
@@ -217,8 +217,8 @@ const CreateConsignmentModal = () => {
     <BaseModal
       disabled={loadingCreateConsignment}
       isOpen={isOpenModal}
-      title="Create a new Consignment"
-      actionLabel="Create"
+      title="Tạo lô hàng mới"
+      actionLabel="Tạo"
       onClose={onCloseModal}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}

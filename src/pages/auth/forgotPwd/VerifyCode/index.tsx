@@ -72,7 +72,7 @@ const VerifyCode = ({ onNext }: { onNext: () => void }) => {
     },
     resolver: yupResolver(
       yup.object().shape({
-        code: yup.string().required("Insert verify code"),
+        code: yup.string().required("Vui lòng nhập mã OTP"),
       })
     ),
   });
@@ -107,8 +107,8 @@ const VerifyCode = ({ onNext }: { onNext: () => void }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack direction="column" gap="16px">
         <Heading
-          title="Insert OTP code"
-          subtitle="Enter the OTP code we sent to your email"
+          title="Nhập mã OTP"
+          subtitle="Nhập mã OTP chúng tôi vừa gửi đến email đăng ký của bạn."
         />
         <Stack direction="row" justifyContent="center">
           <ReactCodeInput

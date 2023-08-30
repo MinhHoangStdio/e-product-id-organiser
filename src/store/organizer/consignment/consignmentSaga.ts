@@ -22,7 +22,7 @@ function* handleGetListConsignments(action: Action) {
     yield put(consignmentActions.getListConsignmentsFailed());
     yield put(
       alertActions.showAlert({
-        text: "Cannot get list consignments",
+        text: "Không thể lấy được danh sách lô hàng",
         type: "error",
       })
     );
@@ -41,7 +41,7 @@ function* handleCreateConsignment(action: Action) {
     yield put(consignmentActions.createConsignmentSuccess());
     yield put(
       alertActions.showAlert({
-        text: "Create a new consignment success",
+        text: "Tạo lô hàng mới thành công",
         type: "success",
       })
     );
@@ -52,7 +52,7 @@ function* handleCreateConsignment(action: Action) {
     yield put(consignmentActions.createConsignmentFailed());
     yield put(
       alertActions.showAlert({
-        text: "Create a new consignment failed",
+        text: "Tạo lô hàng mới thất bại",
         type: "error",
       })
     );
@@ -69,7 +69,7 @@ function* handleDeleteConsignment(action: Action) {
     yield put(consignmentActions.removeConsignmentSuccess());
     yield put(
       alertActions.showAlert({
-        text: "Remove consignment success",
+        text: "Xóa lô hàng thành công",
         type: "success",
       })
     );
@@ -78,7 +78,7 @@ function* handleDeleteConsignment(action: Action) {
     yield put(consignmentActions.removeConsignmentFailed());
     yield put(
       alertActions.showAlert({
-        text: "Remove consignment failed",
+        text: "Xóa lô hàng thất bại",
         type: "error",
       })
     );
@@ -99,7 +99,7 @@ function* handleGetConsignmentDetail(action: Action) {
     yield put(consignmentActions.getConsignmentDetailFailed());
     yield put(
       alertActions.showAlert({
-        text: "Cannot get detail consignment",
+        text: "Không thể lấy thông tin chi tiết lô hàng",
         type: "error",
       })
     );

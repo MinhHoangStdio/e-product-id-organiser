@@ -92,7 +92,7 @@ const ConsignmentPage = () => {
                   name={cons?.name}
                   amount={cons?.amount}
                   productName={
-                    cons?.product?.name ? cons?.product?.name : "None"
+                    cons?.product?.name ? cons?.product?.name : "Chưa đặt"
                   }
                   description={cons?.description}
                   onAction={() => {
@@ -111,7 +111,7 @@ const ConsignmentPage = () => {
         ) : (
           <EmptyOrganizer
             onAction={openConsignmentModal}
-            labelBtn="Create Your Consignment"
+            labelBtn="Tạo lô hàng"
           />
         )}
       </Grid>
@@ -126,10 +126,7 @@ const ConsignmentPage = () => {
       )}
     </Stack>
   ) : (
-    <EmptyOrganizer
-      onAction={openOrganizerModal}
-      labelBtn="Create Your Organizer"
-    />
+    <EmptyOrganizer onAction={openOrganizerModal} labelBtn="Tạo tổ chức" />
   );
 };
 

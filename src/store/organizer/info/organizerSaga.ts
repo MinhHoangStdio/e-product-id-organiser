@@ -17,7 +17,7 @@ function* handleGetOrganizer(action: Action) {
     yield put(organizerActions.getOrganizerFailed());
     yield put(
       alertActions.showAlert({
-        text: "Cannot get Organizer",
+        text: "Không thể lấy thông tin tổ chức",
         type: "error",
       })
     );
@@ -36,7 +36,7 @@ function* handleCreateOrganizer(action: Action) {
     yield put(organizerActions.createOrganizerSuccess());
     yield put(
       alertActions.showAlert({
-        text: "Create a new organizer success",
+        text: "Tạo tổ chức thành công",
         type: "success",
       })
     );
@@ -47,7 +47,7 @@ function* handleCreateOrganizer(action: Action) {
     yield put(organizerActions.createOrganizerFailed());
     yield put(
       alertActions.showAlert({
-        text: "Create a new consignment failed",
+        text: "Tạo tổ chức thất bại",
         type: "error",
       })
     );

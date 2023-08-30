@@ -214,15 +214,15 @@ const CreateChainsModal = () => {
   //   }
   // };
 
-  const formValues = getValues();
+  // const formValues = getValues();
 
   //==========================================================DESCRIPTION//==========================================================
   const bodyContent = (
     <div className="flex flex-col gap-4">
-      <Heading title="Create a new chain" />
+      <Heading title="Tạo công đoạn mới" />
       <TextField
         id="name"
-        label="Chains Name"
+        label="Tên công đoạn"
         inputProps={{ ...register("name") }}
         error={!!errors.name?.message}
         required
@@ -235,7 +235,7 @@ const CreateChainsModal = () => {
       />
       <TextField
         id="description"
-        label="Description"
+        label="Mô tả"
         inputProps={{ ...register("description") }}
         error={!!errors.description?.message}
         required
@@ -254,7 +254,7 @@ const CreateChainsModal = () => {
         render={({ field }) => {
           return (
             <TimePicker
-              label="Date"
+              label="Ngày bắt đầu"
               value={field.value}
               inputRef={field.ref}
               onChange={(date) => {
@@ -320,7 +320,7 @@ const CreateChainsModal = () => {
           borderRadius: 1,
         }}
       >
-        <b>{`Insert images*(Max:4)`}</b>
+        <b>{`Thêm ảnh (Tối đa: 4)`}</b>
         {errors.images?.message ? (
           <FormHelperText error>
             {errors.images?.message as string}
@@ -580,9 +580,9 @@ const CreateChainsModal = () => {
     <BaseModal
       disabled={loadingCreateChains}
       isOpen={isOpenModal}
-      title="Create a new Chains"
+      title="Tạo công đoạn mới"
       // actionLabel={step !== STEPS.REVIEW ? "Next" : "Create"}
-      actionLabel="Create"
+      actionLabel="Tạo"
       // secondaryActionLabel={step == STEPS.DESCRIPTION ? "Cancel" : "Back"}
       onClose={onCloseModal}
       // secondaryAction={onSecondaryAction}

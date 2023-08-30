@@ -32,7 +32,7 @@ function* handleLogin(action: Action) {
     yield put(authActions.loginFailed());
     yield put(
       alertActions.showAlert({
-        text: "The username or password you entered did not match our records. Please try again.",
+        text: "Email hoặc mật khẩu bạn nhập không khớp với hệ thống, vui lòng kiểm tra lại",
         type: "error",
       })
     );
@@ -47,7 +47,7 @@ function* handleRegister(action: Action) {
     yield put(authActions.registerSuccess());
     yield put(
       alertActions.showAlert({
-        text: "Register success!",
+        text: "Đăng ký thành công!",
         type: "success",
       })
     );
@@ -56,7 +56,7 @@ function* handleRegister(action: Action) {
     yield put(authActions.registerFailed());
     yield put(
       alertActions.showAlert({
-        text: "Register failed!",
+        text: "Đăng ký thất bại!",
         type: "error",
       })
     );
@@ -72,7 +72,7 @@ function* handleChangePwd(action: Action) {
     onReset();
     yield put(
       alertActions.showAlert({
-        text: "Change password success!",
+        text: "Đổi mật khẩu thành công!",
         type: "success",
       })
     );
@@ -80,7 +80,7 @@ function* handleChangePwd(action: Action) {
     yield put(authActions.changePwdFailed());
     yield put(
       alertActions.showAlert({
-        text: "Change password failed!",
+        text: "Đổi mật khẩu thất bại!",
         type: "error",
       })
     );
