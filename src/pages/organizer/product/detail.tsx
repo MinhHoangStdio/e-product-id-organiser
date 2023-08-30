@@ -40,7 +40,10 @@ const ProductDetail = () => {
 
   return (
     (product && (
-      <Grid sx={{ width: "100%" }} p={4} container columnSpacing={4}>
+      <Grid sx={{ width: "100%" }} p={2} container columnSpacing={4}>
+        <Grid item xs={12} sx={{ mb: 2 }}>
+          <Typography variant="h3">Chi tiết sản phẩm </Typography>
+        </Grid>
         <Grid item xs={4}>
           <ImageSlider
             imagesUrl={product?.images || []}
@@ -58,16 +61,18 @@ const ProductDetail = () => {
               })}
             </Typography>
             <Typography sx={{ fontSize: "16px", marginTop: "20px" }}>
-              <b>Product name:</b> {product?.name}
+              <b>Tên sản phẩm:</b> {product?.name}
+            </Typography>
+            {product?.category && (
+              <Typography sx={{ fontSize: "16px", mt: 1 }}>
+                <b>Danh mục:</b> {product?.category.name}
+              </Typography>
+            )}
+            <Typography sx={{ fontSize: "16px", mt: 1 }}>
+              <b>Trạng thái sản phẩm:</b> {product?.approval_status}
             </Typography>
             <Typography sx={{ fontSize: "16px", mt: 1 }}>
-              <b>Category:</b> {product?.category.name}
-            </Typography>
-            <Typography sx={{ fontSize: "16px", mt: 1 }}>
-              <b>Approval status:</b> {product?.approval_status}
-            </Typography>
-            <Typography sx={{ fontSize: "16px", mt: 1 }}>
-              <b>Description:</b> <br />
+              <b>Mô tả: </b>
               {product?.description}
             </Typography>
           </Box>

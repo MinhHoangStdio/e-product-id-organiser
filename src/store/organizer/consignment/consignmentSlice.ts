@@ -11,6 +11,7 @@ interface consignmentState {
   consignmentSelected: Consignment | null;
   consignmentDetail?: ConsignmentDetail;
   loadingConsignmentDetail: boolean;
+  loadingDownloadQrCode: boolean;
 }
 
 const initialState: consignmentState = {
@@ -22,6 +23,7 @@ const initialState: consignmentState = {
   consignmentSelected: null,
   consignmentDetail: undefined,
   loadingConsignmentDetail: false,
+  loadingDownloadQrCode: false,
 };
 
 const consignmentSlice = createSlice({
@@ -76,6 +78,16 @@ const consignmentSlice = createSlice({
     },
     getConsignmentDetailFailed(state) {
       state.loadingConsignmentDetail = false;
+    },
+
+    downloadQrCode(state, action) {
+      state.loadingDownloadQrCode = true;
+    },
+    downloadQrCodeSuccess(state) {
+      state.loadingDownloadQrCode = false;
+    },
+    downloadQrCodeFailed(state) {
+      state.loadingDownloadQrCode = false;
     },
 
     resetDetailConsignment(state) {

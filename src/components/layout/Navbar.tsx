@@ -45,46 +45,9 @@ const Navbar = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="space-between" sx={{ px: 4, py: 2 }}>
-      {/* SEARCH BAR */}
-      <Box display="flex" sx={{ bgcolor: "#fff" }}>
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-          sx={{ width: "300px" }}
-          placeholder="Search"
-        />
-      </Box>
-
-      {/* ICONS */}
-      <Stack direction="row" alignItems="center" spacing={1}>
-        {/* <IconButton
-          sx={{
-            width: "40px",
-            height: "40px",
-          }}
-          onClick={toggleTheme}
-        >
-          {theme === "dark" ? (
-            <DarkModeOutlinedIcon />
-          ) : (
-            <LightModeOutlinedIcon />
-          )}
-        </IconButton> */}
-        <IconButton sx={{ width: "40px", height: "40px" }}>
-          <NotificationsOutlinedIcon />
-        </IconButton>
-        {/* <IconButton sx={{ width: "40px", height: "40px" }}>
-          <SettingsOutlinedIcon />
-        </IconButton> */}
-        {/* <IconButton sx={{ width: "40px", height: "40px" }}>
-          <PersonOutlinedIcon />
-        </IconButton> */}
+    <Box display="flex" sx={{ px: 4, py: 2 }} justifyContent="flex-end">
+      {/* <Box display="flex" sx={{ px: 4, py: 2 }} justifyContent="space-between"> */}
+      <Box sx={{ alignItems: "flex-end" }}>
         <Chip
           size="medium"
           variant="outlined"
@@ -112,10 +75,81 @@ const Navbar = () => {
               navigate("/profile/changepwd");
             }}
           >
-            Change Password
+            Đổi mật khẩu
           </MenuItem>
         </Menu>
-      </Stack>
+      </Box>
+
+      {/* SEARCH BAR */}
+      {/* <Box display="flex" sx={{ bgcolor: "#fff" }}>
+        <TextField
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          sx={{ width: "300px" }}
+          placeholder="Search"
+        />
+      </Box> */}
+
+      {/* ICONS */}
+      {/* <Stack direction="row" alignItems="center" spacing={1}> */}
+      {/* <IconButton
+          sx={{
+            width: "40px",
+            height: "40px",
+          }}
+          onClick={toggleTheme}
+        >
+          {theme === "dark" ? (
+            <DarkModeOutlinedIcon />
+          ) : (
+            <LightModeOutlinedIcon />
+          )}
+        </IconButton> */}
+      {/* <IconButton sx={{ width: "40px", height: "40px" }}>
+          <NotificationsOutlinedIcon />
+        </IconButton> */}
+      {/* <IconButton sx={{ width: "40px", height: "40px" }}>
+          <SettingsOutlinedIcon />
+        </IconButton> */}
+      {/* <IconButton sx={{ width: "40px", height: "40px" }}>
+          <PersonOutlinedIcon />
+        </IconButton> */}
+      {/* <Chip
+          size="medium"
+          variant="outlined"
+          avatar={
+            <Avatar alt={userInfo?.name || "user"} src={userImageDefault} />
+          }
+          label={userInfo?.name}
+          color="primary"
+          onClick={handleClick}
+        />
+        <Menu
+          id="action_menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          sx={{ mt: 1 }}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClose();
+              navigate("/profile/changepwd");
+            }}
+          >
+            Đổi mật khẩu
+          </MenuItem>
+        </Menu> */}
+      {/* </Stack> */}
     </Box>
   );
 };

@@ -101,7 +101,7 @@ const ProductCard = ({
                   onEdit();
                 }}
               >
-                Edit
+                Chỉnh sửa
               </MenuItem>
             )}
             {onDelete && (
@@ -112,7 +112,7 @@ const ProductCard = ({
                   onDelete();
                 }}
               >
-                Delete
+                Xóa
               </MenuItem>
             )}
           </Menu>

@@ -1,4 +1,4 @@
-import { Grid, Pagination, Stack, Typography } from "@mui/material";
+import { Box, Grid, Pagination, Stack, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { layoutActions } from "../../../store/layout/layoutSlice";
 import ProductCard from "../../../components/organizer/product/ProductCard";
@@ -32,14 +32,14 @@ const ConsignmentPage = () => {
 
   const confirmDelete = (data: Consignment) => {
     const params: ParamsModalConfirm = {
-      title: "Confirm",
+      title: "Xác nhận",
       content: (
         <span>
-          Do you want to delete a consignment<b> "{data.name}"</b>?
+          Bạn có chắc chắn muốn xóa lô hàng<b> "{data.name}"</b>?
         </span>
       ),
       onAction: () => dispatch(consignmentActions.removeConsignment(data.id)),
-      buttonText: "Delete",
+      buttonText: "Xóa",
     };
     dispatch(modalActions.showModal(params));
   };
@@ -69,58 +69,62 @@ const ConsignmentPage = () => {
   return loadingGetConsignments ? (
     <LoadingPage />
   ) : organizer?.id ? (
-    <Grid sx={{ p: 2 }} container>
-      <Grid item xs={12}>
-        <Stack direction="row" justifyContent="space-between">
-          <Typography variant="h3">Your Consignments</Typography>
+    <Stack sx={{ minHeight: "85vh" }} justifyContent="space-between">
+      <Grid sx={{ p: 2 }} container>
+        <Grid item xs={12}>
+          <Stack direction="row" justifyContent="space-between">
+            <Typography variant="h3">Danh sách lô hàng</Typography>
 
-          <CustomButton
-            Icon={<AddIcon />}
-            color="primary"
-            onClick={openConsignmentModal}
-            label="Create a new Consignment"
+            <CustomButton
+              Icon={<AddIcon />}
+              color="primary"
+              onClick={openConsignmentModal}
+              label="Tạo lô hàng mới"
+            />
+          </Stack>
+        </Grid>
+        {listConsignments.length ? (
+          <>
+            {listConsignments.map((cons) => (
+              <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={cons.id}>
+                <ProductCard
+                  img={cons?.product?.images[0]}
+                  name={cons?.name}
+                  amount={cons?.amount}
+                  productName={
+                    cons?.product?.name ? cons?.product?.name : "None"
+                  }
+                  description={cons?.description}
+                  onAction={() => {
+                    dispatch(consignmentActions.selectedConsignment(cons));
+                    dispatch(layoutActions.openModalChains());
+                  }}
+                  labelAction="Create Chains"
+                  onDelete={() => confirmDelete(cons)}
+                  onClick={() => {
+                    history.push("/organizer/consignments/" + cons.id);
+                  }}
+                />
+              </Grid>
+            ))}
+          </>
+        ) : (
+          <EmptyOrganizer
+            onAction={openConsignmentModal}
+            labelBtn="Create Your Consignment"
           />
-        </Stack>
+        )}
       </Grid>
-      {listConsignments.length ? (
-        <>
-          {listConsignments.map((cons) => (
-            <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={cons.id}>
-              <ProductCard
-                img={cons?.product?.images[0]}
-                name={cons?.name}
-                amount={cons?.amount}
-                productName={cons?.product?.name ? cons?.product?.name : "None"}
-                description={cons?.description}
-                onAction={() => {
-                  dispatch(consignmentActions.selectedConsignment(cons));
-                  dispatch(layoutActions.openModalChains());
-                }}
-                labelAction="Create Chains"
-                onDelete={() => confirmDelete(cons)}
-                onClick={() => {
-                  history.push("/organizer/consignments/" + cons.id);
-                }}
-              />
-            </Grid>
-          ))}
-          <Grid item xs={12}>
-            <Stack sx={{ py: "20px" }}>
-              <Pagination
-                count={pagination ? totalPagePagination(pagination) : 1}
-                page={pagination?.page || 1}
-                onChange={handlePagination}
-              />
-            </Stack>
-          </Grid>
-        </>
-      ) : (
-        <EmptyOrganizer
-          onAction={openConsignmentModal}
-          labelBtn="Create Your Consignment"
-        />
+      {listConsignments.length && (
+        <Box sx={{ py: "20px" }}>
+          <Pagination
+            count={pagination ? totalPagePagination(pagination) : 1}
+            page={pagination?.page || 1}
+            onChange={handlePagination}
+          />
+        </Box>
       )}
-    </Grid>
+    </Stack>
   ) : (
     <EmptyOrganizer
       onAction={openOrganizerModal}
