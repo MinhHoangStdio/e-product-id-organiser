@@ -9,6 +9,7 @@ import modalReducer from "./modal/modalSlice";
 import consignmentReducer from "./organizer/consignment/consignmentSlice";
 import organizerReducer from "./organizer/info/organizerSlice";
 import chainsReducer from "./organizer/chains/chainsSlice";
+import publicConsignmentReducer from "./public/consignment/consignmentSlice";
 
 const reducers = combineReducers({
   alert: alertReducer,
@@ -19,6 +20,7 @@ const reducers = combineReducers({
   consignment: consignmentReducer,
   organizer: organizerReducer,
   chains: chainsReducer,
+  publicConsignment: publicConsignmentReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();
