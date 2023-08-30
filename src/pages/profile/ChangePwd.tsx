@@ -37,12 +37,15 @@ const ChangePwd = () => {
     },
     resolver: yupResolver(
       yup.object().shape({
-        currentPwd: yup.string().required("Insert your current password"),
-        newPwd: yup.string().required("Insert your new password"),
+        currentPwd: yup.string().required("Vui lòng nhập mật khẩu hiện tại"),
+        newPwd: yup.string().required("Vui lòng nhập mật khẩu mới"),
         confirmNewPwd: yup
           .string()
-          .required("Insert confirm new password")
-          .oneOf([yup.ref("newPwd")], "Your new passwords do not match."),
+          .required("Vui lòng nhập xác nhận mật khẩu mới")
+          .oneOf(
+            [yup.ref("newPwd")],
+            "Xác nhận mật khẩu mới không khớp với mật khẩu mới"
+          ),
       })
     ),
   });
@@ -65,10 +68,10 @@ const ChangePwd = () => {
       <Grid item xs={4}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack direction="column" gap="16px">
-            <Typography variant="h3">Change Password</Typography>
+            <Typography variant="h3">Đổi mật khẩu</Typography>
             <TextField
               id="currentPwd"
-              label="Current password"
+              label="Mật khẩu hiện tại"
               type={showPassword ? "text" : "password"}
               inputProps={{ ...register("currentPwd") }}
               error={!!errors.currentPwd?.message}
@@ -89,7 +92,7 @@ const ChangePwd = () => {
             />{" "}
             <TextField
               id="newPwd"
-              label="New password"
+              label="Mật khẩu mới"
               type={showPassword ? "text" : "password"}
               inputProps={{ ...register("newPwd") }}
               error={!!errors.newPwd?.message}
@@ -110,7 +113,7 @@ const ChangePwd = () => {
             />
             <TextField
               id="confirmNewPwd"
-              label="Confirm new password"
+              label="Xác nhận mật khẩu mới"
               type={showPassword ? "text" : "password"}
               inputProps={{ ...register("confirmNewPwd") }}
               error={!!errors.confirmNewPwd?.message}
@@ -129,7 +132,7 @@ const ChangePwd = () => {
                 ),
               }}
             />
-            <CustomButton color="primary" label="Change" type="submit" />
+            <CustomButton color="primary" label="Thay đổi" type="submit" />
           </Stack>
         </form>
       </Grid>

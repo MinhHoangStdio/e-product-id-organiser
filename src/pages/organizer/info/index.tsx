@@ -14,10 +14,7 @@ const OrganizerInfo = () => {
       <Typography variant="h2">{organizer.name}</Typography>
     </Stack>
   ) : (
-    <EmptyOrganizer
-      onAction={openOrganizerModal}
-      labelBtn="Create Your Organizer"
-    />
+    <EmptyOrganizer onAction={openOrganizerModal} labelBtn="Tạo tổ chức" />
   );
 };
 

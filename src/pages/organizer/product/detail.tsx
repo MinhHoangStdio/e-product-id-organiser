@@ -42,7 +42,7 @@ const ProductDetail = () => {
     (product && (
       <Grid sx={{ width: "100%" }} p={2} container columnSpacing={4}>
         <Grid item xs={12} sx={{ mb: 2 }}>
-          <Typography variant="h3">Chi tiết sản phẩm </Typography>
+          <Typography variant="h1">Thông tin sản phẩm</Typography>
         </Grid>
         <Grid item xs={4}>
           <ImageSlider

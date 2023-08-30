@@ -22,7 +22,7 @@ function* handleGetListProducts(action: Action) {
     yield put(productActions.getListProductsFailed());
     yield put(
       alertActions.showAlert({
-        text: "Cannot get list products",
+        text: "Không thể lấy danh sách sản phẩm",
         type: "error",
       })
     );
@@ -38,7 +38,7 @@ function* handleGetAllListProducts(action: Action) {
     yield put(productActions.getAllListProductsFailed());
     yield put(
       alertActions.showAlert({
-        text: "Cannot get list products",
+        text: "Lỗi",
         type: "error",
       })
     );
@@ -54,7 +54,7 @@ function* handleGetListCategories(action: Action) {
     yield put(productActions.getAllListCategoriesFailed());
     yield put(
       alertActions.showAlert({
-        text: "Cannot get list categories",
+        text: "Không thể lấy danh sách danh mục",
         type: "error",
       })
     );
@@ -90,7 +90,7 @@ function* handleCreateProduct(action: Action) {
     yield put(productActions.createProductSuccess());
     yield put(
       alertActions.showAlert({
-        text: "Create a new product success",
+        text: "Tạo sản phẩm mới thành công",
         type: "success",
       })
     );
@@ -103,7 +103,7 @@ function* handleCreateProduct(action: Action) {
     yield put(productActions.createProductFailed());
     yield put(
       alertActions.showAlert({
-        text: "Create a new product failed",
+        text: "Tạo sản phẩm mới thất bại",
         type: "error",
       })
     );
@@ -135,7 +135,7 @@ function* handleEditProduct(action: Action) {
     yield put(productActions.editProductSuccess());
     yield put(
       alertActions.showAlert({
-        text: "Edit product success",
+        text: "Chỉnh sửa sản phẩm thành công",
         type: "success",
       })
     );
@@ -152,7 +152,7 @@ function* handleEditProduct(action: Action) {
     yield put(productActions.editProductFailed());
     yield put(
       alertActions.showAlert({
-        text: "Edit product failed",
+        text: "Chỉnh sửa sản phẩm thất bại",
         type: "error",
       })
     );
@@ -166,7 +166,7 @@ function* handleDeleteProduct(action: Action) {
     yield put(productActions.removeProductSuccess());
     yield put(
       alertActions.showAlert({
-        text: "Remove product success",
+        text: "Xóa sản phẩm thành công",
         type: "success",
       })
     );
@@ -175,7 +175,7 @@ function* handleDeleteProduct(action: Action) {
     yield put(productActions.removeProductFailed());
     yield put(
       alertActions.showAlert({
-        text: "Remove product failed",
+        text: "Xóa sản phẩm thất bại",
         type: "error",
       })
     );
@@ -196,7 +196,7 @@ function* handleGetDetailProduct(action: Action) {
     yield put(productActions.getDetailProductFailed());
     yield put(
       alertActions.showAlert({
-        text: "Cannot get detail product",
+        text: "Không thể lấy thông tin chi tiết sản phẩm",
         type: "error",
       })
     );

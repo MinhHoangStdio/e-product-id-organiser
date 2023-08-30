@@ -60,7 +60,7 @@ function* handleCreateChains(action: Action) {
     yield put(chainsActions.createChainsSuccess());
     yield put(
       alertActions.showAlert({
-        text: "Create a new chains success",
+        text: "Tạo công đoạn mới thành công",
         type: "success",
       })
     );
@@ -72,7 +72,7 @@ function* handleCreateChains(action: Action) {
     yield put(chainsActions.createChainsFailed());
     yield put(
       alertActions.showAlert({
-        text: "Create a new chains failed",
+        text: "Tạo công đoạn mới thất bại",
         type: "error",
       })
     );
@@ -131,7 +131,7 @@ function* handleDeleteChains(action: Action) {
     yield put(chainsActions.removeChainsSuccess());
     yield put(
       alertActions.showAlert({
-        text: "Remove chains success",
+        text: "Xóa công đoạn thành công",
         type: "success",
       })
     );
@@ -139,7 +139,7 @@ function* handleDeleteChains(action: Action) {
     yield put(chainsActions.removeChainsFailed());
     yield put(
       alertActions.showAlert({
-        text: "Remove chains failed",
+        text: "Xóa công đoạn thất bại",
         type: "error",
       })
     );

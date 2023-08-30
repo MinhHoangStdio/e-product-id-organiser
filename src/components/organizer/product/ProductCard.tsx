@@ -148,7 +148,7 @@ const ProductCard = ({
           variant="body2"
           color="text.secondary"
         >
-          Description: {description}
+          Mô tả: {description}
         </Typography>
         {productName && (
           <Typography
@@ -160,7 +160,7 @@ const ProductCard = ({
             variant="body2"
             color="text.secondary"
           >
-            Product name: {productName}
+            Tên sản phẩm: {productName}
           </Typography>
         )}
         {amount && (
@@ -173,7 +173,7 @@ const ProductCard = ({
             variant="body2"
             color="text.secondary"
           >
-            Amount: {amount}
+            Số lượng: {amount}
           </Typography>
         )}
       </CardContent>

@@ -107,8 +107,8 @@ const CreateAndEditProductModal = () => {
     },
     resolver: yupResolver(
       yup.object().shape({
-        name: yup.string().required("Insert name"),
-        description: yup.string().required("Insert description"),
+        name: yup.string().required("Vui lòng nhập tên sản phẩm"),
+        description: yup.string().required("Vui lòng nhập mô tả sản phẩm"),
       })
     ),
   });
@@ -191,11 +191,13 @@ const CreateAndEditProductModal = () => {
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
-        title={typeModal == "create" ? "Create a new product" : "Edit Product"}
+        title={
+          typeModal == "create" ? "Tạo sản phẩm mới" : "Chỉnh sửa sản phẩm"
+        }
       />
       <TextField
         id="name"
-        label="Name"
+        label="Tên sản phẩm"
         inputProps={{ ...register("name") }}
         error={!!errors.name?.message}
         required
@@ -203,7 +205,7 @@ const CreateAndEditProductModal = () => {
       />
       <TextField
         id="description"
-        label="Description"
+        label="Mô tả"
         inputProps={{ ...register("description") }}
         error={!!errors.description?.message}
         required
@@ -221,7 +223,7 @@ const CreateAndEditProductModal = () => {
         variant="outlined"
         select
         id="category_id"
-        label="Category"
+        label="Danh mục"
         value={categoryIdLabel}
         InputLabelProps={{ shrink: !!categoryIdLabel }}
         onChange={(e: any) => {
@@ -235,7 +237,7 @@ const CreateAndEditProductModal = () => {
         error={!!errors.category_id?.message}
         helperText={errors.category_id?.message as string}
       >
-        <MenuItem value={-1}>None</MenuItem>
+        <MenuItem value={-1}>Chưa xác định</MenuItem>
         {listCategories.map((cate) => (
           <MenuItem key={cate.id} value={cate.id}>
             {cate.name}
@@ -292,7 +294,7 @@ const CreateAndEditProductModal = () => {
           borderRadius: 1,
         }}
       >
-        <b>{`Insert images*(Max:4)`}</b>
+        <b>{`Thêm ảnh (Tối đa: 4)`}</b>
         {errors.images?.message ? (
           <FormHelperText error>
             {errors.images?.message as string}
@@ -370,7 +372,7 @@ const CreateAndEditProductModal = () => {
         typeModal == "create" ? loadingCreateProduct : loadingEditProduct
       }
       isOpen={isOpenModal}
-      title={typeModal == "create" ? "Create a new product" : "Edit product"}
+      title={typeModal == "create" ? "Tạo sản phẩm mới" : "Chỉnh sửa sản phẩm"}
       actionLabel={typeModal == "create" ? "Create" : "Edit"}
       onClose={onCloseModal}
       onSubmit={handleSubmit(onSubmit)}
