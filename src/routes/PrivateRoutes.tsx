@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Loadable from "../components/Loadable";
 import MainLayout from "../layout/MainLayout";
 import ConsignmentPage from "../pages/organizer/consignment";
+import MinimalLayout from "../layout/MinimalLayout";
 
 const PrivateRoutes = () => {
   const Dashboard = Loadable(lazy(() => import("../pages/dashboard")));
@@ -15,23 +16,67 @@ const PrivateRoutes = () => {
     lazy(() => import("../pages/organizer/consignment/detail"))
   );
   const ChangePwd = Loadable(lazy(() => import("../pages/profile/ChangePwd")));
+
+  const PublicConsignment = Loadable(
+    lazy(() => import("../pages/public/consignment"))
+  );
   return (
-    <MainLayout>
-      <Routes>
-        <Route path="/*" element={<Navigate to="/organizer/info" />} />
-        <Route path="/login" element={<Navigate to="/organizer/info" />} />
-        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-        <Route path="/organizer/products" element={<Product />} />
-        <Route path="/organizer/info" element={<OrganizerInfo />} />
-        <Route path="/organizer/products/:id" element={<ProductDetail />} />
-        <Route path="/organizer/consignments" element={<ConsignmentPage />} />
-        <Route
-          path="/organizer/consignments/:id"
-          element={<ConsignmentDetail />}
-        />
-        <Route path="/profile/changepwd" element={<ChangePwd />} />
-      </Routes>
-    </MainLayout>
+    <Routes>
+      <Route path="/*" element={<Navigate to="/organizer/info" />} />
+      <Route path="/login" element={<Navigate to="/organizer/info" />} />
+      {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+      <Route path="/organizer/products" element={<Product />} />
+
+      <Route
+        path="/organizer/info"
+        element={
+          <MainLayout>
+            <OrganizerInfo />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/organizer/products/:id"
+        element={
+          <MainLayout>
+            <ProductDetail />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/organizer/consignments"
+        element={
+          <MainLayout>
+            <ConsignmentPage />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/organizer/consignments/:id"
+        element={
+          <MainLayout>
+            <ConsignmentDetail />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/profile/changepwd"
+        element={
+          <MainLayout>
+            <ChangePwd />
+          </MainLayout>
+        }
+      />
+
+      <Route
+        path="/public/consignments/:id"
+        element={
+          <MinimalLayout>
+            <PublicConsignment />
+          </MinimalLayout>
+        }
+      />
+    </Routes>
   );
 };
 
