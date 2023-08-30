@@ -199,7 +199,7 @@ const SidebarCustom = () => {
                 setOpenOrganizerMenu(!openOrganizerMenu);
               }}
               icon={<ApartmentIcon />}
-              label={<Typography fontWeight="500">Your Organizer</Typography>}
+              label={<Typography fontWeight="500">Tổ chức của bạn</Typography>}
             >
               <MenuItem
                 active={selected.toLowerCase() === "organizer/info"}
@@ -209,7 +209,7 @@ const SidebarCustom = () => {
                 }}
                 icon={<InfoIcon />}
               >
-                <Typography fontWeight="500">General Information</Typography>
+                <Typography fontWeight="500">Thông tin về tổ chức</Typography>
               </MenuItem>
               <MenuItem
                 active={selected.toLowerCase().includes("organizer/products")}
@@ -219,7 +219,7 @@ const SidebarCustom = () => {
                 }}
                 icon={<CategoryIcon />}
               >
-                <Typography fontWeight="500">Products</Typography>
+                <Typography fontWeight="500">Sản phẩm</Typography>
               </MenuItem>
               <MenuItem
                 active={
@@ -232,7 +232,7 @@ const SidebarCustom = () => {
                 }}
                 icon={<WysiwygIcon />}
               >
-                <Typography fontWeight="500">Consignment</Typography>
+                <Typography fontWeight="500">Lô hàng</Typography>
               </MenuItem>
               <MenuItem
                 active={selected.toLowerCase() === "organizer/members"}
@@ -242,12 +242,12 @@ const SidebarCustom = () => {
                 }}
                 icon={<GroupIcon />}
               >
-                <Typography fontWeight="500">Members</Typography>
+                <Typography fontWeight="500">Thành viên</Typography>
               </MenuItem>
             </SubMenu>
             {!isCollapseSidebar && (
               <Typography variant="h6" sx={{ m: "15px 0 5px 20px" }}>
-                Settings
+                Cài đặt
               </Typography>
             )}
             <MenuItem
@@ -255,7 +255,7 @@ const SidebarCustom = () => {
               onClick={handleLogout}
               icon={<LogoutIcon />}
             >
-              <Typography>Logout</Typography>
+              <Typography>Đăng xuất</Typography>
             </MenuItem>
           </Box>
         </Menu>

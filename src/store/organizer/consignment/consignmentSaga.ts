@@ -106,6 +106,43 @@ function* handleGetConsignmentDetail(action: Action) {
   }
 }
 
+function* handleDownloadQrCode(action: Action) {
+  try {
+    const id = action.payload;
+
+    const response: { data: any } = yield call(
+      consignmentApi.downloadQrCode,
+      id
+    );
+    const blob = new Blob([response.data], { type: "image/png" });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "qrcode.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    console.log({ response });
+
+    yield put(consignmentActions.downloadQrCodeSuccess());
+    yield put(
+      alertActions.showAlert({
+        text: "Tải mã QR thành công",
+        type: "success",
+      })
+    );
+  } catch (error) {
+    yield put(consignmentActions.downloadQrCodeFailed());
+    yield put(
+      alertActions.showAlert({
+        text: "Tải mã QR thất bại",
+        type: "error",
+      })
+    );
+  }
+}
+
 function* watchLoginFlow() {
   yield all([
     takeLatest(
@@ -124,6 +161,7 @@ function* watchLoginFlow() {
       consignmentActions.getConsignmentDetail.type,
       handleGetConsignmentDetail
     ),
+    takeLatest(consignmentActions.downloadQrCode.type, handleDownloadQrCode),
   ]);
 }
 

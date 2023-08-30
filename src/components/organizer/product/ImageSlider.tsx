@@ -1,4 +1,5 @@
 import { Box, Grid, Stack } from "@mui/material";
+import noImg from "../../../assets/emptyData/no-picture.png";
 
 function ImageSlider({
   imagesUrl,
@@ -22,30 +23,37 @@ function ImageSlider({
           overflow: "hidden",
         }}
       >
-        <img src={urlSelected} style={{ width: "100%" }} />
+        <img
+          src={urlSelected ? urlSelected : noImg}
+          style={{ width: "100%" }}
+        />
       </Box>
       <Grid container>
-        {imagesUrl.map((url, i) => (
-          <Grid key={url} item xs={3} sx={{ px: "4px" }}>
-            <Box
-              onClick={() => setSelected(url)}
-              sx={{
-                cursor: "pointer",
-                border:
-                  urlSelected == url ? "4px solid #0077ff" : "1px solid #ccc",
-                borderRadius: "8px",
-                width: "100%",
-                height: "100%",
-                bgcolor: "#000",
-                display: "flex",
-                alignItems: "center",
-                overflow: "hidden",
-              }}
-            >
-              <img src={url} style={{ width: "100%" }} alt="" />
-            </Box>
-          </Grid>
-        ))}
+        {imagesUrl.length ? (
+          imagesUrl.map((url, i) => (
+            <Grid key={url} item xs={3} sx={{ px: "4px" }}>
+              <Box
+                onClick={() => setSelected(url)}
+                sx={{
+                  cursor: "pointer",
+                  border:
+                    urlSelected == url ? "4px solid #0077ff" : "1px solid #ccc",
+                  borderRadius: "8px",
+                  width: "100%",
+                  height: "100%",
+                  bgcolor: "#000",
+                  display: "flex",
+                  alignItems: "center",
+                  overflow: "hidden",
+                }}
+              >
+                <img src={url} style={{ width: "100%" }} alt="" />
+              </Box>
+            </Grid>
+          ))
+        ) : (
+          <></>
+        )}
       </Grid>
     </Stack>
   );

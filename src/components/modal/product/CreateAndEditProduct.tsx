@@ -24,11 +24,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 interface FieldValues {
   name: string;
-  price: number;
   description: string;
-  images: any;
+  images?: any;
   payload?: any;
-  category_id: any;
+  category_id?: any;
 }
 
 const CreateAndEditProductModal = () => {
@@ -101,7 +100,6 @@ const CreateAndEditProductModal = () => {
   } = useForm<FieldValues>({
     defaultValues: {
       name: "",
-      price: undefined,
       description: "",
       images: [],
       payload: null,
@@ -110,10 +108,7 @@ const CreateAndEditProductModal = () => {
     resolver: yupResolver(
       yup.object().shape({
         name: yup.string().required("Insert name"),
-        price: yup.number().required("Insert price"),
         description: yup.string().required("Insert description"),
-        images: yup.array().min(1, "Insert images").required("Insert images"),
-        category_id: yup.number().required("Insert Category"),
       })
     ),
   });
@@ -121,11 +116,12 @@ const CreateAndEditProductModal = () => {
   useEffect(() => {
     if (productSelected?.name) {
       setValue("name", productSelected.name);
-      setValue("price", productSelected.price as number);
       setValue("description", productSelected.description);
-      setValue("category_id", productSelected.category.id);
+      if (productSelected.category?.id) {
+        setValue("category_id", productSelected.category.id);
+        setCategoryIdLabel(productSelected?.category.id);
+      }
       setValue("images", productSelected.images);
-      setCategoryIdLabel(productSelected?.category.id);
       if (productSelected.payload) {
         const transformedArray = Object.keys(productSelected.payload).map(
           (key, index) => ({
@@ -204,15 +200,6 @@ const CreateAndEditProductModal = () => {
         error={!!errors.name?.message}
         required
         helperText={errors.name?.message}
-      />
-      <TextField
-        id="price"
-        label="Price"
-        type="number"
-        inputProps={{ ...register("price") }}
-        error={!!errors.price?.message}
-        required
-        helperText={errors.price?.message}
       />
       <TextField
         id="description"

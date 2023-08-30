@@ -35,9 +35,9 @@ import TimePicker from "../../share/input/TimePicker";
 interface FieldValues {
   name: string;
   description: string;
-  images: any;
+  images?: any;
   consignment_id?: any;
-  payload: { date: any };
+  date_start: any;
 }
 const CreateChainsModal = () => {
   const theme = useTheme();
@@ -112,16 +112,15 @@ const CreateChainsModal = () => {
       description: "",
       images: [],
       consignment_id: null,
-      payload: { date: dayjs(new Date()) },
+      date_start: dayjs(new Date()),
     },
     resolver: yupResolver(
       yup.object().shape({
         name: yup.string().required("Insert name"),
         description: yup.string().required("Insert description"),
-        images: yup.array().min(1, "Insert images").required("Insert images"),
-        payload: yup.object().shape({
-          date: yup.date().required("Insert Date"),
-        }),
+        // images: yup.array().min(1, "Insert images").required("Insert images"),
+        date_start: yup.date().required("Insert Date"),
+
         // payload: yup
         //   .array()
         //   .of(
@@ -191,6 +190,7 @@ const CreateChainsModal = () => {
         }
       },
     };
+    console.log({ payload });
     dispatch(chainsActions.createChains(payload));
   };
 
@@ -249,7 +249,7 @@ const CreateChainsModal = () => {
 
       <Controller
         control={control}
-        name="payload.date"
+        name="date_start"
         rules={{ required: true }}
         render={({ field }) => {
           return (
@@ -262,8 +262,8 @@ const CreateChainsModal = () => {
               }}
               slotProps={{
                 textField: {
-                  error: !!errors?.payload?.date,
-                  helperText: errors?.payload?.date ? "Invalid date" : null,
+                  error: !!errors?.date_start,
+                  helperText: errors?.date_start ? "Invalid date" : null,
                 },
               }}
             />

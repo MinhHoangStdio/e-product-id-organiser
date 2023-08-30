@@ -68,15 +68,24 @@ function* handleCreateProduct(action: Action) {
     action.payload.formData.forEach((file: File) =>
       formdata.append("files", file)
     );
-    const listImagesUrl: { data: any } = yield call(
-      productApi.upload,
-      formdata
-    );
-    const response: { data: any } = yield call(productApi.createProduct, {
-      ...action.payload.params,
-      images: listImagesUrl.data.image,
-      payload: action.payload.metadata,
-    });
+    if (action.payload.formData.length) {
+      const listImagesUrl: { data: any } = yield call(
+        productApi.upload,
+        formdata
+      );
+      const response: { data: any } = yield call(productApi.createProduct, {
+        ...action.payload.params,
+        images: listImagesUrl.data.image,
+        payload: action.payload.metadata,
+      });
+    } else {
+      const response: { data: any } = yield call(productApi.createProduct, {
+        ...action.payload.params,
+        images: [],
+        payload: action.payload.metadata,
+      });
+    }
+
     yield put(layoutActions.endLayoutLoading());
     yield put(productActions.createProductSuccess());
     yield put(

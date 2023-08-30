@@ -38,12 +38,24 @@ function* handleCreateChains(action: Action) {
     action.payload.formData.forEach((file: File) =>
       formdata.append("files", file)
     );
-    const listImagesUrl: { data: any } = yield call(chainsApi.upload, formdata);
-    const response: { data: any } = yield call(chainsApi.createChains, {
-      ...action.payload.params,
-      payload: action.payload.metadata,
-      images: listImagesUrl.data.image,
-    });
+    if (action.payload.formData.length) {
+      const listImagesUrl: { data: any } = yield call(
+        chainsApi.upload,
+        formdata
+      );
+      const response: { data: any } = yield call(chainsApi.createChains, {
+        ...action.payload.params,
+        payload: action.payload.metadata,
+        images: listImagesUrl.data.image,
+      });
+    } else {
+      const response: { data: any } = yield call(chainsApi.createChains, {
+        ...action.payload.params,
+        payload: action.payload.metadata,
+        images: [],
+      });
+    }
+
     yield put(layoutActions.endLayoutLoading());
     yield put(chainsActions.createChainsSuccess());
     yield put(

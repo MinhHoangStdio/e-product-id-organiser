@@ -11,6 +11,7 @@ import { ParamsModalConfirm } from "../../../types/modal";
 import { chainsActions } from "../../../store/organizer/chains/chainsSlice";
 import AddIcon from "@mui/icons-material/Add";
 import { layoutActions } from "../../../store/layout/layoutSlice";
+import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
 
 const ConsignmentDetail = () => {
   const { id } = useParams();
@@ -85,11 +86,26 @@ const ConsignmentDetail = () => {
           <Typography sx={{ fontSize: "16px", mt: 1 }}>
             <b>Status:</b> {consignment?.is_sold_out ? "Sold out" : "In stock"}
           </Typography>
+          {Object.keys(consignment?.payload).length ? (
+            Object.keys(consignment?.payload).map((key, i) => (
+              <Typography sx={{ fontSize: "16px", mt: 1 }}>
+                <b>{key}</b>: {consignment?.payload[key]}
+              </Typography>
+            ))
+          ) : (
+            <></>
+          )}
           <CustomButton
             label="Thêm chuỗi mới"
             color="primary"
             Icon={<AddIcon />}
             onClick={() => dispatch(layoutActions.openModalChains())}
+          />
+          <CustomButton
+            label="Tải QR lô hàng"
+            color="primary"
+            Icon={<VerticalAlignBottomIcon />}
+            onClick={() => dispatch(consignmentActions.downloadQrCode(id))}
           />
         </Box>
       )) || (
@@ -150,8 +166,8 @@ const ConsignmentDetail = () => {
                     {index + 1 + ". "} {chain.name}
                   </b>
                 </Typography>
-                {chain?.payload?.data?.date && (
-                  <Chip label={convertDateMui(chain?.payload?.data?.date)} />
+                {chain?.date_start && (
+                  <Chip label={convertDateMui(chain?.date_start)} />
                 )}
                 <CustomButton
                   label="Delete"
