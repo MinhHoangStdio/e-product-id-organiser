@@ -43,71 +43,94 @@ const PublicConsignment = () => {
     }
   }, [consignment, product]);
 
-  console.log("cons", consignment);
   return isFetchedData ? (
-    <Box px={20} sx={{ background: "#f4f4f4" }} py={2}>
+    <Box
+      sx={{
+        background: "#f4f4f4",
+        px: {
+          xs: 2,
+          sm: 6,
+          md: 10,
+          lg: 16,
+        },
+      }}
+      py={2}
+    >
       {product && (
-        <Grid
-          ml={0}
-          sx={{ width: "100%", background: "white", borderRadius: "20px" }}
-          p={4}
-          container
-          columnSpacing={4}
-        >
-          <Grid item xs={5}>
-            <ImageSlider
-              imagesUrl={product?.images || []}
-              urlSelected={urlSelected}
-              setSelected={setUrlSelected}
-            />
-          </Grid>
-          <Grid item xs={7}>
-            <Box>
-              <Typography variant="h2">{product?.name}</Typography>
-              <Typography sx={{ fontSize: "14px", marginTop: "20px" }}>
-                <b>Tên sản phẩm:</b> {product?.name}
-              </Typography>
-              <Typography sx={{ fontSize: "14px", mt: 1 }}>
-                <b>Danh mục:</b> {product?.category.name}
-              </Typography>
-              <Typography sx={{ fontSize: "14px", mt: 1 }}>
-                <b>Mô tả sản phẩm:</b>
-              </Typography>
-              {(product?.description &&
-                (product?.description.length <= 500 || showFullDescription ? (
-                  <p>{product?.description}</p>
-                ) : (
-                  <>
-                    {" "}
-                    <p>
-                      {product?.description.slice(0, 500)}...{" "}
-                      <Link
-                        component="button"
-                        variant="body1"
-                        onClick={toggleDescription}
-                      >
-                        Xem thêm
-                      </Link>
-                    </p>
-                  </>
-                ))) ||
-                ""}
+        <Box>
+          <Grid
+            sx={{
+              width: "100%",
+              background: "white",
+              borderRadius: "20px",
+              p: {
+                xs: 0,
+              },
+            }}
+            container
+          >
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              paddingLeft={0}
+              py={2}
+              sx={{ px: { xs: 0, sm: 1 } }}
+            >
+              <ImageSlider
+                imagesUrl={product?.images || []}
+                urlSelected={urlSelected}
+                setSelected={setUrlSelected}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} sx={{ px: { xs: 3, sm: 1 } }} py={2}>
+              <Box>
+                <Typography variant="h2">{product?.name}</Typography>
+                <Typography sx={{ fontSize: "14px", marginTop: "20px" }}>
+                  <b>Tên sản phẩm:</b> {product?.name}
+                </Typography>
+                <Typography sx={{ fontSize: "14px", mt: 1 }}>
+                  <b>Danh mục:</b> {product?.category.name}
+                </Typography>
+                <Typography sx={{ fontSize: "14px", mt: 1 }}>
+                  <b>Mô tả sản phẩm:</b>
+                </Typography>
+                {(product?.description &&
+                  (product?.description.length <= 500 || showFullDescription ? (
+                    <p>{product?.description}</p>
+                  ) : (
+                    <>
+                      {" "}
+                      <p>
+                        {product?.description.slice(0, 500)}...{" "}
+                        <Link
+                          component="button"
+                          variant="body1"
+                          onClick={toggleDescription}
+                        >
+                          Xem thêm
+                        </Link>
+                      </p>
+                    </>
+                  ))) ||
+                  ""}
 
-              {product?.payload &&
-                Object.entries(product.payload).map(
-                  ([key, value]: [string, any]) => (
-                    <Typography sx={{ fontSize: "14px", mt: 1 }} key={key}>
-                      <b>{key}:</b> {value}
-                    </Typography>
-                  )
-                )}
-            </Box>
+                {product?.payload &&
+                  Object.entries(product.payload).map(
+                    ([key, value]: [string, any]) => (
+                      <Typography sx={{ fontSize: "14px", mt: 1 }} key={key}>
+                        <b>{key}:</b> {value}
+                      </Typography>
+                    )
+                  )}
+              </Box>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
       )}
 
       {(consignment && (
-        <Box p={4} mt={5} sx={{ background: "white", borderRadius: "20px" }}>
+        <Box p={3} mt={4} sx={{ background: "white", borderRadius: "20px" }}>
           <Typography variant="h2">Thông tin lô hàng</Typography>
           <Typography sx={{ fontSize: "14px", mt: 1 }}>
             <b>Tên lô hàng:</b> {consignment.name}
@@ -138,12 +161,12 @@ const PublicConsignment = () => {
       )}
 
       {(chains?.length || "") && (
-        <Box mt={5} sx={{ background: "white", borderRadius: "20px" }}>
-          <Typography variant="h2" pl={4} pt={3}>
+        <Box mt={4} sx={{ background: "white", borderRadius: "20px" }}>
+          <Typography variant="h2" pl={3} pt={3}>
             Thông tin công đoạn
           </Typography>
           {chains?.map((chain: Chain, index: any) => (
-            <Box p={4} key={index} pt={0}>
+            <Box p={3} key={index} pt={0}>
               <Stack mt={1} direction="row" gap={1} alignItems="center">
                 <Typography variant="h3">
                   {index + 1 + ". "} {chain.name}
