@@ -47,7 +47,7 @@ const Navbar = () => {
   return (
     <Box display="flex" sx={{ px: 4, py: 2 }} justifyContent="flex-end">
       {/* <Box display="flex" sx={{ px: 4, py: 2 }} justifyContent="space-between"> */}
-      <Box sx={{ alignItems: "flex-end" }}>
+      <Box>
         <Chip
           size="medium"
           variant="outlined"

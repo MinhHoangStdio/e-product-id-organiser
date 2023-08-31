@@ -16,6 +16,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import NoImg from "../../../assets/emptyData/no-picture.png";
+import InfoIcon from "@mui/icons-material/Info";
 
 type IProductCard = {
   img: string;
@@ -121,12 +122,19 @@ const ProductCard = ({
 
       <Box sx={{ px: 1 }}>
         <CardMedia
-          sx={{ height: 250, borderRadius: "4px", cursor: "pointer" }}
+          sx={{
+            height: 200,
+            borderRadius: "4px",
+            cursor: "pointer",
+            backgroundSize: "contain",
+            backgroundColor: "#f6f6f6",
+            border: "1px solid #efefef",
+          }}
           image={img ? img : NoImg}
         />
       </Box>
 
-      <CardContent>
+      <CardContent sx={{ pb: 0, pt: 1 }}>
         <Typography
           sx={{
             overflow: "hidden",
@@ -177,6 +185,23 @@ const ProductCard = ({
           </Typography>
         )}
       </CardContent>
+      <CardActions>
+        <Stack
+          sx={{ width: "100%" }}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <CustomButton
+            size="small"
+            fullWidth
+            color="primary"
+            Icon={<InfoIcon />}
+            onClick={onClick}
+            label="Thông tin chi tiết"
+          />
+        </Stack>
+      </CardActions>
       {/* <CardActions>
         <Stack
           sx={{ width: "100%" }}

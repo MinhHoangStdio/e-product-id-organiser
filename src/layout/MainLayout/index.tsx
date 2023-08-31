@@ -11,6 +11,7 @@ import CreateChainsModal from "../../components/modal/chains/CreateChainsModal";
 import { useEffect } from "react";
 import { organizerActions } from "../../store/organizer/info/organizerSlice";
 import CreateOrganizerModal from "../../components/modal/organizer/CreateOrganizerModal";
+import Breadcrumb from "../../components/BreadCrumb";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
@@ -35,6 +36,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
       >
         <Navbar />
         <Box sx={{ px: 4, pb: 4, bgcolor: colors.background.main }}>
+          <Breadcrumb />
           <Paper sx={{ minHeight: "85vh" }}>{children}</Paper>
         </Box>
         <CreateOrganizerModal />

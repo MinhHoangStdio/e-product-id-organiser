@@ -210,6 +210,8 @@ const CreateAndEditProductModal = () => {
         error={!!errors.description?.message}
         required
         helperText={errors.description?.message}
+        multiline
+        maxRows={8}
       />
       {/* <TextField
         id="category_id"

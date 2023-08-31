@@ -63,42 +63,48 @@ const ProductPage = () => {
   ) : organizer?.id ? (
     <Stack sx={{ minHeight: "85vh" }} justifyContent="space-between">
       <Grid sx={{ p: 2 }} container>
-        <Grid item xs={12}>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h3">Danh sách sản phẩm</Typography>
+        {listProducts ? (
+          listProducts?.length ? (
+            <>
+              <Grid item xs={12}>
+                <Stack direction="row" justifyContent="space-between">
+                  <Typography variant="h3" sx={{ fontWeight: 500 }}>
+                    Danh sách sản phẩm
+                  </Typography>
 
-            <CustomButton
-              Icon={<AddIcon />}
-              color="primary"
-              onClick={openProductModal}
-              label="Tạo sản phẩm mới"
-            />
-          </Stack>
-        </Grid>
-        {listProducts.length ? (
-          <>
-            {listProducts.map((prod) => (
-              <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={prod.id}>
-                <ProductCard
-                  img={prod.images[0]}
-                  name={prod.name}
-                  description={prod.description}
-                  onAction={() => {
-                    dispatch(productActions.selectedProduct(prod));
-                    openConsignmentModal();
-                  }}
-                  onEdit={() => {
-                    dispatch(productActions.selectedProduct(prod));
-                    openProductModal();
-                  }}
-                  onDelete={() => confirmDelete(prod)}
-                  onClick={() => {
-                    history.push("/organizer/products/" + prod.id);
-                  }}
-                />
+                  <CustomButton
+                    Icon={<AddIcon />}
+                    color="primary"
+                    onClick={openProductModal}
+                    label="Tạo sản phẩm mới"
+                  />
+                </Stack>
               </Grid>
-            ))}
-          </>
+              {listProducts.map((prod) => (
+                <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={prod.id}>
+                  <ProductCard
+                    img={prod.images[0]}
+                    name={prod.name}
+                    description={prod.description}
+                    onAction={() => {
+                      dispatch(productActions.selectedProduct(prod));
+                      openConsignmentModal();
+                    }}
+                    onEdit={() => {
+                      dispatch(productActions.selectedProduct(prod));
+                      openProductModal();
+                    }}
+                    onDelete={() => confirmDelete(prod)}
+                    onClick={() => {
+                      history.push("/organizer/products/" + prod.id);
+                    }}
+                  />
+                </Grid>
+              ))}
+            </>
+          ) : (
+            <LoadingPage />
+          )
         ) : (
           <>
             <EmptyOrganizer
@@ -108,7 +114,7 @@ const ProductPage = () => {
           </>
         )}
       </Grid>
-      {listProducts.length && (
+      {listProducts?.length && (
         <Stack sx={{ py: "20px" }}>
           <Pagination
             count={pagination ? totalPagePagination(pagination) : 1}

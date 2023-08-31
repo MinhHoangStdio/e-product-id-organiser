@@ -18,11 +18,11 @@ const PrivateRoutes = () => {
   return (
     <MainLayout>
       <Routes>
-        <Route path="/*" element={<Navigate to="/organizer/info" />} />
-        <Route path="/login" element={<Navigate to="/organizer/info" />} />
+        <Route path="/*" element={<Navigate to="/organizer/products" />} />
+        <Route path="/login" element={<Navigate to="/organizer/products" />} />
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="/organizer/products" element={<Product />} />
-        <Route path="/organizer/info" element={<OrganizerInfo />} />
+        {/* <Route path="/organizer/info" element={<OrganizerInfo />} /> */}
         <Route path="/organizer/products/:id" element={<ProductDetail />} />
         <Route path="/organizer/consignments" element={<ConsignmentPage />} />
         <Route

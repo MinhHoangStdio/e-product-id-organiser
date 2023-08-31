@@ -14,6 +14,7 @@ export const colorToken = (mode: "light" | "dark") => {
           primary: "#00B3D5",
           error: "#CA0000",
           info: "#ECA800",
+          success: "#D2FFE4",
         },
       }
     : {
@@ -30,6 +31,7 @@ export const colorToken = (mode: "light" | "dark") => {
           primary: "#00B3D5",
           error: "#CA0000",
           info: "#ECA800",
+          success: "#D2FFE4",
         },
       };
 };
