@@ -162,29 +162,36 @@ export const themeSettings = (mode: "light" | "dark") => {
     typography: {
       fontFamily: ["Noto Sans", "sans-serif"].join(","),
       fontSize: 12,
+      color: "#343434",
       h1: {
         fontFamily: ["Noto Sans", "sans-serif"].join(","),
         fontSize: 40,
+        color: "#343434",
       },
       h2: {
         fontFamily: ["Noto Sans", "sans-serif"].join(","),
         fontSize: 32,
+        color: "#343434",
       },
       h3: {
         fontFamily: ["Noto Sans", "sans-serif"].join(","),
         fontSize: 24,
+        color: "#343434",
       },
       h4: {
         fontFamily: ["Noto Sans", "sans-serif"].join(","),
         fontSize: 20,
+        color: "#343434",
       },
       h5: {
         fontFamily: ["Noto Sans", "sans-serif"].join(","),
         fontSize: 16,
+        color: "#343434",
       },
       h6: {
         fontFamily: ["Noto Sans", "sans-serif"].join(","),
         fontSize: 14,
+        color: "#343434",
       },
     },
   };

@@ -3,7 +3,7 @@ import { Pagination } from "../../../types/pagination";
 import { Consignment, ConsignmentDetail } from "../../../types/consignment";
 
 interface consignmentState {
-  listConsignments: Consignment[];
+  listConsignments: Consignment[] | null;
   pagination: Pagination | null;
   loadingGetConsignments: boolean;
   loadingCreateConsignment: boolean;
@@ -21,7 +21,7 @@ const initialState: consignmentState = {
   loadingCreateConsignment: false,
   loadingRemoveConsignment: false,
   consignmentSelected: null,
-  consignmentDetail: undefined,
+  consignmentDetail: {} as ConsignmentDetail,
   loadingConsignmentDetail: false,
   loadingDownloadQrCode: false,
 };
@@ -40,6 +40,7 @@ const consignmentSlice = createSlice({
     },
     getListConsignmentsFailed(state) {
       state.loadingGetConsignments = false;
+      state.listConsignments = null;
     },
 
     createConsignment(state, action) {
@@ -77,6 +78,7 @@ const consignmentSlice = createSlice({
       state.loadingConsignmentDetail = false;
     },
     getConsignmentDetailFailed(state) {
+      state.consignmentDetail = {} as ConsignmentDetail;
       state.loadingConsignmentDetail = false;
     },
 
@@ -91,7 +93,7 @@ const consignmentSlice = createSlice({
     },
 
     resetDetailConsignment(state) {
-      state.consignmentDetail = undefined;
+      state.consignmentDetail = {} as ConsignmentDetail;
     },
 
     reset(state) {

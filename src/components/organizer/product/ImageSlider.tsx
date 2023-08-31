@@ -14,20 +14,19 @@ function ImageSlider({
     <Stack gap={1}>
       <Box
         sx={{
-          border: "1px solid #ccc",
+          border: "1px solid #f6f6f6",
           borderRadius: "8px",
-          height: "600px",
-          bgcolor: "#000",
-          display: "flex",
-          alignItems: "center",
+          height: "400px",
+          bgcolor: "#f6f6f6",
+          backgroundImage: urlSelected
+            ? `url(${urlSelected})`
+            : `url(${noImg})`,
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
           overflow: "hidden",
         }}
-      >
-        <img
-          src={urlSelected ? urlSelected : noImg}
-          style={{ width: "100%" }}
-        />
-      </Box>
+      ></Box>
       <Grid container>
         {imagesUrl.length ? (
           imagesUrl.map((url, i) => (
@@ -40,15 +39,17 @@ function ImageSlider({
                     urlSelected == url ? "4px solid #0077ff" : "1px solid #ccc",
                   borderRadius: "8px",
                   width: "100%",
-                  height: "100%",
-                  bgcolor: "#000",
-                  display: "flex",
-                  alignItems: "center",
+                  height: "80px",
+                  bgcolor: "#f6f6f6",
+                  backgroundImage: urlSelected
+                    ? `url(${url})`
+                    : `url(${noImg})`,
+                  backgroundSize: "contain",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
                   overflow: "hidden",
                 }}
-              >
-                <img src={url} style={{ width: "100%" }} alt="" />
-              </Box>
+              ></Box>
             </Grid>
           ))
         ) : (

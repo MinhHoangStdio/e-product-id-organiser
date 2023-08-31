@@ -71,43 +71,49 @@ const ConsignmentPage = () => {
   ) : organizer?.id ? (
     <Stack sx={{ minHeight: "85vh" }} justifyContent="space-between">
       <Grid sx={{ p: 2 }} container>
-        <Grid item xs={12}>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h3">Danh sách lô hàng</Typography>
+        {listConsignments ? (
+          listConsignments?.length ? (
+            <>
+              <Grid item xs={12}>
+                <Stack direction="row" justifyContent="space-between">
+                  <Typography variant="h3" sx={{ fontWeight: 500 }}>
+                    Danh sách lô hàng
+                  </Typography>
 
-            <CustomButton
-              Icon={<AddIcon />}
-              color="primary"
-              onClick={openConsignmentModal}
-              label="Tạo lô hàng mới"
-            />
-          </Stack>
-        </Grid>
-        {listConsignments.length ? (
-          <>
-            {listConsignments.map((cons) => (
-              <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={cons.id}>
-                <ProductCard
-                  img={cons?.product?.images[0]}
-                  name={cons?.name}
-                  amount={cons?.amount}
-                  productName={
-                    cons?.product?.name ? cons?.product?.name : "Chưa đặt"
-                  }
-                  description={cons?.description}
-                  onAction={() => {
-                    dispatch(consignmentActions.selectedConsignment(cons));
-                    dispatch(layoutActions.openModalChains());
-                  }}
-                  labelAction="Create Chains"
-                  onDelete={() => confirmDelete(cons)}
-                  onClick={() => {
-                    history.push("/organizer/consignments/" + cons.id);
-                  }}
-                />
+                  <CustomButton
+                    Icon={<AddIcon />}
+                    color="primary"
+                    onClick={openConsignmentModal}
+                    label="Tạo lô hàng mới"
+                  />
+                </Stack>
               </Grid>
-            ))}
-          </>
+              {listConsignments.map((cons) => (
+                <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={cons.id}>
+                  <ProductCard
+                    img={cons?.product?.images[0]}
+                    name={cons?.name}
+                    amount={cons?.amount}
+                    productName={
+                      cons?.product?.name ? cons?.product?.name : "Chưa đặt"
+                    }
+                    description={cons?.description}
+                    onAction={() => {
+                      dispatch(consignmentActions.selectedConsignment(cons));
+                      dispatch(layoutActions.openModalChains());
+                    }}
+                    labelAction="Create Chains"
+                    onDelete={() => confirmDelete(cons)}
+                    onClick={() => {
+                      history.push("/organizer/consignments/" + cons.id);
+                    }}
+                  />
+                </Grid>
+              ))}
+            </>
+          ) : (
+            <LoadingPage />
+          )
         ) : (
           <EmptyOrganizer
             onAction={openConsignmentModal}
@@ -115,7 +121,7 @@ const ConsignmentPage = () => {
           />
         )}
       </Grid>
-      {listConsignments.length && (
+      {listConsignments?.length && (
         <Box sx={{ py: "20px" }}>
           <Pagination
             count={pagination ? totalPagePagination(pagination) : 1}

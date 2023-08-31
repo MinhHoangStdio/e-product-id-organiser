@@ -3,7 +3,7 @@ import { Category, Product } from "../../../types/product";
 import { Pagination } from "../../../types/pagination";
 
 interface productState {
-  listProducts: Product[];
+  listProducts: Product[] | null;
   listAllProducts: Product[];
   listCategories: Category[];
   pagination: Pagination | null;
@@ -35,7 +35,7 @@ const initialState: productState = {
   loadingRemoveProduct: false,
   productSelected: null,
   listImgWillDelete: [],
-  detailProduct: undefined,
+  detailProduct: {} as Product,
   loadingDetailProduct: false,
   loadingRequestProduct: false,
 };
@@ -54,6 +54,7 @@ const productSlice = createSlice({
     },
     getListProductsFailed(state) {
       state.loadingGetProducts = false;
+      state.listProducts = null;
     },
 
     getAllListProducts(state) {
@@ -61,10 +62,10 @@ const productSlice = createSlice({
     },
     getAllListProductsSuccess(state, action) {
       state.listAllProducts = action.payload.data;
-      state.loadingGetProducts = true;
+      state.loadingGetProducts = false;
     },
     getAllListProductsFailed(state) {
-      state.loadingGetProducts = true;
+      state.loadingGetProducts = false;
     },
 
     getAllListCategories(state) {
@@ -72,10 +73,10 @@ const productSlice = createSlice({
     },
     getAllListCategoriesSuccess(state, action) {
       state.listCategories = action.payload.data;
-      state.loadingGetProducts = true;
+      state.loadingGetProducts = false;
     },
     getAllListCategoriesFailed(state) {
-      state.loadingGetProducts = true;
+      state.loadingGetProducts = false;
     },
 
     uploadImages(state, action) {
@@ -163,9 +164,10 @@ const productSlice = createSlice({
     },
     getDetailProductFailed(state) {
       state.loadingDetailProduct = false;
+      state.detailProduct = undefined;
     },
     resetDetailProduct(state) {
-      state.detailProduct = undefined;
+      state.detailProduct = {} as Product;
     },
 
     requestProduct(state, action) {

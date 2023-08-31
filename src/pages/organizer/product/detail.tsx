@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Typography, Grid, Box, Stack } from "@mui/material";
+import { Typography, Grid, Box, Stack, Divider } from "@mui/material";
 import { useParams } from "react-router-dom";
 import ImageSlider from "../../../components/organizer/product/ImageSlider";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
@@ -8,6 +8,9 @@ import { layoutActions } from "../../../store/layout/layoutSlice";
 import CustomButton from "../../../components/share/CustomButton";
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
+import TextDetail from "../../../components/organizer/product/TextDetail";
+import { toUpperFirstLetter } from "../../../utils/string/toUpperFirstLetter";
+import LoadingPage from "../../../components/LoadingPage";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -38,80 +41,116 @@ const ProductDetail = () => {
     };
   }, []);
 
-  return (
-    (product && (
+  return product ? (
+    product.name ? (
       <Grid sx={{ width: "100%" }} p={2} container columnSpacing={4}>
         <Grid item xs={12} sx={{ mb: 2 }}>
-          <Typography variant="h1">Thông tin sản phẩm</Typography>
+          <Typography variant="h3" sx={{ fontWeight: 500 }}>
+            Thông tin sản phẩm
+          </Typography>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={6}>
           <ImageSlider
             imagesUrl={product?.images || []}
             urlSelected={urlSelected}
             setSelected={setUrlSelected}
           />
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={6}>
           <Box>
-            <Typography variant="h2">{product.name}</Typography>
-            <Typography variant="h3">
-              {product?.price?.toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              })}
-            </Typography>
-            <Typography sx={{ fontSize: "16px", marginTop: "20px" }}>
-              <b>Tên sản phẩm:</b> {product?.name}
-            </Typography>
-            {product?.category && (
-              <Typography sx={{ fontSize: "16px", mt: 1 }}>
-                <b>Danh mục:</b> {product?.category.name}
+            <Stack direction="row" alignItems="center" spacing={3}>
+              <Typography variant="h3" sx={{ fontWeight: 600 }}>
+                {product.name}
               </Typography>
-            )}
-            <Typography sx={{ fontSize: "16px", mt: 1 }}>
-              <b>Trạng thái sản phẩm:</b> {product?.approval_status}
-            </Typography>
-            <Typography sx={{ fontSize: "16px", mt: 1 }}>
-              <b>Mô tả: </b>
-              {product?.description}
-            </Typography>
-          </Box>
-          <Stack gap={1}>
-            <CustomButton
-              width="150px"
-              color="primary"
-              onClick={openConsignmentModal}
-              Icon={<AddIcon />}
-              label="Tạo lô hàng"
-            />
-            {product?.approval_status == "pending" ? (
               <CustomButton
-                width="220px"
-                color="info"
-                onClick={() => {
-                  dispatch(productActions.requestProduct(product?.id));
-                }}
+                size="medium"
+                width="150px"
+                color="primary"
+                onClick={openConsignmentModal}
                 Icon={<AddIcon />}
-                disabled={loadingSendRequest}
-                label="Gửi yêu cầu phê duyệt"
+                label="Tạo lô hàng"
               />
-            ) : (
-              <CustomButton
-                width="250px"
-                color="info"
-                Icon={<CheckIcon />}
-                disabled={true}
-                label="Đã gửi yêu cầu phê duyệt"
-              />
-            )}
-          </Stack>
+            </Stack>
+
+            <Stack spacing={2} sx={{ mt: 3 }}>
+              <TextDetail label="Mô tả sản phẩm" value={product?.description} />
+              <Divider />
+              <Stack spacing={1}>
+                <TextDetail
+                  label="Trạng thái sản phẩm"
+                  value={product?.approval_status}
+                />
+                <Stack gap={1}>
+                  {product?.approval_status == "approved" ? (
+                    <></>
+                  ) : product?.approval_status == "pending" ? (
+                    <CustomButton
+                      size="small"
+                      width="220px"
+                      color="info"
+                      onClick={() => {
+                        dispatch(productActions.requestProduct(product?.id));
+                      }}
+                      Icon={<AddIcon />}
+                      disabled={loadingSendRequest}
+                      label="Gửi yêu cầu phê duyệt"
+                    />
+                  ) : (
+                    <CustomButton
+                      size="small"
+                      width="250px"
+                      color="success"
+                      Icon={<CheckIcon />}
+                      disabled={true}
+                      label="Đã gửi yêu cầu phê duyệt"
+                    />
+                  )}
+                </Stack>
+              </Stack>
+              <Divider />
+              <Stack spacing={1}>
+                <Typography
+                  variant="h4"
+                  sx={{ fontWeight: 500, color: "#4b4b4b" }}
+                >
+                  Chi tiết
+                </Typography>
+                <Typography variant="h6" sx={{ color: "#767676" }}>
+                  <b>Danh mục:</b>{" "}
+                  {product?.category?.name
+                    ? product?.category?.name
+                    : "Chưa xác định"}
+                </Typography>
+                {product?.payload ? (
+                  Object.keys(product?.payload).length ? (
+                    Object.keys(product?.payload).map((key) => (
+                      <Typography
+                        key={key}
+                        variant="h6"
+                        sx={{ color: "#767676" }}
+                      >
+                        <b>{`${toUpperFirstLetter(key)}: `}</b>
+                        {`${product?.payload[key]}`}
+                      </Typography>
+                    ))
+                  ) : (
+                    <></>
+                  )
+                ) : (
+                  <></>
+                )}
+              </Stack>
+            </Stack>
+          </Box>
         </Grid>
       </Grid>
-    )) || (
-      <Typography variant="h2" paddingTop={"25px"} textAlign={"center"}>
-        Product not found.
-      </Typography>
+    ) : (
+      <LoadingPage />
     )
+  ) : (
+    <Typography variant="h2" paddingTop={"25px"} textAlign={"center"}>
+      Product not found.
+    </Typography>
   );
 };
 

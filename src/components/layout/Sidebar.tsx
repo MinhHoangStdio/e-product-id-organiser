@@ -201,7 +201,7 @@ const SidebarCustom = () => {
               icon={<ApartmentIcon />}
               label={<Typography fontWeight="500">Tổ chức của bạn</Typography>}
             >
-              <MenuItem
+              {/* <MenuItem
                 active={selected.toLowerCase() === "organizer/info"}
                 onClick={() => {
                   setSelected("organizer/info");
@@ -210,7 +210,7 @@ const SidebarCustom = () => {
                 icon={<InfoIcon />}
               >
                 <Typography fontWeight="500">Thông tin về tổ chức</Typography>
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem
                 active={selected.toLowerCase().includes("organizer/products")}
                 onClick={() => {
@@ -234,7 +234,7 @@ const SidebarCustom = () => {
               >
                 <Typography fontWeight="500">Lô hàng</Typography>
               </MenuItem>
-              <MenuItem
+              {/* <MenuItem
                 active={selected.toLowerCase() === "organizer/members"}
                 onClick={() => {
                   setSelected("organizer/members");
@@ -243,7 +243,7 @@ const SidebarCustom = () => {
                 icon={<GroupIcon />}
               >
                 <Typography fontWeight="500">Thành viên</Typography>
-              </MenuItem>
+              </MenuItem> */}
             </SubMenu>
             {!isCollapseSidebar && (
               <Typography variant="h6" sx={{ m: "15px 0 5px 20px" }}>

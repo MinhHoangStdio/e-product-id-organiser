@@ -4,7 +4,7 @@ import { useAppSelector } from "../../hooks/store";
 type ICustomButton = {
   fullWidth?: boolean;
   width?: string;
-  color: "primary" | "error" | "info";
+  color: "primary" | "error" | "info" | "success";
   size?: "large" | "small" | "medium";
   disabled?: boolean;
   onClick?: () => void;
