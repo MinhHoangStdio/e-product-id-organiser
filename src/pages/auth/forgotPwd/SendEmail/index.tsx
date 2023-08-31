@@ -26,7 +26,10 @@ const SendEmail = ({ onNext }: { onNext: () => void }) => {
     },
     resolver: yupResolver(
       yup.object().shape({
-        email: yup.string().email("Invalid email").required("Insert email"),
+        email: yup
+          .string()
+          .email("Email không hợp lệ")
+          .required("Email không hợp lệ"),
       })
     ),
   });
