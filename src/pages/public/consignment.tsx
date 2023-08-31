@@ -186,7 +186,7 @@ const PublicConsignment = () => {
                     </Typography>
                   )
                 )}
-              {chain?.images?.length && (
+              {(chain?.images?.length || "") && (
                 <Stack
                   direction="row"
                   justifyContent="flex-start"

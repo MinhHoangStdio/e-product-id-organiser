@@ -116,10 +116,10 @@ const CreateChainsModal = () => {
     },
     resolver: yupResolver(
       yup.object().shape({
-        name: yup.string().required("Insert name"),
-        description: yup.string().required("Insert description"),
+        name: yup.string().required("Vui lòng nhập tên công đoạn"),
+        description: yup.string().required("Vui lòng nhập mô tả cho công đoạn"),
         // images: yup.array().min(1, "Insert images").required("Insert images"),
-        date_start: yup.date().required("Insert Date"),
+        date_start: yup.date().required("Vui lòng chọn ngày"),
 
         // payload: yup
         //   .array()
