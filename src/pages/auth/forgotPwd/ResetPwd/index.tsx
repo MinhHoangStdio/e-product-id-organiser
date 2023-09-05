@@ -32,11 +32,11 @@ const ResetPwd = () => {
     },
     resolver: yupResolver(
       yup.object().shape({
-        newPwd: yup.string().required("Nhập mật khẩu mới của bạn"),
+        newPwd: yup.string().required("Vui lòng nhập mật khẩu mới"),
         confirmNewPwd: yup
           .string()
-          .required("Nhập xác nhận mật khẩu mới")
-          .oneOf([yup.ref("newPwd")], "Mật khẩu không khớp"),
+          .required("Vui lòng nhập mật khẩu xác nhận mới")
+          .oneOf([yup.ref("newPwd")], "Mật khẩu mới của bạn không trùng khớp"),
       })
     ),
   });
