@@ -5,8 +5,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Heading from "../../../../components/Heading";
-import { useAppDispatch } from "../../../../hooks/store";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/store";
 import CustomButton from "../../../../components/share/CustomButton";
+import { authActions } from "../../../../store/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 interface FormValues {
   newPwd: string;
@@ -15,7 +17,9 @@ interface FormValues {
 
 const ResetPwd = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const tokenResetPwd = useAppSelector((state) => state.auth.tokenResetPwd);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -38,19 +42,25 @@ const ResetPwd = () => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
-    console.log({ data });
+    const payload = {
+      params: { password: data.newPwd, token: tokenResetPwd },
+      onNext() {
+        navigate("/login");
+      },
+    };
+    dispatch(authActions.resetPwd(payload));
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack direction="column" gap="16px">
         <Heading
-          title="Reset your password"
-          subtitle="Enter your new password"
+          title="Đặt lại mật khẩu của bạn"
+          subtitle="Nhập mật khẩu mới của bạn"
         />
         <TextField
           id="newPwd"
-          label="New password"
+          label="Mật khẩu mới"
           type={showPassword ? "text" : "password"}
           inputProps={{ ...register("newPwd") }}
           error={!!errors.newPwd?.message}
@@ -71,7 +81,7 @@ const ResetPwd = () => {
         />
         <TextField
           id="confirmNewPwd"
-          label="Confirm new password"
+          label="Xác nhận mật khẩu mới"
           type={showPassword ? "text" : "password"}
           inputProps={{ ...register("confirmNewPwd") }}
           error={!!errors.confirmNewPwd?.message}
@@ -90,7 +100,7 @@ const ResetPwd = () => {
             ),
           }}
         />
-        <CustomButton color="primary" label="Reset" type="submit" />
+        <CustomButton color="primary" label="Thay đổi" type="submit" />
       </Stack>
     </form>
   );

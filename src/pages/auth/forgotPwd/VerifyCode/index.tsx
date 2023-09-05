@@ -82,16 +82,6 @@ const VerifyCode = ({ onNext }: { onNext: () => void }) => {
     console.log(code);
   };
 
-  //   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
-  //     dispatch(
-  //       authActions.login({
-  //         params: data,
-  //         onNavigate: () => {
-  //           navigate("/home");
-  //         },
-  //       })
-  //     );
-  //   };
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
     const payload = {
       params: { code: data.code, token: tokenVerify },
@@ -99,7 +89,6 @@ const VerifyCode = ({ onNext }: { onNext: () => void }) => {
         onNext();
       },
     };
-    console.log({ payload });
     dispatch(authActions.verifyOtp(payload));
   };
   return (

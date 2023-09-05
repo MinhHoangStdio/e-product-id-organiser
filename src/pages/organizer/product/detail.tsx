@@ -11,6 +11,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import TextDetail from "../../../components/organizer/product/TextDetail";
 import { toUpperFirstLetter } from "../../../utils/string/toUpperFirstLetter";
 import LoadingPage from "../../../components/LoadingPage";
+import ProductStatus from "../../../components/organizer/product/ProductStatus";
+import { EApprovalStatus } from "../../../types/enum/product";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -76,9 +78,14 @@ const ProductDetail = () => {
               <TextDetail label="Mô tả sản phẩm" value={product?.description} />
               <Divider />
               <Stack spacing={1}>
-                <TextDetail
-                  label="Trạng thái sản phẩm"
-                  value={product?.approval_status}
+                <Typography
+                  variant="h4"
+                  sx={{ fontWeight: 500, color: "#4b4b4b" }}
+                >
+                  Trạng thái sản phẩm
+                </Typography>
+                <ProductStatus
+                  status={product?.approval_status as EApprovalStatus}
                 />
                 <Stack gap={1}>
                   {product?.approval_status == "approved" ? (

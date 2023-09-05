@@ -106,12 +106,43 @@ const ConsignmentDetail = () => {
                       value={consignment?.description}
                     />
                     <Divider />
-                    <TextDetail
+                    {/* <TextDetail
                       label="Trạng thái lô hàng"
                       value={
                         consignment?.is_sold_out ? "Cháy hàng" : "Còn hàng"
                       }
-                    />
+                    /> */}
+                    <Stack spacing={1}>
+                      <Typography
+                        variant="h4"
+                        sx={{ fontWeight: 500, color: "#4b4b4b" }}
+                      >
+                        Trạng thái lô hàng
+                      </Typography>
+                      {consignment?.is_sold_out ? (
+                        <Chip
+                          sx={{
+                            color: "white",
+                            width: "87px",
+                            textAlign: "center",
+                          }}
+                          label="Hết hàng"
+                          color="error"
+                          size="small"
+                        />
+                      ) : (
+                        <Chip
+                          sx={{
+                            color: "white",
+                            width: "87px",
+                            textAlign: "center",
+                          }}
+                          label="Còn hàng"
+                          color="success"
+                          size="small"
+                        />
+                      )}
+                    </Stack>
                     <Divider />
                     <Stack spacing={1}>
                       <Typography
