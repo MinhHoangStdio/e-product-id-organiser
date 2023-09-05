@@ -51,9 +51,6 @@ const SidebarCustom = () => {
 
   useEffect(() => {
     setSelected(path);
-  }, [path]);
-
-  useEffect(() => {
     if (
       path === "organizer/info" ||
       path === "organizer/products" ||
@@ -125,7 +122,11 @@ const SidebarCustom = () => {
         <Menu>
           {/* LOGO AND MENU ICON */}
           <MenuItem
-            onClick={() => dispatch(layoutActions.toggleCollapseSidebar())}
+            onClick={() => {
+              isCollapseSidebar
+                ? dispatch(layoutActions.toggleCollapseSidebar())
+                : navigate("/organizer/products");
+            }}
             icon={isCollapseSidebar ? <MenuOutlinedIcon /> : undefined}
             style={{
               margin: "0 0 20px 0",

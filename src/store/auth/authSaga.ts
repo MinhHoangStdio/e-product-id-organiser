@@ -129,7 +129,13 @@ function* handleResetPwd(action: Action) {
     const { params, onNext } = action.payload;
     const response: { data: any } = yield call(authApi.resetPwd, params);
     console.log(response);
-    yield put(authActions.resetPwdSuccess(response.data.token));
+    yield put(authActions.resetPwdSuccess());
+    yield put(
+      alertActions.showAlert({
+        text: "Đặt mật khẩu lại thành công",
+        type: "success",
+      })
+    );
     onNext();
   } catch (error: any) {
     yield put(authActions.resetPwdFailed());
