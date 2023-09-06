@@ -4,6 +4,7 @@ import { Consignment, ConsignmentDetail } from "../../../types/consignment";
 
 interface consignmentState {
   listConsignments: Consignment[] | null;
+  isFetchConsignments: boolean;
   pagination: Pagination | null;
   loadingGetConsignments: boolean;
   loadingCreateConsignment: boolean;
@@ -16,6 +17,7 @@ interface consignmentState {
 
 const initialState: consignmentState = {
   listConsignments: [],
+  isFetchConsignments: false,
   pagination: null,
   loadingGetConsignments: false,
   loadingCreateConsignment: false,
@@ -37,10 +39,12 @@ const consignmentSlice = createSlice({
       state.listConsignments = action.payload.data;
       state.pagination = action.payload.paginate;
       state.loadingGetConsignments = false;
+      state.isFetchConsignments = true;
     },
     getListConsignmentsFailed(state) {
       state.loadingGetConsignments = false;
       state.listConsignments = null;
+      state.isFetchConsignments = true;
     },
 
     createConsignment(state, action) {
