@@ -46,7 +46,7 @@ const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("current_user");
     localStorage.removeItem("organizer_id");
-    history.replace("/login");
+    window.location.href = "/login";
   }
 };
 

@@ -147,7 +147,14 @@ const ProductPage = () => {
                 </>
               ))
             ) : (
-              <p>Không tìm thấy có sản phẩm</p>
+              <Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ width: "100%", height: "80vh", color: "#7e7e7e" }}
+              >
+                <p>Không tìm thấy sản phẩm</p>
+              </Stack>
             )}
           </>
         ) : (
@@ -159,7 +166,7 @@ const ProductPage = () => {
           </>
         )}
       </Grid>
-      {listProducts?.length && (
+      {listProducts?.length ? (
         <Stack sx={{ py: "20px" }}>
           <Pagination
             count={pagination ? totalPagePagination(pagination) : 1}
@@ -167,6 +174,8 @@ const ProductPage = () => {
             onChange={handlePagination}
           />
         </Stack>
+      ) : (
+        <></>
       )}
     </Stack>
   ) : (
