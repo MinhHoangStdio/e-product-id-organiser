@@ -158,7 +158,14 @@ const ConsignmentPage = () => {
                 </>
               ))
             ) : (
-              <p>Không tìm thấy lô hàng</p>
+              <Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ width: "100%", height: "80vh", color: "#7e7e7e" }}
+              >
+                <p>Không tìm thấy lô hàng</p>
+              </Stack>
             )}
           </>
         ) : (
@@ -168,7 +175,7 @@ const ConsignmentPage = () => {
           />
         )}
       </Grid>
-      {listConsignments?.length && (
+      {listConsignments?.length ? (
         <Box sx={{ py: "20px" }}>
           <Pagination
             count={pagination ? totalPagePagination(pagination) : 1}
@@ -176,6 +183,8 @@ const ConsignmentPage = () => {
             onChange={handlePagination}
           />
         </Box>
+      ) : (
+        <></>
       )}
     </Stack>
   ) : (
