@@ -12,7 +12,7 @@ export const debounceSearch = _.debounce(
     >
   ) => {
     setParams((prevParams) => {
-      return { ...prevParams, name: value };
+      return { ...prevParams, page: 1, name: value };
     });
   },
   500

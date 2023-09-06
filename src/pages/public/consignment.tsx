@@ -189,10 +189,11 @@ const PublicConsignment = () => {
               {(chain?.images?.length || "") && (
                 <Stack
                   direction="row"
-                  justifyContent="flex-start"
+                  justifyContent="center"
                   gap={1}
                   alignItems="center"
                   mt={2}
+                  flexWrap={"wrap"}
                 >
                   {chain.images?.map((image: string, index: any) => (
                     <img
@@ -201,6 +202,7 @@ const PublicConsignment = () => {
                       style={{
                         height: 300,
                         objectFit: "cover",
+                        // marginTop: "20px",
                       }}
                       key={index}
                     />

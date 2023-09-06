@@ -249,6 +249,7 @@ const ConsignmentDetail = () => {
                           gap={1}
                           alignItems="center"
                           mt={2}
+                          flexWrap={"wrap"}
                         >
                           {chain.images?.map((image, index) => (
                             <img
