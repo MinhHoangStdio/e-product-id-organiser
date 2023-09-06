@@ -4,6 +4,7 @@ import { Pagination } from "../../../types/pagination";
 
 interface productState {
   listProducts: Product[] | null;
+  isFetchProducts: boolean;
   listAllProducts: Product[];
   listCategories: Category[];
   pagination: Pagination | null;
@@ -23,6 +24,7 @@ interface productState {
 
 const initialState: productState = {
   listProducts: [],
+  isFetchProducts: false,
   listAllProducts: [],
   listCategories: [],
   pagination: null,
@@ -51,10 +53,12 @@ const productSlice = createSlice({
       state.listProducts = action.payload.data;
       state.pagination = action.payload.paginate;
       state.loadingGetProducts = false;
+      state.isFetchProducts = true;
     },
     getListProductsFailed(state) {
       state.loadingGetProducts = false;
       state.listProducts = null;
+      state.isFetchProducts = true;
     },
 
     getAllListProducts(state) {
