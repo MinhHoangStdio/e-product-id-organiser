@@ -24,6 +24,41 @@ function* handleGetOrganizer(action: Action) {
   }
 }
 
+function* handleGetDetailOrganizer() {
+  const id = JSON.parse(localStorage.getItem("organizer_id") as string).id;
+  try {
+    const response: { data: any } = yield call(
+      organizerApi.getDetailOrganizer,
+      id
+    );
+
+    yield put(organizerActions.getDetailOrganizerSuccess(response.data));
+  } catch (error) {
+    yield put(organizerActions.getOrganizerFailed());
+    yield put(
+      alertActions.showAlert({
+        text: "Không thể lấy thông tin tổ chức",
+        type: "error",
+      })
+    );
+  }
+}
+
+function* handleGetListValidMember() {
+  try {
+    const response: { data: any } = yield call(organizerApi.getListValidMember);
+    yield put(organizerActions.getListValidMemberSuccess(response.data));
+  } catch (error) {
+    yield put(organizerActions.getListValidMemberFailed());
+    yield put(
+      alertActions.showAlert({
+        text: "Không thể lấy danh sách thành viên",
+        type: "error",
+      })
+    );
+  }
+}
+
 function* handleCreateOrganizer(action: Action) {
   try {
     const params = action.payload;
@@ -54,10 +89,83 @@ function* handleCreateOrganizer(action: Action) {
   }
 }
 
+function* handleAddMember(action: Action) {
+  const organizerId = JSON.parse(
+    localStorage.getItem("organizer_id") as string
+  ).id;
+  const membersId = action.payload.listUser;
+  try {
+    const response: { data: any } = yield call(
+      organizerApi.addMember,
+      membersId,
+      organizerId
+    );
+    yield put(organizerActions.addMemberSuccess());
+    yield call(handleGetDetailOrganizer);
+    action.payload.onNext();
+    yield put(
+      alertActions.showAlert({
+        text: "Thêm thành viên thành công",
+        type: "success",
+      })
+    );
+  } catch (error) {
+    yield put(organizerActions.getOrganizerFailed());
+    yield put(
+      alertActions.showAlert({
+        text: "Thêm thành viên thất bại",
+        type: "error",
+      })
+    );
+  }
+}
+
+function* handleRemoveMember(action: Action) {
+  const organizerId = JSON.parse(
+    localStorage.getItem("organizer_id") as string
+  ).id;
+  const memberId = action.payload;
+  try {
+    const response: { data: any } = yield call(
+      organizerApi.removeMember,
+      memberId,
+      organizerId
+    );
+    yield put(organizerActions.removeMemberSuccess());
+    yield call(handleGetDetailOrganizer);
+    yield call(handleGetListValidMember);
+
+    yield put(
+      alertActions.showAlert({
+        text: "Xóa thành viên thành công",
+        type: "success",
+      })
+    );
+  } catch (error) {
+    yield put(organizerActions.getOrganizerFailed());
+    yield put(
+      alertActions.showAlert({
+        text: "Xóa thành viên thất bại",
+        type: "error",
+      })
+    );
+  }
+}
+
 function* watchLoginFlow() {
   yield all([
     takeLatest(organizerActions.getOrganizer.type, handleGetOrganizer),
+    takeLatest(
+      organizerActions.getListValidMember.type,
+      handleGetListValidMember
+    ),
+    takeLatest(
+      organizerActions.getDetailOrganizer.type,
+      handleGetDetailOrganizer
+    ),
     takeLatest(organizerActions.createOrganizer.type, handleCreateOrganizer),
+    takeLatest(organizerActions.addMember.type, handleAddMember),
+    takeLatest(organizerActions.removeMember.type, handleRemoveMember),
   ]);
 }
 

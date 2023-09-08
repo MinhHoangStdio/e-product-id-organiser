@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { organizerActions } from "../../store/organizer/info/organizerSlice";
 import CreateOrganizerModal from "../../components/modal/organizer/CreateOrganizerModal";
 import Breadcrumb from "../../components/BreadCrumb";
+import AddMember from "../../components/modal/AddMember";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
@@ -44,6 +45,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         <CreateConsignmentModal />
         <CreateChainsModal />
         <ConfirmModal />
+        <AddMember />
         <LoadingOverLay />
       </main>
     </>

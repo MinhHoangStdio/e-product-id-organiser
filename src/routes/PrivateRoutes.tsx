@@ -9,6 +9,7 @@ const PrivateRoutes = () => {
   const Dashboard = Loadable(lazy(() => import("../pages/dashboard")));
   const Product = Loadable(lazy(() => import("../pages/organizer/product")));
   const OrganizerInfo = Loadable(lazy(() => import("../pages/organizer/info")));
+  const Members = Loadable(lazy(() => import("../pages/organizer/members")));
   const ProductDetail = Loadable(
     lazy(() => import("../pages/organizer/product/detail"))
   );
@@ -34,14 +35,14 @@ const PrivateRoutes = () => {
         }
       />
 
-      {/* <Route
-        path="/organizer/info"
+      <Route
+        path="/organizer/members"
         element={
           <MainLayout>
-            <OrganizerInfo />
+            <Members />
           </MainLayout>
         }
-      /> */}
+      />
       <Route
         path="/organizer/products/:id"
         element={
