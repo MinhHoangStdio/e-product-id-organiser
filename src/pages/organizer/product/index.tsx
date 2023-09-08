@@ -124,27 +124,25 @@ const ProductPage = () => {
               <LoadingPage />
             ) : listProducts?.length ? (
               listProducts.map((prod) => (
-                <>
-                  <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={prod.id}>
-                    <ProductCard
-                      img={prod.images[0]}
-                      name={prod.name}
-                      description={prod.description}
-                      onAction={() => {
-                        dispatch(productActions.selectedProduct(prod));
-                        openConsignmentModal();
-                      }}
-                      onEdit={() => {
-                        dispatch(productActions.selectedProduct(prod));
-                        openProductModal();
-                      }}
-                      onDelete={() => confirmDelete(prod)}
-                      onClick={() => {
-                        history.push("/organizer/products/" + prod.id);
-                      }}
-                    />
-                  </Grid>
-                </>
+                <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={prod.id}>
+                  <ProductCard
+                    img={prod.images[0]}
+                    name={prod.name}
+                    description={prod.description}
+                    onAction={() => {
+                      dispatch(productActions.selectedProduct(prod));
+                      openConsignmentModal();
+                    }}
+                    onEdit={() => {
+                      dispatch(productActions.selectedProduct(prod));
+                      openProductModal();
+                    }}
+                    onDelete={() => confirmDelete(prod)}
+                    onClick={() => {
+                      history.push("/organizer/products/" + prod.id);
+                    }}
+                  />
+                </Grid>
               ))
             ) : (
               <Stack

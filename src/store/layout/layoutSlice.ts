@@ -8,6 +8,7 @@ interface LayoutType {
   isOpenProductModal: boolean;
   isOpenConsignmentModal: boolean;
   isOpenChainsModal: boolean;
+  isOpenAddMemberModal: boolean;
   isLayoutLoading: boolean;
 }
 
@@ -19,6 +20,7 @@ const initialState: LayoutType = {
   isOpenProductModal: false,
   isOpenConsignmentModal: false,
   isOpenChainsModal: false,
+  isOpenAddMemberModal: false,
   isLayoutLoading: false,
 };
 
@@ -66,6 +68,13 @@ const layoutSlice = createSlice({
     },
     closeModalOrganizer(state) {
       state.isOpenOrganizerModal = false;
+    },
+
+    openModalAddMember(state) {
+      state.isOpenAddMemberModal = true;
+    },
+    closeModalAddMember(state) {
+      state.isOpenAddMemberModal = false;
     },
 
     startLayoutLoading(state) {
