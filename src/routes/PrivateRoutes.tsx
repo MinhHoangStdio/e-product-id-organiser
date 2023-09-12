@@ -6,6 +6,9 @@ import ConsignmentPage from "../pages/organizer/consignment";
 import MinimalLayout from "../layout/MinimalLayout";
 
 const PrivateRoutes = () => {
+  const LandingPage = Loadable(
+    lazy(() => import("../pages/public/LandingPage"))
+  );
   const Dashboard = Loadable(lazy(() => import("../pages/dashboard")));
   const Product = Loadable(lazy(() => import("../pages/organizer/product")));
   const OrganizerInfo = Loadable(lazy(() => import("../pages/organizer/info")));
@@ -81,6 +84,14 @@ const PrivateRoutes = () => {
         element={
           <MinimalLayout>
             <PublicConsignment />
+          </MinimalLayout>
+        }
+      />
+      <Route
+        path="/introduce"
+        element={
+          <MinimalLayout>
+            <LandingPage />
           </MinimalLayout>
         }
       />

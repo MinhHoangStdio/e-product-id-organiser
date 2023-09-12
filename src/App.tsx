@@ -12,6 +12,7 @@ import { getAuth } from "./utils/auth";
 import { useAppSelector } from "./hooks/store";
 import PublicRoutes from "./routes/PublicRoutes";
 import PrivateRoutes from "./routes/PrivateRoutes";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   const mode = useAppSelector((state) => state.layout.theme);
@@ -24,6 +25,8 @@ const App = () => {
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          <ScrollToTop />
+
           {isAuth && isLoggedIn ? <PrivateRoutes /> : <PublicRoutes />}
           <ToastContainer autoClose={3000} />
         </ThemeProvider>

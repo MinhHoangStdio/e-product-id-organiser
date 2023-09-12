@@ -41,6 +41,9 @@ const layoutSlice = createSlice({
         state.authState = "login";
       }
     },
+    chooseAuthState(state, action) {
+      state.authState = action.payload;
+    },
 
     openModalProduct(state) {
       state.isOpenProductModal = true;

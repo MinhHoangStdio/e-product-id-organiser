@@ -2,6 +2,7 @@ import { lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Loadable from "../components/Loadable";
 import MinimalLayout from "../layout/MinimalLayout";
+import LandingPage from "../pages/public/LandingPage";
 
 const PublicRoutes = () => {
   const AuthLogin = Loadable(lazy(() => import("../pages/auth")));
@@ -18,6 +19,7 @@ const PublicRoutes = () => {
           path="/public/consignments/:id"
           element={<PublicConsignment />}
         />
+        <Route path="/introduce" element={<LandingPage />} />
         <Route path="/*" element={<Navigate to="/login" />} />
       </Routes>
     </MinimalLayout>
