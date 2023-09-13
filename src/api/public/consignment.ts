@@ -5,6 +5,10 @@ const publicConsignmentApi = {
     const url = `/consignments/${id}`;
     return axiosPublic.get(url);
   },
+  getDetailOrganizer(id: any) {
+    const url = `/organizations/${id}`;
+    return axiosPublic.get(url);
+  },
 };
 
 export default publicConsignmentApi;

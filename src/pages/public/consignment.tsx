@@ -27,6 +27,9 @@ const PublicConsignment = () => {
   const consignment = useAppSelector(
     (state) => state.publicConsignment.consignmentDetail
   );
+  const organizerInfo = useAppSelector(
+    (state) => state.publicConsignment.publicOrganizer
+  );
   const product = consignment?.product;
   const chains = consignment?.chains;
   const [urlSelected, setUrlSelected] = useState<any>(product?.images?.[0]);
@@ -38,6 +41,9 @@ const PublicConsignment = () => {
 
   useEffect(() => {
     dispatch(publicConsignmentActions.getConsignmentDetail(id));
+    return () => {
+      dispatch(publicConsignmentActions.resetPublicConsignment());
+    };
   }, [dispatch, id]);
 
   useEffect(() => {
@@ -136,9 +142,9 @@ const PublicConsignment = () => {
           </Box>
         )}
 
-        {(consignment && (
+        {(consignment && organizerInfo ? (
           <Grid container sx={{ mt: 1 }} spacing={3}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={7}>
               <Box p={3} sx={{ background: "white", borderRadius: "20px" }}>
                 <Typography variant="h2">Thông tin lô hàng</Typography>
                 <Typography sx={{ fontSize: "14px", mt: 1 }}>
@@ -164,42 +170,32 @@ const PublicConsignment = () => {
                   )}
               </Box>
             </Grid>
-            <Grid
-              sx={{
-                pl: 1,
-              }}
-              item
-              xs={12}
-              md={6}
-            >
-              <Box p={3} sx={{ background: "white", borderRadius: "20px" }}>
-                <Typography variant="h2">Thông tin lô hàng</Typography>
+            <Grid item xs={12} md={5}>
+              <Box
+                p={3}
+                sx={{
+                  background: "white",
+                  borderRadius: "20px",
+                  height: "100%",
+                }}
+              >
+                <Typography variant="h2">Thông tin tổ chức</Typography>
                 <Typography sx={{ fontSize: "14px", mt: 1 }}>
-                  <b>Tên lô hàng:</b> {consignment.name}
+                  <b>Tên tổ chức:</b> {organizerInfo.name}
                 </Typography>
                 <Typography sx={{ fontSize: "14px", mt: 1 }}>
-                  <b>Số lượng:</b> {consignment.amount}
+                  <b>Người sáng lập:</b> {organizerInfo.owner.name}
                 </Typography>
                 <Typography sx={{ fontSize: "14px", mt: 1 }}>
-                  <b>Mô tả:</b> {consignment?.description}
+                  <b>Số lượng thành viên:</b> {organizerInfo.member_count}
                 </Typography>
-                {/* <Typography sx={{ fontSize: "14px", mt: 1 }}>
-              <b>Trạng thái:</b>{" "}
-              {consignment?.is_sold_out ? "Hết hàng" : "Còn hàng"}
-            </Typography> */}
-                {consignment?.payload &&
-                  Object.entries(consignment.payload).map(
-                    ([key, value]: [string, any]) => (
-                      <Typography sx={{ fontSize: "14px", mt: 1 }} key={key}>
-                        <b>{key}:</b> {value}
-                      </Typography>
-                    )
-                  )}
               </Box>
             </Grid>
           </Grid>
+        ) : (
+          <></>
         )) || (
-          <Typography variant="h2" paddingTop={"25px"} textAlign={"center"}>
+          <Typography variant="h2" paddingTop={"64px"} textAlign={"center"}>
             Sản phẩm không hợp lệ
           </Typography>
         )}
