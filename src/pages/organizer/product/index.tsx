@@ -76,6 +76,8 @@ const ProductPage = () => {
   useEffect(() => {
     if (organizer?.id) {
       dispatch(productActions.getListProducts(params));
+    } else {
+      dispatch(productActions.userNoHaveOrganizer());
     }
   }, [dispatch, params, organizer]);
 

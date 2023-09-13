@@ -46,6 +46,9 @@ const consignmentSlice = createSlice({
       state.listConsignments = null;
       state.isFetchConsignments = true;
     },
+    userNoHaveOrganizer(state) {
+      state.isFetchConsignments = true;
+    },
 
     createConsignment(state, action) {
       state.loadingCreateConsignment = true;

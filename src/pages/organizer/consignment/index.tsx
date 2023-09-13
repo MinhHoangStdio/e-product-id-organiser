@@ -79,6 +79,8 @@ const ConsignmentPage = () => {
   useEffect(() => {
     if (organizer?.id) {
       dispatch(consignmentActions.getListConsignments(params));
+    } else {
+      dispatch(consignmentActions.userNoHaveOrganizer());
     }
   }, [dispatch, params, organizer]);
 
