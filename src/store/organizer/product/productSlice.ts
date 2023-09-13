@@ -60,6 +60,9 @@ const productSlice = createSlice({
       state.listProducts = null;
       state.isFetchProducts = true;
     },
+    userNoHaveOrganizer(state) {
+      state.isFetchProducts = true;
+    },
 
     getAllListProducts(state) {
       state.loadingGetProducts = true;
