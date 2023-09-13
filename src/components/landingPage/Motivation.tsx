@@ -15,7 +15,7 @@ const motivationItems = [
     iconPath: "/icons/clock.png",
     title: "Tiết kiệm thời gian và Tối ưu hóa quy trình",
     subtitle:
-      "Ứng dụng giúp người dùng tiết kiệm thời gian bằng cách tối ưu hóa quy trình tạo và quản lý sản phẩm. Điều này giúp người dùng tập trung vào việc tạo ra sản phẩm chất lượng hơn và tạo ra trải nghiệm dễ dàng và hiệu quả hơn",
+      "Ứng dụng giúp người dùng tiết kiệm thời gian bằng cách tối ưu hóa quy trình tạo và quản lý sản phẩm. Điều này giúp người dùng tập trung vào việc tạo ra sản phẩm chất lượng hơn và tạo ra trải nghiệm dễ dàng và hiệu quả hơn.",
   },
   {
     iconPath: "/icons/qr-code.png",

@@ -1,16 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ConsignmentDetail } from "../../../types/consignment";
+import {
+  ConsignmentDetail,
+  PublicOrganizerDetail,
+} from "../../../types/consignment";
 
 interface consignmentState {
   consignmentDetail?: ConsignmentDetail;
   loadingConsignmentDetail: boolean;
   isFetchedData: boolean;
+  publicOrganizer?: PublicOrganizerDetail;
 }
 
 const initialState: consignmentState = {
   consignmentDetail: undefined,
   loadingConsignmentDetail: false,
   isFetchedData: false,
+  publicOrganizer: undefined,
 };
 
 const publicConsignmentSlice = createSlice({
@@ -21,13 +26,17 @@ const publicConsignmentSlice = createSlice({
       state.loadingConsignmentDetail = true;
     },
     getConsignmentDetailSuccess(state, action) {
-      state.consignmentDetail = action.payload;
+      state.consignmentDetail = action.payload.consignment;
+      state.publicOrganizer = action.payload.organizer;
       state.loadingConsignmentDetail = false;
       state.isFetchedData = true;
     },
     getConsignmentDetailFailed(state) {
       state.loadingConsignmentDetail = false;
       state.isFetchedData = true;
+    },
+    resetPublicConsignment(state) {
+      state.isFetchedData = false;
     },
   },
 });

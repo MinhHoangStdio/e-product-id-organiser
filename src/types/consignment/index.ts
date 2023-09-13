@@ -20,8 +20,19 @@ export interface ConsignmentDetail {
   payload?: any;
   product_id: number;
   id: number;
-  organizer_id: number;
+  organization_id: number;
   is_sold_out: boolean;
   product?: Product;
   chains?: Chain[];
+}
+
+export interface PublicOrganizerDetail {
+  name: string;
+  id: number;
+  owner_id: number;
+  member_count: number;
+  owner: {
+    id: number;
+    name: string;
+  };
 }
