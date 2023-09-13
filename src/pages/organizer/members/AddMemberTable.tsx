@@ -194,6 +194,7 @@ export default function AddMemberTable() {
       </TableContainer>
       <Stack p={1}>
         <CustomButton
+          disabled={!listChecked.length}
           onClick={addMember}
           Icon={<AddIcon />}
           color="primary"

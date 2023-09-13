@@ -375,7 +375,7 @@ const CreateAndEditProductModal = () => {
       }
       isOpen={isOpenModal}
       title={typeModal == "create" ? "Tạo sản phẩm mới" : "Chỉnh sửa sản phẩm"}
-      actionLabel={typeModal == "create" ? "Create" : "Edit"}
+      actionLabel={typeModal == "create" ? "Tạo" : "Sửa"}
       onClose={onCloseModal}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}

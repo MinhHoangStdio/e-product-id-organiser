@@ -5,6 +5,7 @@ import SendEmail from "./SendEmail";
 import { useState } from "react";
 import VerifyCode from "./VerifyCode";
 import ResetPwd from "./ResetPwd";
+import { layoutActions } from "../../../store/layout/layoutSlice";
 
 const ForgotPwd = () => {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const ForgotPwd = () => {
       >
         <p
           onClick={() => {
+            dispatch(layoutActions.chooseAuthState("login"));
             navigate("/login");
           }}
           className="
