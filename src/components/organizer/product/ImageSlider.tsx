@@ -14,10 +14,10 @@ function ImageSlider({
     <Stack gap={1}>
       <Box
         sx={{
-          border: "1px solid #f6f6f6",
+          border: "1px solid #eaeaea",
           borderRadius: "8px",
           height: "400px",
-          bgcolor: "#f6f6f6",
+          bgcolor: "#fff",
           backgroundImage: urlSelected
             ? `url(${urlSelected})`
             : `url(${noImg})`,

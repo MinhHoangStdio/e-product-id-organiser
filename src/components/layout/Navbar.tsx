@@ -19,7 +19,8 @@ import { layoutActions } from "../../store/layout/layoutSlice";
 import SearchIcon from "@mui/icons-material/Search";
 import userImageDefault from "../../assets/user/user.png";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import logoLanding from "../../assets/landingPage/logoLanding.png";
 
 const Navbar = () => {
   const userInfo = useAppSelector((state) => state.auth.dataUser);
@@ -45,8 +46,35 @@ const Navbar = () => {
   };
 
   return (
-    <Box display="flex" sx={{ px: 4, py: 2 }} justifyContent="flex-end">
-      {/* <Box display="flex" sx={{ px: 4, py: 2 }} justifyContent="space-between"> */}
+    <Box
+      display="flex"
+      sx={{ px: 4, background: "#fff", alignItems: "center" }}
+      justifyContent="space-between"
+    >
+      <img
+        style={{ cursor: "pointer" }}
+        onClick={() => navigate("/introduce")}
+        width={150}
+        src={logoLanding}
+        alt="logo"
+      />
+
+      <div className="hidden lg:block text-sm text-neutral-grayish-blue">
+        <Link
+          to="/introduce"
+          className="mx-3 py-5 hover:gradient-border-bottom"
+        >
+          Giới thiệu
+        </Link>
+        <a
+          href="https://stdiohue.com/"
+          target="_blank"
+          className="mx-3 py-5 hover:gradient-border-bottom"
+        >
+          Liên lạc
+        </a>
+      </div>
+
       <Box>
         <Chip
           size="medium"

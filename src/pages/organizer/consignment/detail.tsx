@@ -112,7 +112,7 @@ const ConsignmentDetail = () => {
                         consignment?.is_sold_out ? "Cháy hàng" : "Còn hàng"
                       }
                     /> */}
-                    <Stack spacing={1}>
+                    {/* <Stack spacing={1}>
                       <Typography
                         variant="h4"
                         sx={{ fontWeight: 500, color: "#4b4b4b" }}
@@ -143,7 +143,7 @@ const ConsignmentDetail = () => {
                         />
                       )}
                     </Stack>
-                    <Divider />
+                    <Divider /> */}
                     <Stack spacing={1}>
                       <Typography
                         variant="h4"

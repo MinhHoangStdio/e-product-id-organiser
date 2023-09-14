@@ -15,6 +15,8 @@ import InfoIcon from "@mui/icons-material/Info";
 import { authActions } from "../../store/auth/authSlice";
 import { colorToken } from "../../theme/colorToken";
 import userImageDefault from "../../assets/user/user.png";
+import KeyIcon from "@mui/icons-material/Key";
+import logoLanding from "../../assets/landingPage/logoLanding.png";
 
 const Item = ({ title, to, icon, selected, setSelected, navigate }: any) => {
   return (
@@ -129,7 +131,7 @@ const SidebarCustom = () => {
             }}
             icon={isCollapseSidebar ? <MenuOutlinedIcon /> : undefined}
             style={{
-              margin: "0 0 20px 0",
+              margin: "10px 0 10px 0",
               //   color: colors.grey[100],
             }}
           >
@@ -138,10 +140,14 @@ const SidebarCustom = () => {
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
-                ml="15px"
                 sx={{ py: "15px" }}
               >
-                <Typography variant="h3">E-Product ID</Typography>
+                <img
+                  style={{ cursor: "pointer" }}
+                  width={150}
+                  src={logoLanding}
+                  alt="logo"
+                />
                 <IconButton
                   onClick={(e) => {
                     e.stopPropagation();
@@ -253,9 +259,16 @@ const SidebarCustom = () => {
             )}
             <MenuItem
               style={{ marginTop: "8px" }}
-              onClick={handleLogout}
-              icon={<LogoutIcon />}
+              onClick={() => {
+                setSelected("profile/changepwd");
+                navigate("/profile/changepwd");
+              }}
+              active={selected.toLowerCase() === "profile/changepwd"}
+              icon={<KeyIcon />}
             >
+              <Typography>Đổi mật khẩu</Typography>
+            </MenuItem>
+            <MenuItem onClick={handleLogout} icon={<LogoutIcon />}>
               <Typography>Đăng xuất</Typography>
             </MenuItem>
           </Box>

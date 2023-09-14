@@ -1,4 +1,4 @@
-import { Box, Paper, useTheme } from "@mui/material";
+import { Box, Paper, Typography, useTheme } from "@mui/material";
 import Navbar from "../../components/layout/Navbar";
 import SidebarCustom from "../../components/layout/Sidebar";
 import { useAppDispatch, useAppSelector } from "../../hooks/store";
@@ -13,6 +13,7 @@ import { organizerActions } from "../../store/organizer/info/organizerSlice";
 import CreateOrganizerModal from "../../components/modal/organizer/CreateOrganizerModal";
 import Breadcrumb from "../../components/BreadCrumb";
 import AddMember from "../../components/modal/AddMember";
+import Footer from "../../components/landingPage/Footer";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
@@ -35,11 +36,19 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
             : { paddingLeft: "80px", transition: "padding 0.3s ease" }
         }
       >
-        <Navbar />
-        <Box sx={{ px: 4, pb: 4, bgcolor: colors.background.main }}>
+        {/* <Navbar /> */}
+        <Box sx={{ px: 4, pb: 2, pt: 3, bgcolor: colors.background.main }}>
           <Breadcrumb />
-          <Paper sx={{ minHeight: "85vh" }}>{children}</Paper>
+          <Paper sx={{ minHeight: "90vh" }}>{children}</Paper>
+          <Typography variant="body2" sx={{ mt: 1, color: "#5f5f5f" }}>
+            © E-Product ID. Đã đăng ký bản quyền. Dự án được xây dựng bởi Stdio
+            Team.
+          </Typography>
+          {/* <Typography variant="body2">
+            
+          </Typography> */}
         </Box>
+        {/* <Footer /> */}
         <CreateOrganizerModal />
         <CreateAndEditProductModal />
         <CreateConsignmentModal />

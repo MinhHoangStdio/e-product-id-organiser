@@ -106,7 +106,7 @@ export default function Footer() {
                 © E-Product ID. Đã đăng ký bản quyền
               </p>{" "}
               <p className="text-neutral-grayish-blue text-sm">
-                Dự án được xây dựng bởi Stdio team
+                Dự án được xây dựng bởi Stdio Team
               </p>
             </Stack>
           </div>

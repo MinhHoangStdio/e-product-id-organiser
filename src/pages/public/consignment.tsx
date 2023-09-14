@@ -76,7 +76,7 @@ const PublicConsignment = () => {
                 background: "white",
                 borderRadius: "20px",
                 p: {
-                  xs: 0,
+                  xs: 1,
                 },
               }}
               container
@@ -228,8 +228,8 @@ const PublicConsignment = () => {
                   )}
                 {(chain?.images?.length || "") && (
                   <Stack
+                    sx={{ justifyContent: { xs: "center", md: "flex-start" } }}
                     direction="row"
-                    justifyContent="center"
                     gap={1}
                     alignItems="center"
                     mt={2}
