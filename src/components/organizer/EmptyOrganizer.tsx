@@ -14,7 +14,7 @@ const EmptyOrganizer = ({ text, onAction, labelBtn }: IEmptyOrganizer) => {
     <Stack
       justifyContent="center"
       alignItems="center"
-      sx={{ height: "85vh", width: "100%" }}
+      sx={{ height: "90vh", width: "100%" }}
     >
       <img src={EmptyImg} alt="empty" width="300" />
       <Typography
