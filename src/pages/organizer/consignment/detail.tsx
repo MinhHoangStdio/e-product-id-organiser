@@ -241,6 +241,17 @@ const ConsignmentDetail = () => {
                       <Typography variant="h6" sx={{ mt: 1, color: "#767676" }}>
                         {chain.description}
                       </Typography>
+                      {chain?.payload &&
+                        Object.entries(chain.payload).map(
+                          ([key, value]: [string, any]) => (
+                            <Typography
+                              sx={{ fontSize: "14px", mt: 1 }}
+                              key={key}
+                            >
+                              <b>{key}:</b> {value}
+                            </Typography>
+                          )
+                        )}
 
                       {(chain?.images?.length || "") && (
                         <Stack

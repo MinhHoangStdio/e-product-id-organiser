@@ -4,6 +4,7 @@ import { useAppSelector } from "../../hooks/store";
 type ICustomButton = {
   fullWidth?: boolean;
   width?: string;
+  height?: string;
   color: "primary" | "error" | "info" | "success";
   size?: "large" | "small" | "medium";
   disabled?: boolean;
@@ -23,6 +24,7 @@ const CustomButton = ({
   type = "button",
   Icon,
   width,
+  height,
 }: ICustomButton) => {
   const mode = useAppSelector((state) => state.layout.theme);
   const colors = colorToken(mode);
@@ -36,6 +38,7 @@ const CustomButton = ({
               bgcolor: `${colors.button[color]} !important`,
               textTransform: "none !important",
               width: width,
+              height: height ? height : "",
               cursor: disabled ? "not-allowed !important" : "pointer",
               color: "#fff",
             }
@@ -44,6 +47,7 @@ const CustomButton = ({
               textTransform: "none !important",
               cursor: disabled ? "not-allowed  !important" : "pointer",
               color: "#fff",
+              height: height ? height : "",
             }
       }
       size={size}
@@ -64,6 +68,8 @@ const CustomButton = ({
         bgcolor: `${colors.button[color]} !important`,
         textTransform: "none !important",
         color: "#fff",
+        width: width ? width : "",
+        height: height ? height : "",
       }}
       size={size}
       disabled={disabled}
