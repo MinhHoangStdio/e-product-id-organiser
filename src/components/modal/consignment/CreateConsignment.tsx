@@ -34,12 +34,25 @@ const CreateConsignmentModal = () => {
   );
   const [productIdLabel, setProductIdLabel] = useState<any>(null);
   const [metadataFields, setMetadataFields] = useState<
-    { id: number; key: string; value: string }[]
+    {
+      id: number;
+      key: string;
+      value: string;
+      errorKey: boolean;
+      errorValue: boolean;
+    }[]
   >([]);
+  const [activeValidateMetadata, setActiveValidateMetadata] = useState(false);
   const addField = () => {
     setMetadataFields([
       ...metadataFields,
-      { id: metadataFields.length, key: "", value: "" },
+      {
+        id: metadataFields.length,
+        key: "",
+        value: "",
+        errorKey: false,
+        errorValue: false,
+      },
     ]);
   };
 
@@ -81,6 +94,9 @@ const CreateConsignmentModal = () => {
       }
       return result;
     }, {});
+    const isValidMetadata = metadataFields.every(
+      (data) => !data.errorKey && !data.errorValue
+    );
     const payload = {
       params: data,
       metadata,
@@ -91,11 +107,28 @@ const CreateConsignmentModal = () => {
         }
       },
     };
-    dispatch(consignmentActions.createConsignment(payload));
+    isValidMetadata && dispatch(consignmentActions.createConsignment(payload));
+  };
+
+  const validateMetadataField = () => {
+    setActiveValidateMetadata(true);
+    metadataFields.forEach((data, i) => {
+      if (!data.key) {
+        const updatedFields = [...metadataFields];
+        updatedFields[i].errorKey = true;
+        setMetadataFields(updatedFields);
+      }
+      if (!data.value) {
+        const updatedFields = [...metadataFields];
+        updatedFields[i].errorValue = true;
+        setMetadataFields(updatedFields);
+      }
+    });
   };
 
   const onCloseModal = () => {
     reset();
+    setActiveValidateMetadata(false);
     setProductIdLabel(null);
     resetField();
     dispatch(layoutActions.closeModalConsignment());
@@ -172,7 +205,7 @@ const CreateConsignmentModal = () => {
       />
       {/* Option fields */}
       {metadataFields.map((field, i) => (
-        <Stack direction="row" gap={1} alignItems="center">
+        <Stack direction="row" gap={1}>
           {" "}
           <TextField
             label="Tên trường"
@@ -180,8 +213,16 @@ const CreateConsignmentModal = () => {
             onChange={(e) => {
               const updatedFields = [...metadataFields];
               updatedFields[i].key = e.target.value;
+              if (activeValidateMetadata) {
+                e.target.value.trim()
+                  ? (updatedFields[i].errorKey = false)
+                  : (updatedFields[i].errorKey = true);
+              }
+
               setMetadataFields(updatedFields);
             }}
+            helperText={field.errorKey ? "Vui lòng nhập giá trị" : ""}
+            error={field.errorKey}
           />
           <TextField
             sx={{ flex: 1 }}
@@ -190,8 +231,16 @@ const CreateConsignmentModal = () => {
             onChange={(e) => {
               const updatedFields = [...metadataFields];
               updatedFields[i].value = e.target.value;
+              if (activeValidateMetadata) {
+                e.target.value.trim()
+                  ? (updatedFields[i].errorValue = false)
+                  : (updatedFields[i].errorValue = true);
+              }
+
               setMetadataFields(updatedFields);
             }}
+            helperText={field.errorValue ? "Vui lòng nhập giá trị" : ""}
+            error={field.errorValue}
           />
           <CustomButton
             onClick={() => {
@@ -200,6 +249,8 @@ const CreateConsignmentModal = () => {
             label=""
             color="error"
             Icon={<DeleteIcon />}
+            width="50px"
+            height="50px"
           />
         </Stack>
       ))}
@@ -220,7 +271,10 @@ const CreateConsignmentModal = () => {
       title="Tạo lô hàng mới"
       actionLabel="Tạo"
       onClose={onCloseModal}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={() => {
+        validateMetadataField();
+        handleSubmit(onSubmit)();
+      }}
       body={bodyContent}
     />
   );
