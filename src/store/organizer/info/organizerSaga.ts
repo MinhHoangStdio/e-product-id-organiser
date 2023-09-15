@@ -13,14 +13,16 @@ function* handleGetOrganizer(action: Action) {
     );
     localStorage.setItem("organizer_id", JSON.stringify(response.data));
     yield put(organizerActions.getOrganizerSuccess(response.data));
-  } catch (error) {
+  } catch (error: any) {
     yield put(organizerActions.getOrganizerFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Không thể lấy thông tin tổ chức",
-        type: "error",
-      })
-    );
+    if (error?.response?.status !== 403) {
+      yield put(
+        alertActions.showAlert({
+          text: `${error?.response?.data?.message}` || "Lỗi",
+          type: "error",
+        })
+      );
+    }
   }
 }
 
@@ -33,14 +35,16 @@ function* handleGetDetailOrganizer() {
     );
 
     yield put(organizerActions.getDetailOrganizerSuccess(response.data));
-  } catch (error) {
+  } catch (error: any) {
     yield put(organizerActions.getOrganizerFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Không thể lấy thông tin tổ chức",
-        type: "error",
-      })
-    );
+    if (error?.response?.status !== 403) {
+      yield put(
+        alertActions.showAlert({
+          text: `${error?.response?.data?.message}` || "Lỗi",
+          type: "error",
+        })
+      );
+    }
   }
 }
 
@@ -48,14 +52,16 @@ function* handleGetListValidMember() {
   try {
     const response: { data: any } = yield call(organizerApi.getListValidMember);
     yield put(organizerActions.getListValidMemberSuccess(response.data));
-  } catch (error) {
+  } catch (error: any) {
     yield put(organizerActions.getListValidMemberFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Không thể lấy danh sách thành viên",
-        type: "error",
-      })
-    );
+    if (error?.response?.status !== 403) {
+      yield put(
+        alertActions.showAlert({
+          text: `${error?.response?.data?.message}` || "Lỗi",
+          type: "error",
+        })
+      );
+    }
   }
 }
 
@@ -77,15 +83,17 @@ function* handleCreateOrganizer(action: Action) {
     );
     yield put(organizerActions.getOrganizer());
     yield put(layoutActions.closeModalOrganizer());
-  } catch (error) {
+  } catch (error: any) {
     yield put(layoutActions.endLayoutLoading());
     yield put(organizerActions.createOrganizerFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Tạo tổ chức thất bại",
-        type: "error",
-      })
-    );
+    if (error?.response?.status !== 403) {
+      yield put(
+        alertActions.showAlert({
+          text: `${error?.response?.data?.message}` || "Lỗi",
+          type: "error",
+        })
+      );
+    }
   }
 }
 
@@ -109,14 +117,16 @@ function* handleAddMember(action: Action) {
         type: "success",
       })
     );
-  } catch (error) {
+  } catch (error: any) {
     yield put(organizerActions.getOrganizerFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Thêm thành viên thất bại",
-        type: "error",
-      })
-    );
+    if (error?.response?.status !== 403) {
+      yield put(
+        alertActions.showAlert({
+          text: `${error?.response?.data?.message}` || "Lỗi",
+          type: "error",
+        })
+      );
+    }
   }
 }
 
@@ -141,14 +151,16 @@ function* handleRemoveMember(action: Action) {
         type: "success",
       })
     );
-  } catch (error) {
+  } catch (error: any) {
     yield put(organizerActions.getOrganizerFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Xóa thành viên thất bại",
-        type: "error",
-      })
-    );
+    if (error?.response?.status !== 403) {
+      yield put(
+        alertActions.showAlert({
+          text: `${error?.response?.data?.message}` || "Lỗi",
+          type: "error",
+        })
+      );
+    }
   }
 }
 

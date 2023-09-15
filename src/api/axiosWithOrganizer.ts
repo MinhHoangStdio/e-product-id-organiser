@@ -1,6 +1,7 @@
 import axios from "axios";
 import history from "../routes/history";
 import { getAuth, getOrganizer, handleLogout } from "../utils/auth";
+import { toast } from "react-toastify";
 
 const URL_API_ORGANIZER = import.meta.env.VITE_APP_API_URL_ORGANIZER;
 
@@ -60,7 +61,14 @@ const handleErrorApi = (status: number) => {
   switch (status) {
     case 401:
     case 403:
-      handleLogout();
+      toast.warning(
+        "Tài khoản của bạn có sự thay đổi. Vui lòng đăng nhập để tiếp tục",
+        {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 1500,
+        }
+      );
+      setTimeout(handleLogout, 1500);
       break;
 
     case 500:

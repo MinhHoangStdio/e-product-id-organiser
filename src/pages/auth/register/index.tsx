@@ -37,8 +37,14 @@ const Register = () => {
           .string()
           .email("Email không hợp lệ")
           .required("Vui lòng nhập email"),
-        name: yup.string().required("Vui lòng nhập tên"),
-        password: yup.string().required("Vui lòng nhập mật khẩu"),
+        name: yup
+          .string()
+          .min(4, "Vui lòng nhập tối thiểu 4 ký tự")
+          .required("Vui lòng nhập tên"),
+        password: yup
+          .string()
+          .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+          .required("Vui lòng nhập mật khẩu"),
         confirmPassword: yup
           .string()
           .required("Vui lòng nhập xác nhận mật khẩu")

@@ -34,14 +34,16 @@ function* handleGetAllListProducts(action: Action) {
     const response: { data: { data: Product[]; paginate: Pagination } } =
       yield call(productApi.getListProducts, { limit: 100, page: 1 });
     yield put(productActions.getAllListProductsSuccess(response.data));
-  } catch (error) {
+  } catch (error: any) {
     yield put(productActions.getAllListProductsFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Lỗi",
-        type: "error",
-      })
-    );
+    if (error?.response?.status !== 403) {
+      yield put(
+        alertActions.showAlert({
+          text: `${error?.response?.data?.message}` || "Lỗi",
+          type: "error",
+        })
+      );
+    }
   }
 }
 
