@@ -20,12 +20,12 @@ const EmptyOrganizer = ({ text, onAction, labelBtn }: IEmptyOrganizer) => {
       <Typography
         sx={{ fontSize: "24px", fontWeight: 600, color: "#A5A5A5", mb: 1 }}
       >
-        {text ? text : `Opps! Data empty`}
+        {text ? text : `Dữ liệu trống`}
       </Typography>
       <CustomButton
         onClick={onAction}
         Icon={<AddIcon />}
-        label={labelBtn ? labelBtn : "Import now"}
+        label={labelBtn ? labelBtn : "Thêm"}
         color="primary"
       />
     </Stack>

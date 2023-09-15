@@ -18,14 +18,16 @@ function* handleGetListConsignments(action: Action) {
     const response: { data: { data: Consignment[]; paginate: Pagination } } =
       yield call(consignmentApi.getListConsignments, params);
     yield put(consignmentActions.getListConsignmentsSuccess(response.data));
-  } catch (error) {
+  } catch (error: any) {
     yield put(consignmentActions.getListConsignmentsFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Không thể lấy được danh sách lô hàng",
-        type: "error",
-      })
-    );
+    if (error?.response?.status !== 403) {
+      yield put(
+        alertActions.showAlert({
+          text: `${error?.response?.data?.message}` || "Lỗi",
+          type: "error",
+        })
+      );
+    }
   }
 }
 
@@ -47,15 +49,17 @@ function* handleCreateConsignment(action: Action) {
     );
     yield put(consignmentActions.getListConsignments({}));
     onReset();
-  } catch (error) {
+  } catch (error: any) {
     yield put(layoutActions.endLayoutLoading());
     yield put(consignmentActions.createConsignmentFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Tạo lô hàng mới thất bại",
-        type: "error",
-      })
-    );
+    if (error?.response?.status !== 403) {
+      yield put(
+        alertActions.showAlert({
+          text: `${error?.response?.data?.message}` || "Lỗi",
+          type: "error",
+        })
+      );
+    }
   }
 }
 
@@ -74,14 +78,16 @@ function* handleDeleteConsignment(action: Action) {
       })
     );
     yield put(consignmentActions.getListConsignments({}));
-  } catch (error) {
+  } catch (error: any) {
     yield put(consignmentActions.removeConsignmentFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Xóa lô hàng thất bại",
-        type: "error",
-      })
-    );
+    if (error?.response?.status !== 403) {
+      yield put(
+        alertActions.showAlert({
+          text: `${error?.response?.data?.message}` || "Lỗi",
+          type: "error",
+        })
+      );
+    }
   }
 }
 
@@ -95,14 +101,16 @@ function* handleGetConsignmentDetail(action: Action) {
     );
 
     yield put(consignmentActions.getConsignmentDetailSuccess(response.data));
-  } catch (error) {
+  } catch (error: any) {
     yield put(consignmentActions.getConsignmentDetailFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Không thể lấy thông tin chi tiết lô hàng",
-        type: "error",
-      })
-    );
+    if (error?.response?.status !== 403) {
+      yield put(
+        alertActions.showAlert({
+          text: `${error?.response?.data?.message}` || "Lỗi",
+          type: "error",
+        })
+      );
+    }
   }
 }
 
@@ -132,14 +140,16 @@ function* handleDownloadQrCode(action: Action) {
         type: "success",
       })
     );
-  } catch (error) {
+  } catch (error: any) {
     yield put(consignmentActions.downloadQrCodeFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Tải mã QR thất bại",
-        type: "error",
-      })
-    );
+    if (error?.response?.status !== 403) {
+      yield put(
+        alertActions.showAlert({
+          text: `${error?.response?.data?.message}` || "Lỗi",
+          type: "error",
+        })
+      );
+    }
   }
 }
 

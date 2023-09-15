@@ -27,12 +27,12 @@ function* handleLogin(action: Action) {
     onNavigate?.();
 
     // yield call(getBasicInfo);
-  } catch (error) {
+  } catch (error: any) {
     // localStorage.removeItem(AUTH_LOCAL_STORAGE_KEY);
     yield put(authActions.loginFailed());
     yield put(
       alertActions.showAlert({
-        text: "Email hoặc mật khẩu bạn nhập không khớp với hệ thống, vui lòng kiểm tra lại",
+        text: `${error?.response?.data?.message}` || "Lỗi",
         type: "error",
       })
     );
@@ -52,11 +52,11 @@ function* handleRegister(action: Action) {
       })
     );
     yield put(layoutActions.changeAuthState());
-  } catch (error) {
+  } catch (error: any) {
     yield put(authActions.registerFailed());
     yield put(
       alertActions.showAlert({
-        text: "Đăng ký thất bại!",
+        text: `${error?.response?.data?.message}` || "Lỗi",
         type: "error",
       })
     );
@@ -76,11 +76,11 @@ function* handleChangePwd(action: Action) {
         type: "success",
       })
     );
-  } catch (error) {
+  } catch (error: any) {
     yield put(authActions.changePwdFailed());
     yield put(
       alertActions.showAlert({
-        text: "Đổi mật khẩu thất bại!",
+        text: `${error?.response?.data?.message}` || "Lỗi",
         type: "error",
       })
     );
@@ -94,11 +94,11 @@ function* handleSendEmail(action: Action) {
     console.log(response);
     yield put(authActions.sendEmailSuccess(response.data.token));
     onNext();
-  } catch (error) {
+  } catch (error: any) {
     yield put(authActions.sendEmailFailed());
     yield put(
       alertActions.showAlert({
-        text: "Lỗi!",
+        text: `${error?.response?.data?.message}` || "Lỗi",
         type: "error",
       })
     );
