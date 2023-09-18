@@ -8,6 +8,31 @@ import { Pagination } from "../../../types/pagination";
 import { chainsActions } from "./chainsSlice";
 import chainsApi from "../../../api/chains";
 import { consignmentActions } from "../consignment/consignmentSlice";
+import { Consignment, ConsignmentDetail } from "../../../types/consignment";
+import consignmentApi from "../../../api/consignment";
+
+// function* handleGetConsignmentDetail(action: Action) {
+//   try {
+//     const id = action.payload;
+
+//     const response: { data: ConsignmentDetail } = yield call(
+//       consignmentApi.getDetailConsignment,
+//       id
+//     );
+
+//     yield put(consignmentActions.getConsignmentDetailSuccess(response.data));
+//   } catch (error: any) {
+//     yield put(consignmentActions.getConsignmentDetailFailed());
+//     if (error?.response?.status !== 403) {
+//       yield put(
+//         alertActions.showAlert({
+//           text: `${error?.response?.data?.message}` || "Lỗi",
+//           type: "error",
+//         })
+//       );
+//     }
+//   }
+// }
 
 // function* handleGetListProducts(action: Action) {
 //   try {
@@ -55,7 +80,12 @@ function* handleCreateChains(action: Action) {
         images: [],
       });
     }
-
+    const response2: { data: ConsignmentDetail } = yield call(
+      consignmentApi.getDetailConsignment,
+      action.payload.consignmentId
+    );
+    yield put(consignmentActions.getConsignmentDetailSuccess(response2.data));
+    yield put(consignmentActions.resetSelectedConsignment());
     yield put(layoutActions.endLayoutLoading());
     yield put(chainsActions.createChainsSuccess());
     yield put(
@@ -64,8 +94,8 @@ function* handleCreateChains(action: Action) {
         type: "success",
       })
     );
-    yield put(consignmentActions.resetSelectedConsignment());
-    action.payload.onReset();
+    yield call(action.payload.onReset);
+
     // yield put(chainsActions.getListChains({}));
   } catch (error: any) {
     yield put(layoutActions.endLayoutLoading());
