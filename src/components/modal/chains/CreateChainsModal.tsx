@@ -254,7 +254,7 @@ const CreateChainsModal = () => {
         render={({ field }) => {
           return (
             <TimePicker
-              label="Ngày bắt đầu"
+              label="Ngày tháng"
               value={field.value}
               inputRef={field.ref}
               onChange={(date) => {

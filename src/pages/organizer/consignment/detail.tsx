@@ -185,7 +185,11 @@ const ConsignmentDetail = () => {
                       {consignment?.payload ? (
                         Object.keys(consignment?.payload).length ? (
                           Object.keys(consignment?.payload).map((key, i) => (
-                            <Typography variant="h6" sx={{ color: "#767676" }}>
+                            <Typography
+                              key={key}
+                              variant="h6"
+                              sx={{ color: "#767676" }}
+                            >
                               <b>{toUpperFirstLetter(key)}</b>:{" "}
                               {consignment?.payload[key]}
                             </Typography>
@@ -218,13 +222,11 @@ const ConsignmentDetail = () => {
                   />
                 </Stack>
                 {chains?.length ? (
-                  chains?.map((chain, index) => (
+                  [...chains].reverse().map((chain, index) => (
                     <Box pb={2} key={index} pt={2}>
                       <Stack mt={1} direction="row" gap={1} alignItems="center">
                         <Typography variant="h5" sx={{ color: "#4b4b4b" }}>
-                          <b>
-                            {index + 1 + ". "} {chain.name}
-                          </b>
+                          <b>{chain.name}</b>
                         </Typography>
                         {chain?.date_start && (
                           <Chip

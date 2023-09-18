@@ -23,6 +23,7 @@ const EmptyOrganizer = ({ text, onAction, labelBtn }: IEmptyOrganizer) => {
         {text ? text : `Dữ liệu trống`}
       </Typography>
       <CustomButton
+        height="40px"
         onClick={onAction}
         Icon={<AddIcon />}
         label={labelBtn ? labelBtn : "Thêm"}
