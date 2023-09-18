@@ -26,6 +26,7 @@ const ConsignmentDetail = () => {
   const product = consignment?.product;
   const chains = consignment?.chains;
   const [urlSelected, setUrlSelected] = useState<any>(product?.images?.[0]);
+  const [activeStep, setActiveStep] = useState(0);
 
   const confirmDelete = (data: Chain) => {
     const params: ParamsModalConfirm = {
@@ -208,7 +209,7 @@ const ConsignmentDetail = () => {
                 <Divider />
               </Grid>
               <Grid sx={{ mt: 4 }} item xs={12}>
-                <Stack direction="row" spacing={3} alignItems="center">
+                <Stack direction="row" spacing={3} alignItems="center" mb={2}>
                   {" "}
                   <Typography variant="h4" sx={{ fontWeight: 500 }}>
                     Danh sách công đoạn
@@ -222,10 +223,24 @@ const ConsignmentDetail = () => {
                   />
                 </Stack>
                 {chains?.length ? (
-                  [...chains].reverse().map((chain, index) => (
-                    <Box pb={2} key={index} pt={2}>
+                  chains.map((chain, index) => (
+                    <Box pb={1} key={index}>
                       <Stack mt={1} direction="row" gap={1} alignItems="center">
-                        <Typography variant="h5" sx={{ color: "#4b4b4b" }}>
+                        <Box
+                          sx={{
+                            bgcolor:
+                              activeStep === index ? "#262626" : "#676767",
+                            width: "10px",
+                            height: "10px",
+                            borderRadius: 999,
+                          }}
+                        ></Box>
+                        <Typography
+                          variant="h5"
+                          sx={{
+                            color: activeStep === index ? "#262626" : "#676767",
+                          }}
+                        >
                           <b>{chain.name}</b>
                         </Typography>
                         {chain?.date_start && (
@@ -240,43 +255,57 @@ const ConsignmentDetail = () => {
                             onClick={() => confirmDelete(chain)}
                           /> */}
                       </Stack>
-                      <Typography variant="h6" sx={{ mt: 1, color: "#767676" }}>
-                        {chain.description}
-                      </Typography>
-                      {chain?.payload &&
-                        Object.entries(chain.payload).map(
-                          ([key, value]: [string, any]) => (
-                            <Typography
-                              sx={{ fontSize: "14px", mt: 1 }}
-                              key={key}
-                            >
-                              <b>{key}:</b> {value}
-                            </Typography>
-                          )
-                        )}
-
-                      {(chain?.images?.length || "") && (
-                        <Stack
-                          direction="row"
-                          justifyContent="flex-start"
-                          gap={1}
-                          alignItems="center"
-                          mt={2}
-                          flexWrap={"wrap"}
+                      <Box
+                        pl={2}
+                        sx={{
+                          borderLeft:
+                            activeStep === index
+                              ? "1px solid #262626"
+                              : "1px solid #ccc",
+                          marginLeft: "4px",
+                        }}
+                      >
+                        <Typography
+                          variant="h6"
+                          sx={{ mt: 1, color: "#767676" }}
                         >
-                          {chain.images?.map((image, index) => (
-                            <img
-                              src={image}
-                              alt="Product image"
-                              style={{
-                                height: 300,
-                                objectFit: "cover",
-                              }}
-                              key={index}
-                            />
-                          ))}
-                        </Stack>
-                      )}
+                          {chain.description}
+                        </Typography>
+                        {chain?.payload &&
+                          Object.entries(chain.payload).map(
+                            ([key, value]: [string, any]) => (
+                              <Typography
+                                sx={{ fontSize: "14px", mt: 1 }}
+                                key={key}
+                              >
+                                <b>{key}:</b> {value}
+                              </Typography>
+                            )
+                          )}
+
+                        {(chain?.images?.length || "") && (
+                          <Stack
+                            direction="row"
+                            justifyContent="flex-start"
+                            gap={1}
+                            alignItems="center"
+                            mt={2}
+                            flexWrap={"wrap"}
+                          >
+                            {chain.images?.map((image, index) => (
+                              <img
+                                src={image}
+                                alt="Product image"
+                                style={{
+                                  height: 300,
+                                  objectFit: "cover",
+                                }}
+                                key={index}
+                              />
+                            ))}
+                          </Stack>
+                        )}
+                      </Box>
                     </Box>
                   ))
                 ) : (

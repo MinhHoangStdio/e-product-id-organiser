@@ -181,13 +181,14 @@ const CreateChainsModal = () => {
       params: data,
       formData: listImage,
       metadata,
+      consignmentId: consignmentDetail?.id,
       onReset() {
         onCloseModal();
-        if (consignmentDetail?.id) {
-          dispatch(
-            consignmentActions.getConsignmentDetail(consignmentDetail?.id)
-          );
-        }
+        // if (consignmentDetail?.id) {
+        //   dispatch(
+        //     consignmentActions.getConsignmentDetail(consignmentDetail?.id)
+        //   );
+        // }
       },
     };
     console.log({ payload });
@@ -299,6 +300,8 @@ const CreateChainsModal = () => {
             }}
             label=""
             color="error"
+            width="50px"
+            height="50px"
             Icon={<DeleteIcon />}
           />
         </Stack>
