@@ -276,6 +276,8 @@ const CreateAndEditProductModal = () => {
             label=""
             color="error"
             Icon={<DeleteIcon />}
+            width="50px"
+            height="50px"
           />
         </Stack>
       ))}

@@ -3,8 +3,14 @@ import logoLanding from "../../assets/landingPage/logoLanding.png";
 import { useAppDispatch, useAppSelector } from "../../hooks/store";
 import { layoutActions } from "../../store/layout/layoutSlice";
 import { Stack } from "@mui/material";
+import { scrollDownToSection } from "../../utils/scrollDown";
 
 export default function Footer() {
+  const navItems = [
+    { label: "Trang chủ", to: "intro" },
+    { label: "Giới thiệu", to: "about" },
+    { label: "Sản phẩm nổi bật", to: "products" },
+  ];
   const userInfo = useAppSelector((state) => state.auth.dataUser);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -72,15 +78,31 @@ export default function Footer() {
           </div>
 
           <div className="grid grid-cols-1 gap-2 py-1 lg:grid-rows-3 text-white text-sm lg:text-left lg:justify-self-start lg:col-span-5 lg:gap-x-24 lg:grid-flow-col-dense">
-            <a className="hover:text-green-400" href="/introduce#">
-              Trang chủ
-            </a>
-            <a className="hover:text-green-400" href="/introduce#about">
-              Giới thiệu
-            </a>
-            <a className="hover:text-green-400" href="/introduce#products">
-              Sản phẩm nổi bật
-            </a>
+            {location.pathname.includes("/introduce") ? (
+              navItems.map((navItem) => (
+                <a
+                  style={{ cursor: "pointer" }}
+                  key={navItem.label}
+                  className="hover:text-green-400"
+                  onClick={() => scrollDownToSection(navItem.to)}
+                >
+                  {navItem.label}
+                </a>
+              ))
+            ) : (
+              <>
+                <Link className="hover:text-green-400" to="/introduce">
+                  Trang chủ
+                </Link>
+                <Link className="hover:text-green-400" to="/introduce">
+                  Giới thiệu
+                </Link>
+                <Link className="hover:text-green-400" to="/introduce">
+                  Sản phẩm nổi bật
+                </Link>
+              </>
+            )}
+
             <a
               className="hover:text-green-400"
               href="https://stdiohue.com/"

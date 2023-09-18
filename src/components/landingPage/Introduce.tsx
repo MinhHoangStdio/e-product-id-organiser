@@ -12,7 +12,7 @@ export default function Introduce() {
     navigate("/login");
   };
   return (
-    <section className="relative">
+    <section id="intro" className="relative">
       <div className="bg-image-mockups absolute w-full h-[40%] md:h-[50%] bg-no-repeat lg:hidden"></div>
       {/* <div className="bg-header-desktop absolute w-full h-full bg-no-repeat hidden lg:block bg-left -right-42.6%"></div> */}
       {/* <div className="bg-image-mockups absolute z-20 w-full h-1/2 bg-no-repeat bg-top -top-12 md:-top-16 bg-custom-mobile-mockup-size lg:hidden"></div> */}
