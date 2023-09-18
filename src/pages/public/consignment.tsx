@@ -144,6 +144,27 @@ const PublicConsignment = () => {
 
         {(consignment && organizerInfo ? (
           <Grid container sx={{ mt: 1 }} spacing={3}>
+            <Grid item xs={12} md={5}>
+              <Box
+                p={3}
+                sx={{
+                  background: "white",
+                  borderRadius: "20px",
+                  height: "100%",
+                }}
+              >
+                <Typography variant="h2">Thông tin tổ chức</Typography>
+                <Typography sx={{ fontSize: "14px", mt: 1 }}>
+                  <b>Tên tổ chức:</b> {organizerInfo.name}
+                </Typography>
+                <Typography sx={{ fontSize: "14px", mt: 1 }}>
+                  <b>Người sáng lập:</b> {organizerInfo.owner.name}
+                </Typography>
+                <Typography sx={{ fontSize: "14px", mt: 1 }}>
+                  <b>Số lượng thành viên:</b> {organizerInfo.member_count}
+                </Typography>
+              </Box>
+            </Grid>
             <Grid item xs={12} md={7}>
               <Box p={3} sx={{ background: "white", borderRadius: "20px" }}>
                 <Typography variant="h2">Thông tin lô hàng</Typography>
@@ -168,27 +189,6 @@ const PublicConsignment = () => {
                       </Typography>
                     )
                   )}
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={5}>
-              <Box
-                p={3}
-                sx={{
-                  background: "white",
-                  borderRadius: "20px",
-                  height: "100%",
-                }}
-              >
-                <Typography variant="h2">Thông tin tổ chức</Typography>
-                <Typography sx={{ fontSize: "14px", mt: 1 }}>
-                  <b>Tên tổ chức:</b> {organizerInfo.name}
-                </Typography>
-                <Typography sx={{ fontSize: "14px", mt: 1 }}>
-                  <b>Người sáng lập:</b> {organizerInfo.owner.name}
-                </Typography>
-                <Typography sx={{ fontSize: "14px", mt: 1 }}>
-                  <b>Số lượng thành viên:</b> {organizerInfo.member_count}
-                </Typography>
               </Box>
             </Grid>
           </Grid>
