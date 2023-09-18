@@ -5,11 +5,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/store";
 import { layoutActions } from "../../store/layout/layoutSlice";
+import { scrollDownToSection } from "../../utils/scrollDown";
 
 const navItems = [
-  { label: "Trang chủ", to: "/introduce#" },
-  { label: "Giới thiệu", to: "/introduce#about" },
-  { label: "Sản phẩm nổi bật", to: "/introduce#products" },
+  { label: "Trang chủ", to: "intro" },
+  { label: "Giới thiệu", to: "about" },
+  { label: "Sản phẩm nổi bật", to: "products" },
 ];
 
 export default function Navbar() {
@@ -43,9 +44,10 @@ export default function Navbar() {
             <div className="hidden lg:block text-sm text-neutral-grayish-blue">
               {navItems.map((navItem) => (
                 <a
+                  style={{ cursor: "pointer" }}
                   key={navItem.label}
                   className="mx-3 py-5 hover:gradient-border-bottom"
-                  href={navItem.to}
+                  onClick={() => scrollDownToSection(navItem.to)}
                 >
                   {navItem.label}
                 </a>
