@@ -96,13 +96,6 @@ const ConsignmentDetail = () => {
                     <Typography variant="h3" sx={{ fontWeight: 600 }}>
                       {consignment.name}
                     </Typography>
-                    {consignment?.product?.approval_status ==
-                      EApprovalStatus.Ban && (
-                      <Alert sx={{ flex: 1 }} severity="error">
-                        Sản phẩm của lô hàng này đã bị chặn.
-                      </Alert>
-                    )}
-
                     {consignment.product?.approval_status == "approved" ? (
                       <CustomButton
                         width="190px"
@@ -118,6 +111,12 @@ const ConsignmentDetail = () => {
                       <></>
                     )}
                   </Stack>
+                  {consignment?.product?.approval_status ==
+                    EApprovalStatus.Ban && (
+                    <Alert sx={{ px: 1, py: 0, mt: 1 }} severity="error">
+                      Sản phẩm của lô hàng này đã bị chặn.
+                    </Alert>
+                  )}
                   <Stack spacing={2} sx={{ mt: 3 }}>
                     <TextDetail
                       label="Mô tả lô hàng"
