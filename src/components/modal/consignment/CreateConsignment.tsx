@@ -12,6 +12,7 @@ import { productActions } from "../../../store/organizer/product/productSlice";
 import AddIcon from "@mui/icons-material/Add";
 import CustomButton from "../../share/CustomButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { EApprovalStatus } from "../../../types/enum/product";
 interface FieldValues {
   name: string;
   amount: number;
@@ -25,7 +26,7 @@ const CreateConsignmentModal = () => {
   const productDetail = useAppSelector((state) => state.product.detailProduct);
   const listAllProduct = useAppSelector(
     (state) => state.product.listAllProducts
-  );
+  ).filter((prod) => prod.approval_status !== EApprovalStatus.Ban);
   const loadingCreateConsignment = useAppSelector(
     (state) => state.consignment.loadingCreateConsignment
   );

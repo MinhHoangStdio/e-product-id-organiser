@@ -107,6 +107,18 @@ const ProductDetail = () => {
                       disabled={loadingSendRequest}
                       label="Gửi yêu cầu phê duyệt"
                     />
+                  ) : product?.approval_status == EApprovalStatus.Reject ? (
+                    <CustomButton
+                      size="small"
+                      width="220px"
+                      color="info"
+                      onClick={() => {
+                        dispatch(productActions.requestProduct(product?.id));
+                      }}
+                      Icon={<AddIcon />}
+                      disabled={loadingSendRequest}
+                      label="Gửi yêu cầu phê duyệt lại"
+                    />
                   ) : (
                     <CustomButton
                       size="small"

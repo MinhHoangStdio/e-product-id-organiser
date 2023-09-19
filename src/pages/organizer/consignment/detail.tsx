@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { Typography, Grid, Box, Stack, Chip, Divider } from "@mui/material";
+import {
+  Typography,
+  Grid,
+  Box,
+  Stack,
+  Chip,
+  Divider,
+  Alert,
+} from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { consignmentActions } from "../../../store/organizer/consignment/consignmentSlice";
@@ -16,6 +24,7 @@ import ImageSlider from "../../../components/organizer/product/ImageSlider";
 import TextDetail from "../../../components/organizer/product/TextDetail";
 import { toUpperFirstLetter } from "../../../utils/string/toUpperFirstLetter";
 import LoadingPage from "../../../components/LoadingPage";
+import { EApprovalStatus } from "../../../types/enum/product";
 
 const ConsignmentDetail = () => {
   const { id } = useParams();
@@ -68,9 +77,11 @@ const ConsignmentDetail = () => {
           <>
             <Grid sx={{ width: "100%" }} p={2} container columnSpacing={4}>
               <Grid item xs={12} mb={2}>
-                <Typography variant="h3" sx={{ fontWeight: 500 }}>
-                  Thông tin lô hàng
-                </Typography>
+                <Stack direction="row" spacing={1}>
+                  <Typography variant="h3" sx={{ fontWeight: 500 }}>
+                    Thông tin lô hàng
+                  </Typography>
+                </Stack>
               </Grid>
               <Grid item xs={6}>
                 <ImageSlider
@@ -85,6 +96,12 @@ const ConsignmentDetail = () => {
                     <Typography variant="h3" sx={{ fontWeight: 600 }}>
                       {consignment.name}
                     </Typography>
+                    {consignment?.product?.approval_status ==
+                      EApprovalStatus.Ban && (
+                      <Alert sx={{ flex: 1 }} severity="error">
+                        Sản phẩm của lô hàng này đã bị chặn.
+                      </Alert>
+                    )}
 
                     {consignment.product?.approval_status == "approved" ? (
                       <CustomButton

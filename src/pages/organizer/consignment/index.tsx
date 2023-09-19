@@ -139,6 +139,7 @@ const ConsignmentPage = () => {
                 <>
                   <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={cons.id}>
                     <ProductCard
+                      status={cons?.product?.approval_status}
                       img={cons?.product?.images[0]}
                       name={cons?.name}
                       amount={cons?.amount}
