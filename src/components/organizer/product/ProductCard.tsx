@@ -30,7 +30,7 @@ type IProductCard = {
   onAction?: () => void;
   labelAction?: string;
   onClick?: () => void;
-  status: string;
+  status?: string;
 };
 
 const ProductCard = ({
