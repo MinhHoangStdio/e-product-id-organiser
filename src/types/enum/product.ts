@@ -3,4 +3,5 @@ export enum EApprovalStatus {
   Reject = "reject",
   Pending = "pending",
   Requesting = "requesting",
+  Ban = "banned",
 }

@@ -64,14 +64,18 @@ const ProductDetail = () => {
               <Typography variant="h3" sx={{ fontWeight: 600 }}>
                 {product.name}
               </Typography>
-              <CustomButton
-                size="medium"
-                width="150px"
-                color="primary"
-                onClick={openConsignmentModal}
-                Icon={<AddIcon />}
-                label="Tạo lô hàng"
-              />
+              {product?.approval_status !== EApprovalStatus.Ban ? (
+                <CustomButton
+                  size="medium"
+                  width="150px"
+                  color="primary"
+                  onClick={openConsignmentModal}
+                  Icon={<AddIcon />}
+                  label="Tạo lô hàng"
+                />
+              ) : (
+                <></>
+              )}
             </Stack>
 
             <Stack spacing={2} sx={{ mt: 3 }}>
@@ -88,7 +92,8 @@ const ProductDetail = () => {
                   status={product?.approval_status as EApprovalStatus}
                 />
                 <Stack gap={1}>
-                  {product?.approval_status == "approved" ? (
+                  {product?.approval_status == "approved" ||
+                  product?.approval_status == EApprovalStatus.Ban ? (
                     <></>
                   ) : product?.approval_status == "pending" ? (
                     <CustomButton
@@ -127,6 +132,10 @@ const ProductDetail = () => {
                   {product?.category?.name
                     ? product?.category?.name
                     : "Chưa xác định"}
+                </Typography>
+                <Typography variant="h6" sx={{ color: "#767676" }}>
+                  <b>Số lượng lô hàng:</b>{" "}
+                  {product?.category?.name ? product?.consignment_count : 0}
                 </Typography>
                 {product?.payload ? (
                   Object.keys(product?.payload).length ? (
