@@ -48,7 +48,7 @@ const App = () => {
           <CssBaseline />
           <ScrollToTop />
           {isAuth && isLoggedIn ? <PrivateRoutes /> : <PublicRoutes />}
-          <ToastContainer limit={1} autoClose={3000} />
+          <ToastContainer limit={3} autoClose={3000} />
         </ThemeProvider>
       </StyledEngineProvider>
     </div>
