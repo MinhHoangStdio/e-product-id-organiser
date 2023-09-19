@@ -128,6 +128,7 @@ const ProductPage = () => {
               listProducts.map((prod) => (
                 <Grid sx={{ mt: 2, px: 1 }} item xs={3} key={prod.id}>
                   <ProductCard
+                    status={prod.approval_status}
                     img={prod.images[0]}
                     name={prod.name}
                     description={prod.description}

@@ -13,6 +13,7 @@ export interface Product {
     parent_id: number;
     id: number;
   };
+  consignment_count: number;
 }
 
 export interface Category {
