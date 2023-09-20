@@ -147,7 +147,7 @@ const ProductDetail = () => {
                 </Typography>
                 <Typography variant="h6" sx={{ color: "#767676" }}>
                   <b>Số lượng lô hàng:</b>{" "}
-                  {product?.category?.name ? product?.consignment_count : 0}
+                  {product?.consignment_count ? product?.consignment_count : 0}
                 </Typography>
                 {product?.payload ? (
                   Object.keys(product?.payload).length ? (
