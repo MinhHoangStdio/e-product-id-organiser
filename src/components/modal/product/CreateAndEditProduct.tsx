@@ -51,12 +51,27 @@ const CreateAndEditProductModal = () => {
 
   const [categoryIdLabel, setCategoryIdLabel] = useState<any>(null);
   const [metadataFields, setMetadataFields] = useState<
-    { id: number; key: string; value: string }[]
+    {
+      id: number;
+      key: string;
+      value: string;
+      errorKey: boolean;
+      errorKeyText: string;
+      errorValue: boolean;
+    }[]
   >([]);
+  const [activeValidateMetadata, setActiveValidateMetadata] = useState(false);
   const addField = () => {
     setMetadataFields([
       ...metadataFields,
-      { id: metadataFields.length, key: "", value: "" },
+      {
+        id: metadataFields.length,
+        key: "",
+        value: "",
+        errorKey: false,
+        errorKeyText: "",
+        errorValue: false,
+      },
     ]);
   };
 
@@ -69,8 +84,44 @@ const CreateAndEditProductModal = () => {
   };
   const typeModal = productSelected?.name ? "edit" : "create";
 
+  const validateMetadataField = () => {
+    setActiveValidateMetadata(true);
+    metadataFields.forEach((data, i) => {
+      if (!data.key) {
+        const updatedFields = [...metadataFields];
+        updatedFields[i].errorKey = true;
+        setMetadataFields(updatedFields);
+      }
+      if (
+        data.key &&
+        metadataFields.filter((mdata) => mdata.key.trim() == data.key.trim())
+          .length >= 2
+      ) {
+        const updatedFields = [...metadataFields];
+        updatedFields[i].errorKey = true;
+        updatedFields[i].errorKeyText = "Trường không được trùng tên";
+        setMetadataFields(updatedFields);
+      } else if (
+        data.key &&
+        metadataFields.filter((mdata) => mdata.key.trim() == data.key.trim())
+          .length < 2
+      ) {
+        const updatedFields = [...metadataFields];
+        updatedFields[i].errorKey = false;
+        updatedFields[i].errorKeyText = "";
+        setMetadataFields(updatedFields);
+      }
+      if (!data.value) {
+        const updatedFields = [...metadataFields];
+        updatedFields[i].errorValue = true;
+        setMetadataFields(updatedFields);
+      }
+    });
+  };
+
   const onCloseModal = () => {
     reset();
+    setActiveValidateMetadata(false);
     resetField();
     setCategoryIdLabel(null);
     dispatch(layoutActions.closeModalProduct());
@@ -128,6 +179,9 @@ const CreateAndEditProductModal = () => {
             id: index,
             key,
             value: productSelected.payload[key],
+            errorKey: false,
+            errorKeyText: "",
+            errorValue: false,
           })
         );
         setMetadataFields(transformedArray);
@@ -152,6 +206,9 @@ const CreateAndEditProductModal = () => {
       }
       return result;
     }, {});
+    const isValidMetadata = metadataFields.every(
+      (data) => !data.errorKey && !data.errorValue
+    );
     if (typeModal == "create") {
       const payload = {
         params: data,
@@ -165,7 +222,7 @@ const CreateAndEditProductModal = () => {
           reset();
         },
       };
-      dispatch(productActions.createProduct(payload));
+      isValidMetadata && dispatch(productActions.createProduct(payload));
     } else if (typeModal == "edit") {
       const payload = {
         params: data,
@@ -184,7 +241,7 @@ const CreateAndEditProductModal = () => {
           reset();
         },
       };
-      dispatch(productActions.editProduct(payload));
+      isValidMetadata && dispatch(productActions.editProduct(payload));
     }
   };
 
@@ -256,8 +313,53 @@ const CreateAndEditProductModal = () => {
             onChange={(e) => {
               const updatedFields = [...metadataFields];
               updatedFields[i].key = e.target.value;
+              if (activeValidateMetadata) {
+                updatedFields.forEach((uField, index) => {
+                  if (
+                    metadataFields.filter(
+                      (mdata) => mdata.key.trim() == uField.key.trim()
+                    ).length >= 2 &&
+                    uField.key
+                  ) {
+                    updatedFields[index].errorKey = true;
+                    updatedFields[index].errorKeyText =
+                      "Trường không được trùng tên";
+                  } else if (
+                    metadataFields.filter(
+                      (mdata) => mdata.key.trim() == uField.key.trim()
+                    ).length < 2 &&
+                    !uField.key
+                  ) {
+                    updatedFields[index].errorKey = true;
+                    updatedFields[index].errorKeyText = "";
+                  } else if (
+                    metadataFields.filter(
+                      (mdata) => mdata.key.trim() == uField.key.trim()
+                    ).length >= 2 &&
+                    !uField.key
+                  ) {
+                    updatedFields[index].errorKey = true;
+                    updatedFields[index].errorKeyText = "";
+                  } else {
+                    updatedFields[index].errorKey = false;
+                    updatedFields[index].errorKeyText = "";
+                  }
+                });
+                if (!e.target.value.trim()) {
+                  updatedFields[i].errorKey = true;
+                }
+              }
+
               setMetadataFields(updatedFields);
             }}
+            helperText={
+              field.errorKey
+                ? field.errorKeyText
+                  ? field.errorKeyText
+                  : "Vui lòng nhập giá trị"
+                : ""
+            }
+            error={field.errorKey}
           />
           <TextField
             sx={{ flex: 1 }}
@@ -266,8 +368,15 @@ const CreateAndEditProductModal = () => {
             onChange={(e) => {
               const updatedFields = [...metadataFields];
               updatedFields[i].value = e.target.value;
+              if (activeValidateMetadata) {
+                e.target.value.trim()
+                  ? (updatedFields[i].errorValue = false)
+                  : (updatedFields[i].errorValue = true);
+              }
               setMetadataFields(updatedFields);
             }}
+            helperText={field.errorValue ? "Vui lòng nhập giá trị" : ""}
+            error={field.errorValue}
           />
           <CustomButton
             onClick={() => {
@@ -379,7 +488,10 @@ const CreateAndEditProductModal = () => {
       title={typeModal == "create" ? "Tạo sản phẩm mới" : "Chỉnh sửa sản phẩm"}
       actionLabel={typeModal == "create" ? "Tạo" : "Sửa"}
       onClose={onCloseModal}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={() => {
+        validateMetadataField();
+        handleSubmit(onSubmit)();
+      }}
       body={bodyContent}
     />
   );
