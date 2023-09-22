@@ -219,6 +219,7 @@ const CreateConsignmentModal = () => {
         label="Số lượng"
         inputProps={{ ...register("amount") }}
         error={!!errors.amount?.message}
+        InputLabelProps={{ shrink: true }}
         required
         helperText={errors.amount?.message as string}
       />
