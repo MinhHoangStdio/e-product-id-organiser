@@ -40,6 +40,7 @@ const CreateConsignmentModal = () => {
       key: string;
       value: string;
       errorKey: boolean;
+      errorKeyText: string;
       errorValue: boolean;
     }[]
   >([]);
@@ -52,6 +53,7 @@ const CreateConsignmentModal = () => {
         key: "",
         value: "",
         errorKey: false,
+        errorKeyText: "",
         errorValue: false,
       },
     ]);
@@ -82,7 +84,12 @@ const CreateConsignmentModal = () => {
     resolver: yupResolver(
       yup.object().shape({
         name: yup.string().required("Vui lòng nhập tên lô hàng"),
-        amount: yup.number().required("Vui lòng nhập số lượng"),
+        amount: yup
+          .number()
+          .nullable()
+          .required("Vui lòng nhập số lượng")
+          .min(1, "Giá trị phải lớn hơn hoặc bằng 1")
+          .typeError("Vui lòng nhập một số hợp lệ"),
         description: yup.string().required("Vui lòng nhập mô tả"),
       })
     ),
@@ -117,6 +124,25 @@ const CreateConsignmentModal = () => {
       if (!data.key) {
         const updatedFields = [...metadataFields];
         updatedFields[i].errorKey = true;
+        setMetadataFields(updatedFields);
+      }
+      if (
+        data.key &&
+        metadataFields.filter((mdata) => mdata.key.trim() == data.key.trim())
+          .length >= 2
+      ) {
+        const updatedFields = [...metadataFields];
+        updatedFields[i].errorKey = true;
+        updatedFields[i].errorKeyText = "Trường không được trùng tên";
+        setMetadataFields(updatedFields);
+      } else if (
+        data.key &&
+        metadataFields.filter((mdata) => mdata.key.trim() == data.key.trim())
+          .length < 2
+      ) {
+        const updatedFields = [...metadataFields];
+        updatedFields[i].errorKey = false;
+        updatedFields[i].errorKeyText = "";
         setMetadataFields(updatedFields);
       }
       if (!data.value) {
@@ -210,19 +236,55 @@ const CreateConsignmentModal = () => {
           {" "}
           <TextField
             label="Tên trường"
-            value={field.key}
             onChange={(e) => {
               const updatedFields = [...metadataFields];
               updatedFields[i].key = e.target.value;
               if (activeValidateMetadata) {
-                e.target.value.trim()
-                  ? (updatedFields[i].errorKey = false)
-                  : (updatedFields[i].errorKey = true);
+                updatedFields.forEach((uField, index) => {
+                  if (
+                    metadataFields.filter(
+                      (mdata) => mdata.key.trim() == uField.key.trim()
+                    ).length >= 2 &&
+                    uField.key
+                  ) {
+                    updatedFields[index].errorKey = true;
+                    updatedFields[index].errorKeyText =
+                      "Trường không được trùng tên";
+                  } else if (
+                    metadataFields.filter(
+                      (mdata) => mdata.key.trim() == uField.key.trim()
+                    ).length < 2 &&
+                    !uField.key
+                  ) {
+                    updatedFields[index].errorKey = true;
+                    updatedFields[index].errorKeyText = "";
+                  } else if (
+                    metadataFields.filter(
+                      (mdata) => mdata.key.trim() == uField.key.trim()
+                    ).length >= 2 &&
+                    !uField.key
+                  ) {
+                    updatedFields[index].errorKey = true;
+                    updatedFields[index].errorKeyText = "";
+                  } else {
+                    updatedFields[index].errorKey = false;
+                    updatedFields[index].errorKeyText = "";
+                  }
+                });
+                if (!e.target.value.trim()) {
+                  updatedFields[i].errorKey = true;
+                }
               }
 
               setMetadataFields(updatedFields);
             }}
-            helperText={field.errorKey ? "Vui lòng nhập giá trị" : ""}
+            helperText={
+              field.errorKey
+                ? field.errorKeyText
+                  ? field.errorKeyText
+                  : "Vui lòng nhập giá trị"
+                : ""
+            }
             error={field.errorKey}
           />
           <TextField

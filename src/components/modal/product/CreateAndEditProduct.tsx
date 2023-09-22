@@ -217,6 +217,7 @@ const CreateAndEditProductModal = () => {
         onReset() {
           dispatch(productActions.resetTemporarylistImgUrl());
           dispatch(layoutActions.closeModalProduct());
+          setActiveValidateMetadata(false);
           setCategoryIdLabel(null);
           resetField();
           reset();

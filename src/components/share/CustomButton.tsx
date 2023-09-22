@@ -41,6 +41,9 @@ const CustomButton = ({
               height: height ? height : "",
               cursor: disabled ? "not-allowed !important" : "pointer",
               color: "#fff",
+              "&.Mui-disabled": {
+                color: "#c0c0c0",
+              },
             }
           : {
               bgcolor: `${colors.button[color]} !important`,
@@ -48,6 +51,9 @@ const CustomButton = ({
               cursor: disabled ? "not-allowed  !important" : "pointer",
               color: "#fff",
               height: height ? height : "",
+              "&.Mui-disabled": {
+                color: "#c0c0c0",
+              },
             }
       }
       size={size}
@@ -70,6 +76,10 @@ const CustomButton = ({
         color: "#fff",
         width: width ? width : "",
         height: height ? height : "",
+        "&.Mui-disabled": {
+          background: "#eaeaea",
+          color: "#c0c0c0",
+        },
       }}
       size={size}
       disabled={disabled}

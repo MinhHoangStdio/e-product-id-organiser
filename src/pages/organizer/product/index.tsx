@@ -1,6 +1,7 @@
 import {
   Grid,
   InputAdornment,
+  MenuItem,
   Pagination,
   Stack,
   TextField,
@@ -23,20 +24,30 @@ import EmptyOrganizer from "../../../components/organizer/EmptyOrganizer";
 import LoadingPage from "../../../components/LoadingPage";
 import SearchIcon from "@mui/icons-material/Search";
 import { debounceSearch } from "../../../utils/debounceSearch";
+import { EApprovalStatus } from "../../../types/enum/product";
 
 const ProductPage = () => {
   const [params, setParams] = useState<{
     limit: number;
     page: number;
     name?: string;
+    status?: string;
   }>({ limit: 8, page: 1 });
   const [searchProduct, setSearchProduct] = useState("");
+  const [productStatusLabel, setProductStatus] = useState("");
   const organizer = useAppSelector((state) => state.organizer.userOrganizer);
   const dispatch = useAppDispatch();
   const { listProducts, loadingGetProducts, pagination, isFetchProducts } =
     useAppSelector((state) => state.product);
 
   const debounceSearchListProduct = useCallback(debounceSearch, []);
+  const [listStatus] = useState([
+    { label: "Đã xác nhận", value: EApprovalStatus.Approve },
+    { label: "Đã chặn", value: EApprovalStatus.Ban },
+    { label: "Chưa yêu cầu", value: EApprovalStatus.Pending },
+    { label: "Đã từ chối", value: EApprovalStatus.Reject },
+    { label: "Chờ duyệt", value: EApprovalStatus.Requesting },
+  ]);
 
   const handleSearchProduct = (value: string) => {
     setSearchProduct(value);
@@ -72,6 +83,12 @@ const ProductPage = () => {
       return { ...prevState, page: value };
     });
   };
+
+  const resetParams = useCallback(() => {
+    setParams({ limit: 8, page: 1 });
+    setSearchProduct("");
+    setProductStatus("");
+  }, []);
 
   useEffect(() => {
     if (organizer?.id) {
@@ -111,6 +128,35 @@ const ProductPage = () => {
                     size="small"
                     value={searchProduct}
                     onChange={(e) => handleSearchProduct(e.target.value)}
+                  />
+                  <TextField
+                    sx={{ minWidth: "120px" }}
+                    size="small"
+                    variant="outlined"
+                    select
+                    id="product-status"
+                    label="Trạng thái"
+                    value={productStatusLabel}
+                    InputLabelProps={{ shrink: !!productStatusLabel }}
+                    onChange={(e: any) => {
+                      setParams((prevState) => ({
+                        ...prevState,
+                        status: e.target.value,
+                      }));
+                      setProductStatus(e.target.value);
+                    }}
+                  >
+                    {listStatus.map((status) => (
+                      <MenuItem key={status.value} value={status.value}>
+                        {status.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  <CustomButton
+                    disabled={!searchProduct && !productStatusLabel}
+                    color="error"
+                    onClick={resetParams}
+                    label="Xóa bộ lọc"
                   />
                 </Stack>
 
