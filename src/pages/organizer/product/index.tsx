@@ -142,6 +142,7 @@ const ProductPage = () => {
                       setParams((prevState) => ({
                         ...prevState,
                         status: e.target.value,
+                        page: 1,
                       }));
                       setProductStatus(e.target.value);
                     }}
