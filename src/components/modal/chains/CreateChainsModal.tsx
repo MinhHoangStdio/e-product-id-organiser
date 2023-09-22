@@ -50,12 +50,27 @@ const CreateChainsModal = () => {
   // const [step, setStep] = useState(STEPS.DESCRIPTION);
   // const [fields, setFields] = useState([{ id: 0, deleted: false }]); // Mảng các field
   const [metadataFields, setMetadataFields] = useState<
-    { id: number; key: string; value: string }[]
+    {
+      id: number;
+      key: string;
+      value: string;
+      errorKey: boolean;
+      errorKeyText: string;
+      errorValue: boolean;
+    }[]
   >([]);
+  const [activeValidateMetadata, setActiveValidateMetadata] = useState(false);
   const addField = () => {
     setMetadataFields([
       ...metadataFields,
-      { id: metadataFields.length, key: "", value: "" },
+      {
+        id: metadataFields.length,
+        key: "",
+        value: "",
+        errorKey: false,
+        errorKeyText: "",
+        errorValue: false,
+      },
     ]);
   };
 
@@ -67,6 +82,43 @@ const CreateChainsModal = () => {
     setMetadataFields([]);
   };
 
+  const validateMetadataField = () => {
+    setActiveValidateMetadata(true);
+    metadataFields.forEach((data, i) => {
+      if (!data.key) {
+        const updatedFields = [...metadataFields];
+        updatedFields[i].errorKey = true;
+        setMetadataFields(updatedFields);
+      }
+      if (
+        data.key &&
+        metadataFields.filter((mdata) => mdata.key.trim() == data.key.trim())
+          .length >= 2
+      ) {
+        const updatedFields = [...metadataFields];
+        updatedFields[i].errorKey = true;
+        updatedFields[i].errorKeyText = "Trường không được trùng tên";
+        setMetadataFields(updatedFields);
+      } else if (
+        data.key &&
+        metadataFields.filter((mdata) => mdata.key.trim() == data.key.trim())
+          .length < 2
+      ) {
+        const updatedFields = [...metadataFields];
+        updatedFields[i].errorKey = false;
+        updatedFields[i].errorKeyText = "";
+        setMetadataFields(updatedFields);
+      }
+      if (!data.value) {
+        const updatedFields = [...metadataFields];
+        updatedFields[i].errorValue = true;
+        setMetadataFields(updatedFields);
+      }
+    });
+  };
+  const isValidMetadata = metadataFields.every(
+    (data) => !data.errorKey && !data.errorValue
+  );
   //==========================================================handle upload imgs//==========================================================
   const listImage = useAppSelector((state) => state.chains.temporarylistImgUrl);
   const listStepImage = useAppSelector(
@@ -158,6 +210,18 @@ const CreateChainsModal = () => {
   // const resetField = () => {
   //   setFields([{ id: 0, deleted: false }]);
   // };
+  const onCloseModal = () => {
+    reset();
+    // setStep(STEPS.DESCRIPTION);
+    resetField();
+    setActiveValidateMetadata(false);
+    dispatch(layoutActions.closeModalChains());
+    dispatch(chainsActions.resetTemporarylistImgUrl());
+    dispatch(consignmentActions.resetSelectedConsignment());
+    if (consignmentDetail?.name) {
+      setValue("consignment_id", consignmentDetail?.id);
+    }
+  };
 
   const onSubmitOrNext: SubmitHandler<FieldValues> = async (data) => {
     // if (step == STEPS.DESCRIPTION) {
@@ -191,20 +255,7 @@ const CreateChainsModal = () => {
         // }
       },
     };
-    console.log({ payload });
-    dispatch(chainsActions.createChains(payload));
-  };
-
-  const onCloseModal = () => {
-    reset();
-    // setStep(STEPS.DESCRIPTION);
-    resetField();
-    dispatch(layoutActions.closeModalChains());
-    dispatch(chainsActions.resetTemporarylistImgUrl());
-    dispatch(consignmentActions.resetSelectedConsignment());
-    if (consignmentDetail?.name) {
-      setValue("consignment_id", consignmentDetail?.id);
-    }
+    isValidMetadata && dispatch(chainsActions.createChains(payload));
   };
 
   // const onSecondaryAction = () => {
@@ -264,7 +315,9 @@ const CreateChainsModal = () => {
               slotProps={{
                 textField: {
                   error: !!errors?.date_start,
-                  helperText: errors?.date_start ? "Invalid date" : null,
+                  helperText: errors?.date_start
+                    ? "Ngày tháng không hợp lệ"
+                    : null,
                 },
               }}
             />
@@ -281,8 +334,53 @@ const CreateChainsModal = () => {
             onChange={(e) => {
               const updatedFields = [...metadataFields];
               updatedFields[i].key = e.target.value;
+              if (activeValidateMetadata) {
+                updatedFields.forEach((uField, index) => {
+                  if (
+                    metadataFields.filter(
+                      (mdata) => mdata.key.trim() == uField.key.trim()
+                    ).length >= 2 &&
+                    uField.key
+                  ) {
+                    updatedFields[index].errorKey = true;
+                    updatedFields[index].errorKeyText =
+                      "Trường không được trùng tên";
+                  } else if (
+                    metadataFields.filter(
+                      (mdata) => mdata.key.trim() == uField.key.trim()
+                    ).length < 2 &&
+                    !uField.key
+                  ) {
+                    updatedFields[index].errorKey = true;
+                    updatedFields[index].errorKeyText = "";
+                  } else if (
+                    metadataFields.filter(
+                      (mdata) => mdata.key.trim() == uField.key.trim()
+                    ).length >= 2 &&
+                    !uField.key
+                  ) {
+                    updatedFields[index].errorKey = true;
+                    updatedFields[index].errorKeyText = "";
+                  } else {
+                    updatedFields[index].errorKey = false;
+                    updatedFields[index].errorKeyText = "";
+                  }
+                });
+                if (!e.target.value.trim()) {
+                  updatedFields[i].errorKey = true;
+                }
+              }
+
               setMetadataFields(updatedFields);
             }}
+            helperText={
+              field.errorKey
+                ? field.errorKeyText
+                  ? field.errorKeyText
+                  : "Vui lòng nhập giá trị"
+                : ""
+            }
+            error={field.errorKey}
           />
           <TextField
             sx={{ flex: 1 }}
@@ -291,8 +389,15 @@ const CreateChainsModal = () => {
             onChange={(e) => {
               const updatedFields = [...metadataFields];
               updatedFields[i].value = e.target.value;
+              if (activeValidateMetadata) {
+                e.target.value.trim()
+                  ? (updatedFields[i].errorValue = false)
+                  : (updatedFields[i].errorValue = true);
+              }
               setMetadataFields(updatedFields);
             }}
+            helperText={field.errorValue ? "Vui lòng nhập giá trị" : ""}
+            error={field.errorValue}
           />
           <CustomButton
             onClick={() => {
@@ -589,7 +694,10 @@ const CreateChainsModal = () => {
       // secondaryActionLabel={step == STEPS.DESCRIPTION ? "Cancel" : "Back"}
       onClose={onCloseModal}
       // secondaryAction={onSecondaryAction}
-      onSubmit={handleSubmit(onSubmitOrNext)}
+      onSubmit={() => {
+        validateMetadataField();
+        handleSubmit(onSubmitOrNext)();
+      }}
       body={bodyContent}
     />
   );
