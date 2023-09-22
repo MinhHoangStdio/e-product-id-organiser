@@ -189,7 +189,7 @@ const CreateAndEditProductModal = () => {
     } else {
       reset();
     }
-  }, [productSelected, setValue]);
+  }, [productSelected?.name, setValue]);
 
   useEffect(() => {
     dispatch(productActions.getAllListCategories());

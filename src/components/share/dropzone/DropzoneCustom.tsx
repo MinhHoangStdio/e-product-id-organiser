@@ -72,7 +72,7 @@ const DropzoneCustom = ({
     onDrop,
     onDropRejected: (files) => {
       if (files?.length > maxFile) {
-        toast.error(`The maximum amount allowed is ${maxFile}`);
+        toast.error(`Bạn chỉ được phép thêm ${maxFile} ảnh nữa`);
       }
     },
   });
