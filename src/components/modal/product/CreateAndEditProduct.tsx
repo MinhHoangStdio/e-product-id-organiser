@@ -26,7 +26,7 @@ interface FieldValues {
   name: string;
   description: string;
   images?: any;
-  payload?: any;
+  payload: { name: string; value: string }[] | undefined;
   category_id?: any;
 }
 
@@ -48,80 +48,44 @@ const CreateAndEditProductModal = () => {
   const isOpenModal = useAppSelector(
     (state) => state.layout.isOpenProductModal
   );
-
-  const [categoryIdLabel, setCategoryIdLabel] = useState<any>(null);
-  const [metadataFields, setMetadataFields] = useState<
+  const [payloadFields, setPayloadFields] = useState<
     {
-      id: number;
-      key: string;
+      name: string;
       value: string;
-      errorKey: boolean;
-      errorKeyText: string;
-      errorValue: boolean;
     }[]
   >([]);
-  const [activeValidateMetadata, setActiveValidateMetadata] = useState(false);
+  const [categoryIdLabel, setCategoryIdLabel] = useState<any>(null);
+
   const addField = () => {
-    setMetadataFields([
-      ...metadataFields,
-      {
-        id: metadataFields.length,
-        key: "",
-        value: "",
-        errorKey: false,
-        errorKeyText: "",
-        errorValue: false,
-      },
-    ]);
+    const fields = getValues("payload") || [];
+    const cleanedFields = fields.filter(
+      (field: { name: string; value: string }) =>
+        field.name !== undefined && field.value !== undefined
+    );
+    cleanedFields.push({ name: "", value: "" });
+    setValue("payload", cleanedFields);
+    setPayloadFields(cleanedFields);
   };
 
-  const removeField = (id: number) => {
-    setMetadataFields(metadataFields.filter((field) => field.id !== id));
-  };
-
-  const resetField = () => {
-    setMetadataFields([]);
-  };
-  const typeModal = productSelected?.name ? "edit" : "create";
-
-  const validateMetadataField = () => {
-    setActiveValidateMetadata(true);
-    metadataFields.forEach((data, i) => {
-      if (!data.key) {
-        const updatedFields = [...metadataFields];
-        updatedFields[i].errorKey = true;
-        setMetadataFields(updatedFields);
-      }
-      if (
-        data.key &&
-        metadataFields.filter((mdata) => mdata.key.trim() == data.key.trim())
-          .length >= 2
-      ) {
-        const updatedFields = [...metadataFields];
-        updatedFields[i].errorKey = true;
-        updatedFields[i].errorKeyText = "Trường không được trùng tên";
-        setMetadataFields(updatedFields);
-      } else if (
-        data.key &&
-        metadataFields.filter((mdata) => mdata.key.trim() == data.key.trim())
-          .length < 2
-      ) {
-        const updatedFields = [...metadataFields];
-        updatedFields[i].errorKey = false;
-        updatedFields[i].errorKeyText = "";
-        setMetadataFields(updatedFields);
-      }
-      if (!data.value) {
-        const updatedFields = [...metadataFields];
-        updatedFields[i].errorValue = true;
-        setMetadataFields(updatedFields);
-      }
+  const removeField = (index: number) => {
+    const fields = getValues("payload") || [];
+    fields.splice(index, 1);
+    setPayloadFields(fields);
+    setValue("payload", fields);
+    fields.forEach((field: { name: string; value: string }, idx: number) => {
+      setValue(`payload.${idx}.name`, field.name);
+      setValue(`payload.${idx}.value`, field.value);
     });
   };
 
+  const resetField = () => {
+    setValue("payload", []);
+    setPayloadFields([]);
+  };
+  const typeModal = productSelected?.name ? "edit" : "create";
+
   const onCloseModal = () => {
     reset();
-    setActiveValidateMetadata(false);
     resetField();
     setCategoryIdLabel(null);
     dispatch(layoutActions.closeModalProduct());
@@ -147,19 +111,45 @@ const CreateAndEditProductModal = () => {
     handleSubmit,
     reset,
     setValue,
+    getValues,
+    clearErrors,
+    trigger,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
       name: "",
       description: "",
       images: [],
-      payload: null,
+      payload: [] as { name: string; value: string }[],
       category_id: null,
     },
     resolver: yupResolver(
       yup.object().shape({
         name: yup.string().required("Vui lòng nhập tên sản phẩm"),
         description: yup.string().required("Vui lòng nhập mô tả sản phẩm"),
+        payload: yup.array().of(
+          yup.object().shape({
+            name: yup
+              .string()
+              .required("Nhập tên trường")
+              .test(
+                "is-unique",
+                "Tên trường không được trùng nhau",
+                function (value) {
+                  const originPayload = getValues().payload;
+                  const length = originPayload?.filter(
+                    (item) => item.name.trim() == value.trim()
+                  ).length;
+                  if (length && length < 2) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }
+              ),
+            value: yup.string().required("Nhập giá trị"),
+          })
+        ),
       })
     ),
   });
@@ -175,16 +165,13 @@ const CreateAndEditProductModal = () => {
       setValue("images", productSelected.images);
       if (productSelected.payload) {
         const transformedArray = Object.keys(productSelected.payload).map(
-          (key, index) => ({
-            id: index,
-            key,
+          (key) => ({
+            name: key,
             value: productSelected.payload[key],
-            errorKey: false,
-            errorKeyText: "",
-            errorValue: false,
           })
         );
-        setMetadataFields(transformedArray);
+        setValue("payload", transformedArray);
+        setPayloadFields(transformedArray);
       }
     } else {
       reset();
@@ -200,33 +187,30 @@ const CreateAndEditProductModal = () => {
   }, [listImage]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const metadata = metadataFields.reduce((result: any, field) => {
-      if (field.key && field.value) {
-        result[field.key] = field.value;
+    const metadata = data.payload?.reduce((result: any, field) => {
+      if (field.name && field.value) {
+        result[field.name.trim()] = field.value.trim();
       }
       return result;
     }, {});
-    const isValidMetadata = metadataFields.every(
-      (data) => !data.errorKey && !data.errorValue
-    );
+    const { payload, ...params } = data;
     if (typeModal == "create") {
-      const payload = {
-        params: data,
+      const payloadRequest = {
+        params,
         formData: listImage,
         metadata,
         onReset() {
           dispatch(productActions.resetTemporarylistImgUrl());
           dispatch(layoutActions.closeModalProduct());
-          setActiveValidateMetadata(false);
           setCategoryIdLabel(null);
           resetField();
           reset();
         },
       };
-      isValidMetadata && dispatch(productActions.createProduct(payload));
+      dispatch(productActions.createProduct(payloadRequest));
     } else if (typeModal == "edit") {
-      const payload = {
-        params: data,
+      const payloadRequest = {
+        params,
         formData: listImage,
         metadata,
         productImages: productSelected?.images,
@@ -242,7 +226,7 @@ const CreateAndEditProductModal = () => {
           reset();
         },
       };
-      isValidMetadata && dispatch(productActions.editProduct(payload));
+      dispatch(productActions.editProduct(payloadRequest));
     }
   };
 
@@ -305,83 +289,76 @@ const CreateAndEditProductModal = () => {
         ))}
       </TextField>
       {/* Option fields */}
-      {metadataFields.map((field, i) => (
-        <Stack direction="row" gap={1} alignItems="center">
+      {payloadFields.map((field, index) => (
+        <Stack direction="row" gap={1} key={index}>
           {" "}
           <TextField
+            id={`name-${index}`}
             label="Tên trường"
-            value={field.key}
-            onChange={(e) => {
-              const updatedFields = [...metadataFields];
-              updatedFields[i].key = e.target.value;
-              if (activeValidateMetadata) {
-                updatedFields.forEach((uField, index) => {
-                  if (
-                    metadataFields.filter(
-                      (mdata) => mdata.key.trim() == uField.key.trim()
-                    ).length >= 2 &&
-                    uField.key
-                  ) {
-                    updatedFields[index].errorKey = true;
-                    updatedFields[index].errorKeyText =
-                      "Trường không được trùng tên";
-                  } else if (
-                    metadataFields.filter(
-                      (mdata) => mdata.key.trim() == uField.key.trim()
-                    ).length < 2 &&
-                    !uField.key
-                  ) {
-                    updatedFields[index].errorKey = true;
-                    updatedFields[index].errorKeyText = "";
-                  } else if (
-                    metadataFields.filter(
-                      (mdata) => mdata.key.trim() == uField.key.trim()
-                    ).length >= 2 &&
-                    !uField.key
-                  ) {
-                    updatedFields[index].errorKey = true;
-                    updatedFields[index].errorKeyText = "";
-                  } else {
-                    updatedFields[index].errorKey = false;
-                    updatedFields[index].errorKeyText = "";
-                  }
-                });
-                if (!e.target.value.trim()) {
-                  updatedFields[i].errorKey = true;
-                }
-              }
-
-              setMetadataFields(updatedFields);
-            }}
-            helperText={
-              field.errorKey
-                ? field.errorKeyText
-                  ? field.errorKeyText
-                  : "Vui lòng nhập giá trị"
-                : ""
+            inputProps={{ ...register(`payload.${index}.name`) }}
+            InputLabelProps={{ shrink: true }}
+            error={
+              !!errors.payload &&
+              !!errors.payload[index] &&
+              !!errors.payload[index]?.name
             }
-            error={field.errorKey}
+            required
+            helperText={
+              !!errors.payload &&
+              !!errors.payload[index] &&
+              !!errors.payload[index]?.name &&
+              errors.payload[index]?.name?.message
+            }
+            onChange={() => {
+              if (errors.payload) {
+                trigger(`payload`);
+              }
+              if (
+                !!errors.payload &&
+                !!errors.payload[index] &&
+                !!errors.payload[index]?.name
+              ) {
+                clearErrors(`payload.${index}.name`);
+                trigger(`payload`);
+              }
+            }}
           />
           <TextField
-            sx={{ flex: 1 }}
+            fullWidth
+            id={`description-${index}`}
             label="Giá trị"
-            value={field.value}
-            onChange={(e) => {
-              const updatedFields = [...metadataFields];
-              updatedFields[i].value = e.target.value;
-              if (activeValidateMetadata) {
-                e.target.value.trim()
-                  ? (updatedFields[i].errorValue = false)
-                  : (updatedFields[i].errorValue = true);
-              }
-              setMetadataFields(updatedFields);
+            inputProps={{
+              ...register(`payload.${index}.value`),
             }}
-            helperText={field.errorValue ? "Vui lòng nhập giá trị" : ""}
-            error={field.errorValue}
+            InputLabelProps={{ shrink: true }}
+            error={
+              !!errors.payload &&
+              !!errors.payload[index] &&
+              !!errors.payload[index]?.value
+            }
+            required
+            helperText={
+              !!errors.payload &&
+              !!errors.payload[index] &&
+              !!errors.payload[index]?.value &&
+              errors.payload[index]?.value?.message
+            }
+            onChange={() => {
+              if (
+                !!errors.payload &&
+                !!errors.payload[index] &&
+                !!errors.payload[index]?.value
+              ) {
+                clearErrors(`payload.${index}.value`);
+              }
+            }}
           />
           <CustomButton
             onClick={() => {
-              removeField(field.id);
+              removeField(index);
+              if (errors.payload) {
+                trigger(`payload`);
+              }
             }}
             label=""
             color="error"
@@ -490,7 +467,6 @@ const CreateAndEditProductModal = () => {
       actionLabel={typeModal == "create" ? "Tạo" : "Sửa"}
       onClose={onCloseModal}
       onSubmit={() => {
-        validateMetadataField();
         handleSubmit(onSubmit)();
       }}
       body={bodyContent}

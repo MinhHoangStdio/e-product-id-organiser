@@ -38,6 +38,7 @@ interface FieldValues {
   images?: any;
   consignment_id?: any;
   date_start: any;
+  payload: { name: string; value: string }[] | undefined;
 }
 const CreateChainsModal = () => {
   const theme = useTheme();
@@ -49,76 +50,38 @@ const CreateChainsModal = () => {
   const dispatch = useAppDispatch();
   // const [step, setStep] = useState(STEPS.DESCRIPTION);
   // const [fields, setFields] = useState([{ id: 0, deleted: false }]); // Mảng các field
-  const [metadataFields, setMetadataFields] = useState<
+  const [payloadFields, setPayloadFields] = useState<
     {
-      id: number;
-      key: string;
+      name: string;
       value: string;
-      errorKey: boolean;
-      errorKeyText: string;
-      errorValue: boolean;
     }[]
   >([]);
-  const [activeValidateMetadata, setActiveValidateMetadata] = useState(false);
   const addField = () => {
-    setMetadataFields([
-      ...metadataFields,
-      {
-        id: metadataFields.length,
-        key: "",
-        value: "",
-        errorKey: false,
-        errorKeyText: "",
-        errorValue: false,
-      },
-    ]);
+    const fields = getValues("payload") || [];
+    const cleanedFields = fields.filter(
+      (field: { name: string; value: string }) =>
+        field.name !== undefined && field.value !== undefined
+    );
+    cleanedFields.push({ name: "", value: "" });
+    setValue("payload", cleanedFields);
+    setPayloadFields(cleanedFields);
   };
 
-  const removeField = (id: number) => {
-    setMetadataFields(metadataFields.filter((field) => field.id !== id));
+  const removeField = (index: number) => {
+    const fields = getValues("payload") || [];
+    fields.splice(index, 1);
+    setPayloadFields(fields);
+    setValue("payload", fields);
+    fields.forEach((field: { name: string; value: string }, idx: number) => {
+      setValue(`payload.${idx}.name`, field.name);
+      setValue(`payload.${idx}.value`, field.value);
+    });
   };
 
   const resetField = () => {
-    setMetadataFields([]);
+    setValue("payload", []);
+    setPayloadFields([]);
   };
-
-  const validateMetadataField = () => {
-    setActiveValidateMetadata(true);
-    metadataFields.forEach((data, i) => {
-      if (!data.key) {
-        const updatedFields = [...metadataFields];
-        updatedFields[i].errorKey = true;
-        setMetadataFields(updatedFields);
-      }
-      if (
-        data.key &&
-        metadataFields.filter((mdata) => mdata.key.trim() == data.key.trim())
-          .length >= 2
-      ) {
-        const updatedFields = [...metadataFields];
-        updatedFields[i].errorKey = true;
-        updatedFields[i].errorKeyText = "Trường không được trùng tên";
-        setMetadataFields(updatedFields);
-      } else if (
-        data.key &&
-        metadataFields.filter((mdata) => mdata.key.trim() == data.key.trim())
-          .length < 2
-      ) {
-        const updatedFields = [...metadataFields];
-        updatedFields[i].errorKey = false;
-        updatedFields[i].errorKeyText = "";
-        setMetadataFields(updatedFields);
-      }
-      if (!data.value) {
-        const updatedFields = [...metadataFields];
-        updatedFields[i].errorValue = true;
-        setMetadataFields(updatedFields);
-      }
-    });
-  };
-  const isValidMetadata = metadataFields.every(
-    (data) => !data.errorKey && !data.errorValue
-  );
   //==========================================================handle upload imgs//==========================================================
   const listImage = useAppSelector((state) => state.chains.temporarylistImgUrl);
   const listStepImage = useAppSelector(
@@ -152,10 +115,9 @@ const CreateChainsModal = () => {
     handleSubmit,
     reset,
     setValue,
+    getValues,
     clearErrors,
     trigger,
-    unregister,
-    getValues,
     control,
     formState: { errors },
   } = useForm<FieldValues>({
@@ -165,6 +127,7 @@ const CreateChainsModal = () => {
       images: [],
       consignment_id: null,
       date_start: dayjs(new Date()),
+      payload: [] as { name: string; value: string }[],
     },
     resolver: yupResolver(
       yup.object().shape({
@@ -172,17 +135,29 @@ const CreateChainsModal = () => {
         description: yup.string().required("Vui lòng nhập mô tả cho công đoạn"),
         // images: yup.array().min(1, "Insert images").required("Insert images"),
         date_start: yup.date().required("Vui lòng chọn ngày"),
-
-        // payload: yup
-        //   .array()
-        //   .of(
-        //     yup.object().shape({
-        //       name: yup.string().required("Insert name"),
-        //       description: yup.string().required("Insert description"),
-        //     })
-        //   )
-        //   .min(1, "Insert Chain")
-        //   .required("Insert images"),
+        payload: yup.array().of(
+          yup.object().shape({
+            name: yup
+              .string()
+              .required("Nhập tên trường")
+              .test(
+                "is-unique",
+                "Tên trường không được trùng nhau",
+                function (value) {
+                  const originPayload = getValues().payload;
+                  const length = originPayload?.filter(
+                    (item) => item.name.trim() == value.trim()
+                  ).length;
+                  if (length && length < 2) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }
+              ),
+            value: yup.string().required("Nhập giá trị"),
+          })
+        ),
       })
     ),
   });
@@ -198,23 +173,9 @@ const CreateChainsModal = () => {
       reset();
     }
   }, [consignmentDetail, setValue]);
-
-  // const addField = () => {
-  //   setFields([...fields, { id: fields.length, deleted: false }]);
-  // };
-
-  // const removeField = (id: number) => {
-  //   setFields(fields.filter((field) => field.id !== id));
-  // };
-
-  // const resetField = () => {
-  //   setFields([{ id: 0, deleted: false }]);
-  // };
   const onCloseModal = () => {
     reset();
-    // setStep(STEPS.DESCRIPTION);
     resetField();
-    setActiveValidateMetadata(false);
     dispatch(layoutActions.closeModalChains());
     dispatch(chainsActions.resetTemporarylistImgUrl());
     dispatch(consignmentActions.resetSelectedConsignment());
@@ -235,14 +196,15 @@ const CreateChainsModal = () => {
     //     setStep(step + 1);
     //   }
     // } else {
-    const metadata = metadataFields.reduce((result: any, field) => {
-      if (field.key && field.value) {
-        result[field.key] = field.value;
+    const metadata = data.payload?.reduce((result: any, field) => {
+      if (field.name && field.value) {
+        result[field.name.trim()] = field.value.trim();
       }
       return result;
     }, {});
-    const payload = {
-      params: data,
+    const { payload, ...params } = data;
+    const payloadRequest = {
+      params,
       formData: listImage,
       metadata,
       consignmentId: consignmentDetail?.id,
@@ -255,7 +217,7 @@ const CreateChainsModal = () => {
         // }
       },
     };
-    isValidMetadata && dispatch(chainsActions.createChains(payload));
+    dispatch(chainsActions.createChains(payloadRequest));
   };
 
   // const onSecondaryAction = () => {
@@ -325,89 +287,82 @@ const CreateChainsModal = () => {
         }}
       />
       {/* Option fields */}
-      {metadataFields.map((field, i) => (
-        <Stack direction="row" gap={1} alignItems="center">
+      {payloadFields.map((field, index) => (
+        <Stack direction="row" gap={1} key={index}>
           {" "}
           <TextField
+            id={`name-${index}`}
             label="Tên trường"
-            value={field.key}
-            onChange={(e) => {
-              const updatedFields = [...metadataFields];
-              updatedFields[i].key = e.target.value;
-              if (activeValidateMetadata) {
-                updatedFields.forEach((uField, index) => {
-                  if (
-                    metadataFields.filter(
-                      (mdata) => mdata.key.trim() == uField.key.trim()
-                    ).length >= 2 &&
-                    uField.key
-                  ) {
-                    updatedFields[index].errorKey = true;
-                    updatedFields[index].errorKeyText =
-                      "Trường không được trùng tên";
-                  } else if (
-                    metadataFields.filter(
-                      (mdata) => mdata.key.trim() == uField.key.trim()
-                    ).length < 2 &&
-                    !uField.key
-                  ) {
-                    updatedFields[index].errorKey = true;
-                    updatedFields[index].errorKeyText = "";
-                  } else if (
-                    metadataFields.filter(
-                      (mdata) => mdata.key.trim() == uField.key.trim()
-                    ).length >= 2 &&
-                    !uField.key
-                  ) {
-                    updatedFields[index].errorKey = true;
-                    updatedFields[index].errorKeyText = "";
-                  } else {
-                    updatedFields[index].errorKey = false;
-                    updatedFields[index].errorKeyText = "";
-                  }
-                });
-                if (!e.target.value.trim()) {
-                  updatedFields[i].errorKey = true;
-                }
-              }
-
-              setMetadataFields(updatedFields);
-            }}
-            helperText={
-              field.errorKey
-                ? field.errorKeyText
-                  ? field.errorKeyText
-                  : "Vui lòng nhập giá trị"
-                : ""
+            inputProps={{ ...register(`payload.${index}.name`) }}
+            InputLabelProps={{ shrink: true }}
+            error={
+              !!errors.payload &&
+              !!errors.payload[index] &&
+              !!errors.payload[index]?.name
             }
-            error={field.errorKey}
+            required
+            helperText={
+              !!errors.payload &&
+              !!errors.payload[index] &&
+              !!errors.payload[index]?.name &&
+              errors.payload[index]?.name?.message
+            }
+            onChange={() => {
+              if (errors.payload) {
+                trigger(`payload`);
+              }
+              if (
+                !!errors.payload &&
+                !!errors.payload[index] &&
+                !!errors.payload[index]?.name
+              ) {
+                clearErrors(`payload.${index}.name`);
+                trigger(`payload`);
+              }
+            }}
           />
           <TextField
-            sx={{ flex: 1 }}
+            fullWidth
+            id={`description-${index}`}
             label="Giá trị"
-            value={field.value}
-            onChange={(e) => {
-              const updatedFields = [...metadataFields];
-              updatedFields[i].value = e.target.value;
-              if (activeValidateMetadata) {
-                e.target.value.trim()
-                  ? (updatedFields[i].errorValue = false)
-                  : (updatedFields[i].errorValue = true);
-              }
-              setMetadataFields(updatedFields);
+            inputProps={{
+              ...register(`payload.${index}.value`),
             }}
-            helperText={field.errorValue ? "Vui lòng nhập giá trị" : ""}
-            error={field.errorValue}
+            InputLabelProps={{ shrink: true }}
+            error={
+              !!errors.payload &&
+              !!errors.payload[index] &&
+              !!errors.payload[index]?.value
+            }
+            required
+            helperText={
+              !!errors.payload &&
+              !!errors.payload[index] &&
+              !!errors.payload[index]?.value &&
+              errors.payload[index]?.value?.message
+            }
+            onChange={() => {
+              if (
+                !!errors.payload &&
+                !!errors.payload[index] &&
+                !!errors.payload[index]?.value
+              ) {
+                clearErrors(`payload.${index}.value`);
+              }
+            }}
           />
           <CustomButton
             onClick={() => {
-              removeField(field.id);
+              removeField(index);
+              if (errors.payload) {
+                trigger(`payload`);
+              }
             }}
             label=""
             color="error"
+            Icon={<DeleteIcon />}
             width="50px"
             height="50px"
-            Icon={<DeleteIcon />}
           />
         </Stack>
       ))}
@@ -695,7 +650,6 @@ const CreateChainsModal = () => {
       onClose={onCloseModal}
       // secondaryAction={onSecondaryAction}
       onSubmit={() => {
-        validateMetadataField();
         handleSubmit(onSubmitOrNext)();
       }}
       body={bodyContent}
