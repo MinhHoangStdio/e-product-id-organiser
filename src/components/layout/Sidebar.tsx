@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import { Avatar, Box, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  IconButton,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/store";
 import { layoutActions } from "../../store/layout/layoutSlice";
@@ -11,6 +18,7 @@ import WysiwygIcon from "@mui/icons-material/Wysiwyg";
 import GroupIcon from "@mui/icons-material/Group";
 import CategoryIcon from "@mui/icons-material/Category";
 import LogoutIcon from "@mui/icons-material/Logout";
+import SettingsIcon from "@mui/icons-material/Settings";
 import InfoIcon from "@mui/icons-material/Info";
 import { authActions } from "../../store/auth/authSlice";
 import { colorToken } from "../../theme/colorToken";
@@ -199,63 +207,55 @@ const SidebarCustom = () => {
               selected={selected}
               setSelected={setSelected}
             /> */}
-            <SubMenu
-              defaultOpen={openOrganizerMenu}
-              open={openOrganizerMenu}
-              onOpenChange={() => {
-                setOpenOrganizerMenu(!openOrganizerMenu);
-              }}
-              icon={<ApartmentIcon />}
-              label={<Typography fontWeight="500">Tổ chức</Typography>}
-            >
-              {/* <MenuItem
-                active={selected.toLowerCase() === "organizer/info"}
-                onClick={() => {
-                  setSelected("organizer/info");
-                  navigate("/organizer/info");
-                }}
-                icon={<InfoIcon />}
-              >
-                <Typography fontWeight="500">Thông tin về tổ chức</Typography>
-              </MenuItem> */}
-              <MenuItem
-                active={selected.toLowerCase().includes("organizer/products")}
-                onClick={() => {
-                  setSelected("organizer/products");
-                  navigate("/organizer/products");
-                }}
-                icon={<CategoryIcon />}
-              >
-                <Typography fontWeight="500">Sản phẩm</Typography>
-              </MenuItem>
-              <MenuItem
-                active={
-                  selected.toLowerCase() === "organizer/consignments" ||
-                  selected.toLowerCase().includes("organizer/consignments")
-                }
-                onClick={() => {
-                  setSelected("organizer/consignments");
-                  navigate("/organizer/consignments");
-                }}
-                icon={<WysiwygIcon />}
-              >
-                <Typography fontWeight="500">Lô hàng</Typography>
-              </MenuItem>
-              <MenuItem
-                active={selected.toLowerCase() === "organizer/members"}
-                onClick={() => {
-                  setSelected("organizer/members");
-                  navigate("/organizer/members");
-                }}
-                icon={<GroupIcon />}
-              >
-                <Typography fontWeight="500">Thành viên</Typography>
-              </MenuItem>
-            </SubMenu>
             {!isCollapseSidebar && (
-              <Typography variant="h6" sx={{ m: "15px 0 5px 20px" }}>
-                Cài đặt
-              </Typography>
+              <Stack direction="row" spacing={1} sx={{ m: "10px 0 10px 10px" }}>
+                <ApartmentIcon />
+                <Typography variant="h5" fontWeight={600}>
+                  Tổ chức
+                </Typography>
+              </Stack>
+            )}
+            <MenuItem
+              active={selected.toLowerCase().includes("organizer/products")}
+              onClick={() => {
+                setSelected("organizer/products");
+                navigate("/organizer/products");
+              }}
+              icon={<CategoryIcon />}
+            >
+              <Typography fontWeight="500">Sản phẩm</Typography>
+            </MenuItem>
+            <MenuItem
+              active={
+                selected.toLowerCase() === "organizer/consignments" ||
+                selected.toLowerCase().includes("organizer/consignments")
+              }
+              onClick={() => {
+                setSelected("organizer/consignments");
+                navigate("/organizer/consignments");
+              }}
+              icon={<WysiwygIcon />}
+            >
+              <Typography fontWeight="500">Lô hàng</Typography>
+            </MenuItem>
+            <MenuItem
+              active={selected.toLowerCase() === "organizer/members"}
+              onClick={() => {
+                setSelected("organizer/members");
+                navigate("/organizer/members");
+              }}
+              icon={<GroupIcon />}
+            >
+              <Typography fontWeight="500">Thành viên</Typography>
+            </MenuItem>
+
+            {!isCollapseSidebar && (
+              <Stack direction="row" spacing={1} sx={{ m: "10px 0 10px 10px" }}>
+                <SettingsIcon />
+                <Typography variant="h5" fontWeight={600}>
+                  Cài đặt
+                </Typography>
+              </Stack>
             )}
             <MenuItem
               style={{ marginTop: "8px" }}
