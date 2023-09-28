@@ -28,7 +28,11 @@ const SendEmail = ({ onNext }: { onNext: () => void }) => {
       yup.object().shape({
         email: yup
           .string()
-          .email("Email không hợp lệ")
+          .matches(
+            /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+            "Email không hợp lệ"
+          )
+          // .email("Email không hợp lệ")
           .required("Email không hợp lệ"),
       })
     ),
