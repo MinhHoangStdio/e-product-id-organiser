@@ -66,7 +66,9 @@ const SidebarCustom = () => {
       })
     );
   };
-
+  useEffect(() => {
+    setSelected(path);
+  }, [path]);
   return (
     <Box
       sx={{
@@ -203,16 +205,6 @@ const SidebarCustom = () => {
               </Stack>
             )}
             <MenuItem
-              active={selected.toLowerCase().includes("organizer/dashboard")}
-              onClick={() => {
-                setSelected("organizer/dashboard");
-                navigate("/organizer/dashboard");
-              }}
-              icon={<SpaceDashboardIcon />}
-            >
-              <Typography fontWeight="500">Thống kê</Typography>
-            </MenuItem>
-            <MenuItem
               active={selected.toLowerCase().includes("organizer/products")}
               onClick={() => {
                 setSelected("organizer/products");
@@ -245,6 +237,16 @@ const SidebarCustom = () => {
               icon={<GroupIcon />}
             >
               <Typography fontWeight="500">Thành viên</Typography>
+            </MenuItem>
+            <MenuItem
+              active={selected.toLowerCase().includes("organizer/dashboard")}
+              onClick={() => {
+                setSelected("organizer/dashboard");
+                navigate("/organizer/dashboard");
+              }}
+              icon={<SpaceDashboardIcon />}
+            >
+              <Typography fontWeight="500">Thống kê</Typography>
             </MenuItem>
 
             {!isCollapseSidebar && (

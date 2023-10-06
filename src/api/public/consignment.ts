@@ -9,6 +9,10 @@ const publicConsignmentApi = {
     const url = `/organizations/${id}`;
     return axiosPublic.get(url);
   },
+  updateViewCount(productId: any) {
+    const url = `/products/${productId}/update-view-count`;
+    return axiosPublic.patch(url);
+  },
 };
 
 export default publicConsignmentApi;
