@@ -11,6 +11,7 @@ const switchLanguages: any = {
   members: "Thành viên",
   profile: "Cài đặt",
   changepwd: "Đổi mật khẩu",
+  dashboard: "Thống kê",
 };
 
 const Breadcrumb = () => {

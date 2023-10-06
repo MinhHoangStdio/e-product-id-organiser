@@ -28,7 +28,14 @@ const PrivateRoutes = () => {
     <Routes>
       <Route path="/*" element={<Navigate to="/organizer/products" />} />
       <Route path="/login" element={<Navigate to="/organizer/products" />} />
-      {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+      <Route
+        path="/organizer/dashboard"
+        element={
+          <MainLayout>
+            <Dashboard />
+          </MainLayout>
+        }
+      />
       <Route
         path="/organizer/products"
         element={
