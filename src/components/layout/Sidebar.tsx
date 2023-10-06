@@ -11,7 +11,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/store";
 import { layoutActions } from "../../store/layout/layoutSlice";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import WysiwygIcon from "@mui/icons-material/Wysiwyg";
@@ -43,7 +43,7 @@ const Item = ({ title, to, icon, selected, setSelected, navigate }: any) => {
 
 const SidebarCustom = () => {
   const theme = useTheme();
-  const [openOrganizerMenu, setOpenOrganizerMenu] = useState<boolean>(false);
+  // const [openOrganizerMenu, setOpenOrganizerMenu] = useState<boolean>(false);
 
   //test theme
   const mode = useAppSelector((state) => state.layout.theme);
@@ -58,19 +58,6 @@ const SidebarCustom = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [selected, setSelected] = useState("");
-
-  useEffect(() => {
-    setSelected(path);
-    if (
-      path === "organizer/info" ||
-      path === "organizer/products" ||
-      path === "organizer/consignments" ||
-      path.includes("organizer/products") ||
-      path.includes("organizer/consignments")
-    ) {
-      setOpenOrganizerMenu(true);
-    }
-  }, [path]);
 
   const handleLogout = async () => {
     dispatch(
@@ -112,8 +99,8 @@ const SidebarCustom = () => {
           padding: "4px",
           background: `${theme.palette.background.default} !important`,
           transition: `height 300ms !important`,
-          display: openOrganizerMenu ? `block !important` : `none !important`,
-          height: openOrganizerMenu ? `auto !important` : `0px !important`,
+          // display: openOrganizerMenu ? `block !important` : `none !important`,
+          // height: openOrganizerMenu ? `auto !important` : `0px !important`,
         },
         "& .ps-submenu-content.ps-open": {
           marginTop: isCollapseSidebar ? "80px !important" : "0",
@@ -216,6 +203,16 @@ const SidebarCustom = () => {
               </Stack>
             )}
             <MenuItem
+              active={selected.toLowerCase().includes("organizer/dashboard")}
+              onClick={() => {
+                setSelected("organizer/dashboard");
+                navigate("/organizer/dashboard");
+              }}
+              icon={<SpaceDashboardIcon />}
+            >
+              <Typography fontWeight="500">Thống kê</Typography>
+            </MenuItem>
+            <MenuItem
               active={selected.toLowerCase().includes("organizer/products")}
               onClick={() => {
                 setSelected("organizer/products");
@@ -225,6 +222,7 @@ const SidebarCustom = () => {
             >
               <Typography fontWeight="500">Sản phẩm</Typography>
             </MenuItem>
+
             <MenuItem
               active={
                 selected.toLowerCase() === "organizer/consignments" ||

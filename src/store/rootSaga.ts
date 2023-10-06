@@ -6,6 +6,7 @@ import { consignmentSaga } from "./organizer/consignment/consignmentSaga";
 import { organizerSaga } from "./organizer/info/organizerSaga";
 import { chainsSaga } from "./organizer/chains/chainSaga";
 import { publicConsignmentSaga } from "./public/consignment/consignmentSaga";
+import { dashboardSaga } from "./dashboard/dashboardSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -16,5 +17,6 @@ export default function* rootSaga() {
     organizerSaga(),
     chainsSaga(),
     publicConsignmentSaga(),
+    dashboardSaga(),
   ]);
 }
