@@ -20,6 +20,10 @@ function* handleGetConsignmentDetail(action: Action) {
       publicConsignmentApi.getDetailOrganizer,
       consignmentResponse.data.organization_id
     );
+    yield call(
+      publicConsignmentApi.updateViewCount,
+      consignmentResponse.data.product?.id
+    );
 
     const payload = {
       consignment: consignmentResponse.data,
