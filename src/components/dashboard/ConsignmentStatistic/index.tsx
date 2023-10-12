@@ -4,7 +4,7 @@ import { useAppSelector } from "../../../hooks/store";
 
 export default function ConsignmentStatistic() {
   const statisticConsignment = useAppSelector(
-    (state) => state.dashboard.consignmentStatistic?.consignments_count
+    (state) => state.dashboard.statistic?.consignment_count
   );
   const body = (
     <Stack sx={{ mt: 1 }} spacing={1}>

@@ -7,7 +7,7 @@ import { useAppSelector } from "../../../hooks/store";
 
 export default function ProductStatistic() {
   const statisticProduct = useAppSelector(
-    (state) => state.dashboard.productStatistic?.products_count
+    (state) => state.dashboard.statistic?.product_count
   );
   const body = (
     <Stack sx={{ mt: 1 }} spacing={1}>
