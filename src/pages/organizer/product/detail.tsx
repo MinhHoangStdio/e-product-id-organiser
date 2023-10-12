@@ -80,6 +80,10 @@ const ProductDetail = () => {
 
             <Stack spacing={2} sx={{ mt: 3 }}>
               <TextDetail label="Mô tả sản phẩm" value={product?.description} />
+              <TextDetail
+                label="Lượt xem"
+                value={(product?.view_count || "") as string}
+              />
               <Divider />
               <Stack spacing={1}>
                 <Typography
