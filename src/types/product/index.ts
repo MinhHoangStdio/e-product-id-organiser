@@ -8,6 +8,7 @@ export interface Product {
   id: number;
   approval_status: string;
   organization_id?: number;
+  view_count?: number;
   category: {
     name: string;
     parent_id: number;
