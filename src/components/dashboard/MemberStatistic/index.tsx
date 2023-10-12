@@ -4,7 +4,7 @@ import { useAppSelector } from "../../../hooks/store";
 
 export default function MemberStatistic() {
   const statisticMember = useAppSelector(
-    (state) => state.dashboard.memberStatistic?.members_count
+    (state) => state.dashboard.statistic?.member_count
   );
 
   return (

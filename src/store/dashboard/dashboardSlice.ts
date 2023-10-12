@@ -1,66 +1,30 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  ConsignmentStatistic,
-  MemberStatistic,
-  ProductStatistic,
-} from "../../types/dashboard";
+import { createSlice } from "@reduxjs/toolkit";
+import { Statistics } from "../../types/dashboard";
 
 interface IDashboard {
-  loadingProductStatictis: boolean;
-  loadingConsignmentStatictis: boolean;
-  loadingMemberStatictis: boolean;
-  productStatistic: ProductStatistic | null;
-  consignmentStatistic: ConsignmentStatistic | null;
-  memberStatistic: MemberStatistic | null;
+  loadingStatistic: boolean;
+  statistic: Statistics | null;
 }
 
 const initialState: IDashboard = {
-  loadingProductStatictis: false,
-  loadingConsignmentStatictis: false,
-  loadingMemberStatictis: false,
-  productStatistic: null,
-  consignmentStatistic: null,
-  memberStatistic: null,
+  loadingStatistic: false,
+  statistic: null,
 };
 
 const dashboardSlice = createSlice({
   name: "dashboard",
   initialState,
   reducers: {
-    getProductStatistic(state, action) {
-      state.loadingProductStatictis = true;
+    getStatistic(state, action) {
+      state.loadingStatistic = true;
     },
-    getProductStatisticSuccess(state, action) {
-      state.loadingProductStatictis = false;
-      state.productStatistic = action.payload;
+    getStatisticSuccess(state, action) {
+      state.loadingStatistic = false;
+      state.statistic = action.payload;
     },
-    getProductStatisticFailed(state) {
-      state.loadingProductStatictis = false;
-      state.productStatistic = {} as ProductStatistic;
-    },
-
-    getConsignmentStatistic(state, action) {
-      state.loadingConsignmentStatictis = true;
-    },
-    getConsignmentStatisticSuccess(state, action) {
-      state.loadingConsignmentStatictis = false;
-      state.consignmentStatistic = action.payload;
-    },
-    getConsignmentStatisticFailed(state) {
-      state.loadingConsignmentStatictis = false;
-      state.consignmentStatistic = {} as ConsignmentStatistic;
-    },
-
-    getMemberStatistic(state, action) {
-      state.loadingMemberStatictis = true;
-    },
-    getMemberStatisticSuccess(state, action) {
-      state.loadingMemberStatictis = false;
-      state.memberStatistic = action.payload;
-    },
-    getMemberStatisticFailed(state) {
-      state.loadingMemberStatictis = false;
-      state.memberStatistic = {} as MemberStatistic;
+    getStatisticFailed(state) {
+      state.loadingStatistic = false;
+      state.statistic = {} as Statistics;
     },
   },
 });

@@ -2,61 +2,21 @@ import { all, fork, put, call, takeLatest } from "redux-saga/effects";
 import { dashboardAction } from "./dashboardSlice";
 import { Action } from "../../types/actions";
 import dashboardApi from "../../api/dashboard";
-import {
-  ConsignmentStatistic,
-  MemberStatistic,
-  ProductStatistic,
-} from "../../types/dashboard";
+import { Statistics } from "../../types/dashboard";
 import { alertActions } from "../alert/alertSlice";
 
-function* handleGetProductStatistic(action: Action) {
+function* handleGetStatistic(action: Action) {
   try {
-    const response: { data: ProductStatistic } = yield call(
-      dashboardApi.getStatisticProducts,
+    const response: { data: Statistics } = yield call(
+      dashboardApi.getStatistics,
       action.payload
     );
-    yield put(dashboardAction.getProductStatisticSuccess(response.data));
+    yield put(dashboardAction.getStatisticSuccess(response.data));
   } catch (error) {
-    yield put(dashboardAction.getProductStatisticFailed());
+    yield put(dashboardAction.getStatisticFailed());
     yield put(
       alertActions.showAlert({
-        text: "Không thể lấy thống kê sản phẩm",
-        type: "error",
-      })
-    );
-  }
-}
-
-function* handleGetConsignmentStatistic(action: Action) {
-  try {
-    const response: { data: ConsignmentStatistic } = yield call(
-      dashboardApi.getStatisticConsignments,
-      action.payload
-    );
-    yield put(dashboardAction.getConsignmentStatisticSuccess(response.data));
-  } catch (error) {
-    yield put(dashboardAction.getConsignmentStatisticFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Không thể lấy thống kê lô hàng",
-        type: "error",
-      })
-    );
-  }
-}
-
-function* handleGetMemberStatistic(action: Action) {
-  try {
-    const response: { data: MemberStatistic } = yield call(
-      dashboardApi.getStatisticMembers,
-      action.payload
-    );
-    yield put(dashboardAction.getMemberStatisticSuccess(response.data));
-  } catch (error) {
-    yield put(dashboardAction.getMemberStatisticFailed());
-    yield put(
-      alertActions.showAlert({
-        text: "Không thể lấy thống kê thành viên",
+        text: "Không thể lấy thông tin thống kê",
         type: "error",
       })
     );
@@ -65,18 +25,7 @@ function* handleGetMemberStatistic(action: Action) {
 
 function* dashboardFlow() {
   yield all([
-    takeLatest(
-      dashboardAction.getProductStatistic.type,
-      handleGetProductStatistic
-    ),
-    takeLatest(
-      dashboardAction.getConsignmentStatistic.type,
-      handleGetConsignmentStatistic
-    ),
-    takeLatest(
-      dashboardAction.getMemberStatistic.type,
-      handleGetMemberStatistic
-    ),
+    takeLatest(dashboardAction.getStatistic.type, handleGetStatistic),
   ]);
 }
 

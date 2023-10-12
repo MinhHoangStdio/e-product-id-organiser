@@ -16,9 +16,7 @@ const InfoPage = () => {
   };
 
   useEffect(() => {
-    dispatch(dashboardAction.getConsignmentStatistic(organizer?.id));
-    dispatch(dashboardAction.getProductStatistic(organizer?.id));
-    dispatch(dashboardAction.getMemberStatistic(organizer?.id));
+    dispatch(dashboardAction.getStatistic(organizer?.id));
   }, [dispatch, organizer?.id]);
 
   return organizer?.id ? (
