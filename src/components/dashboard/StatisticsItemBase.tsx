@@ -1,7 +1,5 @@
 import { Box, Paper, Stack, Typography } from "@mui/material";
 import React from "react";
-import ProductStatus from "../organizer/product/ProductStatus";
-import { EApprovalStatus } from "../../types/enum/product";
 
 type StatisticsItemProps = {
   title: string;
@@ -17,10 +15,10 @@ export default function StatisticsItemBase({
   return (
     <Paper
       sx={{
-        width: "100%",
-        minHeight: "150px",
-        borderRadius: "8px",
-        border: "1px solid #ccc",
+        width: "95%",
+        minHeight: "120px",
+        borderRadius: "5px",
+        border: "2px solid skyblue",
         bgcolor: "#f7fdfe",
         p: 2,
       }}
@@ -33,7 +31,7 @@ export default function StatisticsItemBase({
           {quantity}
         </Typography>
       </Stack>
-      <Box sx={{ overflow: "auto", height: "120px" }}>{BodyContent}</Box>
+      <Box sx={{ overflow: "auto", height: "100px" }}>{BodyContent}</Box>
     </Paper>
   );
 }
