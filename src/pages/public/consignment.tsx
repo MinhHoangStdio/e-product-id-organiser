@@ -7,6 +7,7 @@ import {
   Grid,
   Link,
   CircularProgress,
+  Button,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/store";
@@ -17,6 +18,7 @@ import ImageSlider from "../../components/organizer/product/ImageSlider";
 import Navbar from "../../components/landingPage/Navbar";
 import Footer from "../../components/landingPage/Footer";
 import ScrollToTopOnMount from "../../components/ScrollToTopOnMount";
+import { layoutActions } from "../../store/layout/layoutSlice";
 
 const PublicConsignment = () => {
   const { id } = useParams();
@@ -37,6 +39,10 @@ const PublicConsignment = () => {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
+  };
+
+  const openRepurchaseModal = () => {
+    dispatch(layoutActions.openModalRepurchase());
   };
 
   useEffect(() => {
@@ -136,6 +142,19 @@ const PublicConsignment = () => {
                         </Typography>
                       )
                     )}
+                  <Button
+                    onClick={openRepurchaseModal}
+                    variant="contained"
+                    color="primary"
+                    style={{
+                      marginTop: "20px",
+                      width: "100%",
+                      padding: "10px 20px",
+                      backgroundColor: "green",
+                    }}
+                  >
+                    Mua lại
+                  </Button>
                 </Box>
               </Grid>
             </Grid>
