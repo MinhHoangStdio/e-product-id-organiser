@@ -10,6 +10,7 @@ interface LayoutType {
   isOpenChainsModal: boolean;
   isOpenAddMemberModal: boolean;
   isLayoutLoading: boolean;
+  isOpenRepurchaseModal: boolean;
 }
 
 const initialState: LayoutType = {
@@ -22,6 +23,7 @@ const initialState: LayoutType = {
   isOpenChainsModal: false,
   isOpenAddMemberModal: false,
   isLayoutLoading: false,
+  isOpenRepurchaseModal: false,
 };
 
 const layoutSlice = createSlice({
@@ -85,6 +87,13 @@ const layoutSlice = createSlice({
     },
     endLayoutLoading(state) {
       state.isLayoutLoading = false;
+    },
+
+    openModalRepurchase(state) {
+      state.isOpenRepurchaseModal = true;
+    },
+    closeModalRepurchase(state) {
+      state.isOpenRepurchaseModal = false;
     },
   },
 });
