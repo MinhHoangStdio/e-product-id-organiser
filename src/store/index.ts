@@ -11,7 +11,8 @@ import organizerReducer from "./organizer/info/organizerSlice";
 import chainsReducer from "./organizer/chains/chainsSlice";
 import publicConsignmentReducer from "./public/consignment/consignmentSlice";
 import dashboardReducer from "./dashboard/dashboardSlice";
-import orderReducer from "./public/order/orderSlice";
+import publicOrderReducer from "./public/order/orderSlice";
+import orderReducer from "./organizer/order/orderSlice";
 
 const reducers = combineReducers({
   alert: alertReducer,
@@ -24,6 +25,7 @@ const reducers = combineReducers({
   chains: chainsReducer,
   publicConsignment: publicConsignmentReducer,
   dashboard: dashboardReducer,
+  publicOrder: publicOrderReducer,
   order: orderReducer,
 });
 

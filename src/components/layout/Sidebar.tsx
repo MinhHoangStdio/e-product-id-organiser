@@ -25,6 +25,7 @@ import { colorToken } from "../../theme/colorToken";
 import userImageDefault from "../../assets/user/user.png";
 import KeyIcon from "@mui/icons-material/Key";
 import logoLanding from "../../assets/landingPage/logoLanding.png";
+import ViewListIcon from "@mui/icons-material/ViewList";
 
 const Item = ({ title, to, icon, selected, setSelected, navigate }: any) => {
   return (
@@ -237,6 +238,16 @@ const SidebarCustom = () => {
               icon={<GroupIcon />}
             >
               <Typography fontWeight="500">Thành viên</Typography>
+            </MenuItem>
+            <MenuItem
+              active={selected.toLowerCase().includes("organizer/orders")}
+              onClick={() => {
+                setSelected("organizer/orders");
+                navigate("/organizer/orders");
+              }}
+              icon={<ViewListIcon />}
+            >
+              <Typography fontWeight="500">Đơn hàng</Typography>
             </MenuItem>
             <MenuItem
               active={selected.toLowerCase().includes("organizer/dashboard")}

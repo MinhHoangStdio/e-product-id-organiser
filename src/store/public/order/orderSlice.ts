@@ -8,7 +8,7 @@ const initialState: orderState = {
 };
 
 const orderSlice = createSlice({
-  name: "consignment",
+  name: "public order",
   initialState,
   reducers: {
     createOrder(state, action) {
@@ -24,7 +24,7 @@ const orderSlice = createSlice({
 });
 
 // Actions
-export const orderActions = orderSlice.actions;
+export const publicOrderActions = orderSlice.actions;
 // Reducer
-const orderReducer = orderSlice.reducer;
-export default orderReducer;
+const publicOrderReducer = orderSlice.reducer;
+export default publicOrderReducer;

@@ -1,0 +1,23 @@
+import { EOrderStatus } from "../enum/order";
+
+export interface Order {
+  name: string;
+  phone_number: string;
+  address: string;
+  note: string;
+  id: number;
+  status: EOrderStatus;
+  created_at: string;
+  product: OrderProduct;
+  consignment: OrderConsignment;
+}
+
+export interface OrderProduct {
+  name: string;
+  id: number;
+}
+export interface OrderConsignment {
+  name: string;
+  id: number;
+  organization_id: number;
+}
