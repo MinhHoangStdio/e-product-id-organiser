@@ -6,19 +6,18 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  IconButton,
   Stack,
+  Typography,
 } from "@mui/material";
 
 // icon
-import InfoIcon from "@mui/icons-material/Info";
 import { HeadCell } from "../../../types/table";
 import Empty from "../../../components/table/Empty";
 import { Order } from "../../../types/order";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
-import history from "../../../routes/history";
 import OrderTableHead from "../../../components/table/OrderTableHead";
 import OrderStatus from "../../../components/organizer/order/OrderStatus";
+import { Link } from "react-router-dom";
 
 export default function OrdersTable() {
   const dispatch = useAppDispatch();
@@ -71,7 +70,7 @@ export default function OrdersTable() {
       id: "action",
       align: "center",
       disablePadding: false,
-      label: "Hành động",
+      label: "",
       fontSize: "15px",
       paddingLeft: "25px",
     },
@@ -108,7 +107,7 @@ export default function OrdersTable() {
               textOverflow: "ellipsis",
             }}
           >
-            {row.product.name}
+            {row?.product?.name}
           </TableCell>
 
           <TableCell
@@ -121,7 +120,7 @@ export default function OrdersTable() {
               textOverflow: "ellipsis",
             }}
           >
-            {row.consignment.name}
+            {row?.consignment?.name}
           </TableCell>
           <TableCell
             align="center"
@@ -152,15 +151,18 @@ export default function OrdersTable() {
           <TableCell align="left" className="table-cell">
             <Box>
               <Stack direction="row" justifyContent="center">
-                <IconButton
-                  aria-label="info"
-                  onClick={() => {
-                    history.push("/products/" + row.id);
-                  }}
-                  color="secondary"
-                >
-                  <InfoIcon fontSize="medium" />
-                </IconButton>
+                <Link to={`/organizer/orders/${row.id}`}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: "#00B3D5",
+                      mt: 1,
+                      "&:hover": { textDecoration: "underline" },
+                    }}
+                  >
+                    Chi tiết
+                  </Typography>
+                </Link>
               </Stack>
             </Box>
           </TableCell>

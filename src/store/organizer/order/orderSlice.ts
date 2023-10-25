@@ -6,11 +6,17 @@ interface orderState {
   loadingListOrders: boolean;
   listOrders: Order[] | null;
   pagination: Pagination | null;
+  detailOrder?: Order;
+  loadingDetailOrder: boolean;
+  loadingCompleteOrder: boolean;
 }
 const initialState: orderState = {
   loadingListOrders: false,
   listOrders: null,
   pagination: null,
+  detailOrder: undefined,
+  loadingDetailOrder: false,
+  loadingCompleteOrder: false,
 };
 
 const orderSlice = createSlice({
@@ -27,6 +33,27 @@ const orderSlice = createSlice({
     },
     getListOrderFailed(state) {
       state.loadingListOrders = false;
+    },
+
+    getDetailOrder(state, action) {
+      state.loadingDetailOrder = true;
+    },
+    getDetailOrderSuccess(state, action) {
+      state.loadingDetailOrder = false;
+      state.detailOrder = action.payload;
+    },
+    getDetailOrderFailed(state) {
+      state.loadingDetailOrder = false;
+    },
+
+    completeOrder(state, action) {
+      state.loadingCompleteOrder = true;
+    },
+    completeOrderSuccess(state) {
+      state.loadingCompleteOrder = false;
+    },
+    completeOrderFailed(state) {
+      state.loadingCompleteOrder = false;
     },
   },
 });

@@ -69,7 +69,7 @@ const OrderPage = () => {
             sx={{ minWidth: "220px" }}
             variant="outlined"
             select
-            id="product-status"
+            id="order-status"
             label="Trạng thái"
             value={orderStatusLabel}
             InputLabelProps={{ shrink: !!orderStatusLabel }}
