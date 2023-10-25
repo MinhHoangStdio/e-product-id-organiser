@@ -1,17 +1,16 @@
 import { call, fork, put, takeLatest, all } from "redux-saga/effects";
 import { alertActions } from "../../alert/alertSlice";
 import { Action } from "../../../types/actions";
-import { orderActions } from "./orderSlice";
+import { publicOrderActions } from "./orderSlice";
 import publicOrderApi from "../../../api/public/order";
 
 function* handleCreateOrder(action: Action) {
   try {
-    console.log(`⚡️[log]: †††††† >>>> ~ action.payload: `, action.payload);
     const { params, onReset } = action.payload;
     const response: { data: any } = yield call(publicOrderApi.createOrder, {
       ...params,
     });
-    yield put(orderActions.createOrderSuccess());
+    yield put(publicOrderActions.createOrderSuccess());
     yield put(
       alertActions.showAlert({
         text: "Tạo yêu cầu mua lại thành công",
@@ -20,7 +19,7 @@ function* handleCreateOrder(action: Action) {
     );
     onReset();
   } catch (error: any) {
-    yield put(orderActions.createOrderFailed());
+    yield put(publicOrderActions.createOrderFailed());
     if (error?.response?.status !== 403) {
       yield put(
         alertActions.showAlert({
@@ -33,9 +32,11 @@ function* handleCreateOrder(action: Action) {
 }
 
 function* watchLoginFlow() {
-  yield all([takeLatest(orderActions.createOrder.type, handleCreateOrder)]);
+  yield all([
+    takeLatest(publicOrderActions.createOrder.type, handleCreateOrder),
+  ]);
 }
 
-export function* orderSaga() {
+export function* publicOrderSaga() {
   yield fork(watchLoginFlow);
 }

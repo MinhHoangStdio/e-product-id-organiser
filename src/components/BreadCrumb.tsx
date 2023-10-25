@@ -9,6 +9,7 @@ const switchLanguages: any = {
   consignments: "Lô hàng",
   products: "Sản phẩm",
   members: "Thành viên",
+  orders: "Đơn hàng",
   profile: "Cài đặt",
   changepwd: "Đổi mật khẩu",
   dashboard: "Thống kê",

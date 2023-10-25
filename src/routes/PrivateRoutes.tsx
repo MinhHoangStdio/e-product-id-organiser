@@ -13,6 +13,10 @@ const PrivateRoutes = () => {
   const Product = Loadable(lazy(() => import("../pages/organizer/product")));
   const OrganizerInfo = Loadable(lazy(() => import("../pages/organizer/info")));
   const Members = Loadable(lazy(() => import("../pages/organizer/members")));
+  const Order = Loadable(lazy(() => import("../pages/organizer/order")));
+  const OrderDetail = Loadable(
+    lazy(() => import("../pages/organizer/order/detail"))
+  );
   const ProductDetail = Loadable(
     lazy(() => import("../pages/organizer/product/detail"))
   );
@@ -53,6 +57,24 @@ const PrivateRoutes = () => {
           </MainLayout>
         }
       />
+
+      <Route
+        path="/organizer/orders"
+        element={
+          <MainLayout>
+            <Order />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/organizer/orders/:id"
+        element={
+          <MainLayout>
+            <OrderDetail />
+          </MainLayout>
+        }
+      />
+
       <Route
         path="/organizer/products/:id"
         element={

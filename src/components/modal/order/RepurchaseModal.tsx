@@ -5,7 +5,7 @@ import { layoutActions } from "../../../store/layout/layoutSlice";
 import { Grid, TextField, Typography } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { orderActions } from "../../../store/public/order/orderSlice";
+import { publicOrderActions } from "../../../store/public/order/orderSlice";
 
 interface FieldValues {
   name: string;
@@ -20,7 +20,7 @@ const RepurchaseModal = () => {
     (state) => state.publicConsignment.consignmentDetail
   );
   const loadingCreateOrder = useAppSelector(
-    (state) => state.order.loadingCreateOrder
+    (state) => state.publicOrder.loadingCreateOrder
   );
   const isOpenModal = useAppSelector(
     (state) => state.layout.isOpenRepurchaseModal
@@ -76,7 +76,7 @@ const RepurchaseModal = () => {
         onCloseModal();
       },
     };
-    dispatch(orderActions.createOrder(payloadRequest));
+    dispatch(publicOrderActions.createOrder(payloadRequest));
   };
 
   const bodyContent = (
