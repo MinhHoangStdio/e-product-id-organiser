@@ -11,7 +11,7 @@ interface FieldValues {
   name: string;
   phone_number: string;
   address: string;
-  note: string;
+  note: string | null | undefined;
 }
 
 const RepurchaseModal = () => {
