@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const articles = [
   {
-    author: "Doanh nghiệp Hòa Đặng",
+    author: "Doanh nghiệp STDIO",
     title: "Nước dừa tươi Vietcoco Organic 330ml",
     description:
       "Một trong những loại nước trái cây thơm ngon hấp dẫn, tươi mát giúp giải nhiệt hiệu quả, nước dừa Vietcoco là lựa chọn chất lượng,...",
@@ -12,7 +12,7 @@ const articles = [
     to: "/public/consignments/gAAAAABk_uz9ZmypRj8ltht_-Ubow5eXpzYERE5ddHK2HtfYSlTBzklr_TvWSwMmOjJZqG3GRcGn_TOS7Dj1IntkQfbXZIOaaw==",
   },
   {
-    author: "Doanh nghiệp Hòa Đặng",
+    author: "Doanh nghiệp STDIO",
     title: "Nước dừa tươi Vietcoco Organic 330ml",
     description:
       "Một trong những loại nước trái cây thơm ngon hấp dẫn, tươi mát giúp giải nhiệt hiệu quả, nước dừa Vietcoco là lựa chọn chất lượng,...",
@@ -22,7 +22,7 @@ const articles = [
     to: "/public/consignments/gAAAAABk_uz9ZmypRj8ltht_-Ubow5eXpzYERE5ddHK2HtfYSlTBzklr_TvWSwMmOjJZqG3GRcGn_TOS7Dj1IntkQfbXZIOaaw==",
   },
   {
-    author: "Doanh nghiệp Hòa Đặng",
+    author: "Doanh nghiệp STDIO",
     title: "Nước dừa tươi Vietcoco Organic 330ml",
     description:
       "Một trong những loại nước trái cây thơm ngon hấp dẫn, tươi mát giúp giải nhiệt hiệu quả, nước dừa Vietcoco là lựa chọn chất lượng,...",
@@ -32,7 +32,7 @@ const articles = [
     to: "/public/consignments/gAAAAABk_uz9ZmypRj8ltht_-Ubow5eXpzYERE5ddHK2HtfYSlTBzklr_TvWSwMmOjJZqG3GRcGn_TOS7Dj1IntkQfbXZIOaaw==",
   },
   {
-    author: "Doanh nghiệp Hòa Đặng",
+    author: "Doanh nghiệp STDIO",
     title: "Nước dừa tươi Vietcoco Organic 330ml",
     description:
       "Một trong những loại nước trái cây thơm ngon hấp dẫn, tươi mát giúp giải nhiệt hiệu quả, nước dừa Vietcoco là lựa chọn chất lượng,...",
