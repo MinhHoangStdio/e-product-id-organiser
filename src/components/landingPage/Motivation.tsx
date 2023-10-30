@@ -57,7 +57,7 @@ export default function Motivation() {
               <h2 className="text-lg text-primary-dark-blue py-4 lg:pt-9 lg:pb-6 lg:text-xl lg:font-bold">
                 {item.title}
               </h2>
-              <p className="text-neutral-grayish-blue text-sm font-light lg:text-base leading-5">
+              <p className="text-neutral-grayish-blue text-sm font-light lg:text-base leading-5 text-justify">
                 {item.subtitle}
               </p>
             </div>
