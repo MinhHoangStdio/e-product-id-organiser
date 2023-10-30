@@ -20,11 +20,11 @@ export default function Introduce() {
         <div className=" h-full flex flex-col justify-end pb-0 lg:w-96 lg:justify-center">
           <div className="h-[60%] md:h-1/2 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
             <Typography variant="h1" className=" text-primary-dark-blue pb-5">
-              Giới thiệu sản phẩm của bạn đến khách hàng
+              Chất lượng vượt niềm tin
             </Typography>
             <p className="text-neutral-grayish-blue text-xs lg:text-base leading-5 mb-7">
-              Tạo quy trình sản xuất sản phẩm, đảm bảo chất lượng và đem lại sự
-              tin cậy cho khách hàng của bạn
+              Công khai quy trình sản xuất, khẳng định chất lượng, nâng tầm
+              thương hiệu của bạn ngay hôm nay.
             </p>
             {userInfo?.name ? (
               <></>
@@ -33,7 +33,7 @@ export default function Introduce() {
                 onClick={navigateRegister}
                 className="bg-primary-lime-green px-7 py-3 rounded-full text-neutral-white text-xs bg-gradient-to-r from-primary-lime-green to-primary-bright-cyan hover:button-brightness mb-2 focus:outline-none focus:ring ring-green-400"
               >
-                Đăng ký ngay
+                Dùng thử ngay
               </button>
             )}
           </div>

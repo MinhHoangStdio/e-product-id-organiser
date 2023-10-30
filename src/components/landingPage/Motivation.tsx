@@ -1,27 +1,27 @@
 const motivationItems = [
   {
     iconPath: "/icons/planning.png",
-    title: "Dễ dàng Quản lý Sản phẩm và Sản xuất",
+    title: "Dễ dàng quản lý",
     subtitle:
-      "Ứng dụng cung cấp một nền tảng thuận tiện để người dùng đăng sản phẩm của mình và quản lý quy trình sản xuất. Hệ thống này giúp người dùng kiểm soát việc tạo ra sản phẩm, đảm bảo sự đơn giản và tiện lợi trong quá trình này.",
+      "Cung cấp một nền tảng đơn giản để người dùng giới thiệu sản phẩm, minh bạch quy trình sản xuất và quản lý hàng hóa hiệu quả.",
   },
   {
     iconPath: "/icons/products.png",
-    title: "Phê duyệt Sản phẩm và Chia sẻ QR Code",
+    title: "Phê duyệt và chia sẻ QR Code sản phẩm",
     subtitle:
-      "Ứng dụng giúp người dùng dễ dàng theo dõi tình trạng phê duyệt của sản phẩm và khi sản phẩm được phê duyệt, người dùng có thể tải xuống QR Code để chia sẻ với người khác. Một cách mới và hữu ích để quảng cáo sản phẩm.",
+      "Product ID giúp người dùng dễ dàng theo dõi tình trạng phê duyệt và chia sẻ mã QR Code của sản phẩm. Quảng cáo nay nhanh chóng và đơn giản hơn.",
   },
   {
     iconPath: "/icons/clock.png",
-    title: "Tiết kiệm thời gian và Tối ưu hóa quy trình",
+    title: "Tối ưu hóa thời gian và quy trình",
     subtitle:
-      "Ứng dụng giúp người dùng tiết kiệm thời gian bằng cách tối ưu hóa quy trình tạo và quản lý sản phẩm. Điều này giúp người dùng tập trung vào việc tạo ra sản phẩm chất lượng hơn và tạo ra trải nghiệm dễ dàng và hiệu quả hơn.",
+      "Ứng dụng giúp người dùng tiết kiệm thời gian và tạo ra sản phẩm chất lượng hơn bằng cách tối ưu hóa quy trình tạo và quản lý sản phẩm.",
   },
   {
     iconPath: "/icons/qr-code.png",
-    title: "Tích hợp QR Code, tiện lợi cho người tiêu dùng",
+    title: "Tích hợp QR Code",
     subtitle:
-      "Cung cấp tích hợp QR Code, giúp người tiêu dùng dễ dàng truy cập thông tin sản phẩm. Điều này tạo ra một kết nối trực tiếp giữa người dùng và sản phẩm, giúp tăng cường tương tác và tin tưởng từ phía khách hàng.",
+      "Tích hợp QR Code giúp người tiêu dùng dễ dàng truy cập thông tin và tìm hiểu về sản phẩm, thúc đẩy tiêu dùng và xây dựng niềm tin với thương hiệu.",
   },
 ];
 
@@ -35,12 +35,11 @@ export default function Motivation() {
         <div className="grid lg:grid-cols-2 mb-12 lg:mb-16">
           <div className="col-span-1">
             <h2 className="text-3xl lg:text-4xl text-primary-dark-blue pb-5">
-              Tại sao nên chọn E-Product ID?
+              Product ID - Giải pháp tiếp cận khách hàng hiệu quả
             </h2>
             <p className="text-neutral-grayish-blue text-sm lg:text-base leading-5">
-              Ứng dụng giúp người dùng dễ dàng đăng sản phẩm, quản lý quy trình
-              sản xuất, phê duyệt sản phẩm, và chia sẻ QR Code, tạo ra một trải
-              nghiệm đơn giản và tiện lợi.
+              Nền tảng kết nối nhà cung cấp và khách hàng, thúc đẩy tiêu dùng
+              đơn giản và hiệu quả.
             </p>
           </div>
         </div>
