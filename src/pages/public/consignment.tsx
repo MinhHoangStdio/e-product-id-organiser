@@ -108,7 +108,7 @@ const PublicConsignment = () => {
                     <b>Tên sản phẩm:</b> {product?.name}
                   </Typography>
                   <Typography sx={{ fontSize: "14px", mt: 1 }}>
-                    <b>Danh mục:</b> {product?.category.name}
+                    <b>Danh mục:</b> {product?.category?.name}
                   </Typography>
                   <Typography sx={{ fontSize: "14px", mt: 1 }}>
                     <b>Mô tả sản phẩm:</b>

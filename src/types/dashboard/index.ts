@@ -13,8 +13,15 @@ export interface ConsignmentStatistic {
   qr_release: number;
 }
 
+export interface OrderStatistic {
+  total: number;
+  pending: number;
+  completed: number;
+}
+
 export interface Statistics {
   product_count: ProductStatistic;
   consignment_count: ConsignmentStatistic;
   member_count: number;
+  order_count: OrderStatistic;
 }
