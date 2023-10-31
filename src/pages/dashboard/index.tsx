@@ -8,6 +8,7 @@ import { dashboardAction } from "../../store/dashboard/dashboardSlice";
 import ConsignmentStatistic from "../../components/dashboard/ConsignmentStatistic";
 import MemberStatistic from "../../components/dashboard/MemberStatistic";
 import ProductStatisticsPieChart from "../../components/chart/ProductStatisticsPieChart";
+import OrderStatisticsPieChart from "../../components/chart/OrderStatisticsPieChart";
 
 const InfoPage = () => {
   const dispatch = useAppDispatch();
@@ -24,7 +25,7 @@ const InfoPage = () => {
     <Grid sx={{ p: 1 }} container>
       <Grid item xs={12}></Grid>
 
-      <Grid sx={{ p: 1, mb: 2 }} item xs={6}>
+      <Grid sx={{ p: 1, mb: 1 }} item xs={6}>
         <Box p={4} border={"2px solid skyblue"} borderRadius={"5px"}>
           <Typography mb={5} variant="h3">
             Sản phẩm
@@ -32,7 +33,14 @@ const InfoPage = () => {
           <ProductStatisticsPieChart />
         </Box>
       </Grid>
-      <Grid item xs={6}></Grid>
+      <Grid sx={{ p: 1, mb: 1 }} item xs={6}>
+        <Box p={4} border={"2px solid skyblue"} borderRadius={"5px"}>
+          <Typography mb={5} variant="h3">
+            Đơn hàng
+          </Typography>
+          <OrderStatisticsPieChart />
+        </Box>
+      </Grid>
 
       <Grid sx={{ p: 1 }} item xs={4}>
         <ProductStatistic />
