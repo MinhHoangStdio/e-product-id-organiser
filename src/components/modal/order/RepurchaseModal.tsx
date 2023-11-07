@@ -11,6 +11,7 @@ interface FieldValues {
   name: string;
   phone_number: string;
   address: string;
+  amount: number;
   note: string | null | undefined;
 }
 
@@ -53,6 +54,11 @@ const RepurchaseModal = () => {
           .string()
           .required("Vui lòng nhập địa chỉ.")
           .max(500, "Địa chỉ có tối đa 500 kí tự."),
+        amount: yup
+          .number()
+          .typeError("Vui lòng nhập số lượng.")
+          .required("Vui lòng nhập số lượng.")
+          .min(1, "Số lượng phải có giá trị lớn hơn 0."),
         note: yup.string().nullable().max(500, "Ghi chú có tối đa 500 kí tự."),
       })
     ),
@@ -117,6 +123,19 @@ const RepurchaseModal = () => {
             required
             helperText={errors.address?.message}
             fullWidth={true}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <TextField
+            id="amount"
+            label="Số lượng"
+            inputProps={{ ...register("amount") }}
+            error={!!errors.amount?.message}
+            required
+            helperText={errors.amount?.message}
+            fullWidth={true}
+            type="number"
+            defaultValue={1}
           />
         </Grid>
         <Grid item xs={12}>

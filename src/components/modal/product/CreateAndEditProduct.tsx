@@ -28,6 +28,8 @@ interface FieldValues {
   images?: any;
   payload: { name: string; value: string }[] | undefined;
   category_id?: any;
+  unit_price: number;
+  unit: string | undefined;
 }
 
 const CreateAndEditProductModal = () => {
@@ -122,10 +124,18 @@ const CreateAndEditProductModal = () => {
       images: [],
       payload: [] as { name: string; value: string }[],
       category_id: null,
+      unit_price: 0,
+      unit: undefined,
     },
     resolver: yupResolver(
       yup.object().shape({
         name: yup.string().required("Vui lòng nhập tên sản phẩm"),
+        unit_price: yup
+          .number()
+          .typeError("Vui lòng nhập giá sản phẩm.")
+          .required("Vui lòng nhập giá sản phẩm.")
+          .min(1, "Vui lòng nhập giá hợp lệ."),
+        unit: yup.string(),
         description: yup.string().required("Vui lòng nhập mô tả sản phẩm"),
         payload: yup.array().of(
           yup.object().shape({
@@ -158,6 +168,8 @@ const CreateAndEditProductModal = () => {
     if (productSelected?.name) {
       setValue("name", productSelected.name);
       setValue("description", productSelected.description);
+      setValue("unit_price", productSelected?.unit_price || 0);
+      setValue("unit", productSelected.unit);
       if (productSelected.category?.id) {
         setValue("category_id", productSelected.category.id);
         setCategoryIdLabel(productSelected?.category.id);
@@ -244,6 +256,26 @@ const CreateAndEditProductModal = () => {
         error={!!errors.name?.message}
         required
         helperText={errors.name?.message}
+      />
+      <TextField
+        id="unit_price"
+        label="Đơn giá (VNĐ)"
+        inputProps={{ ...register("unit_price") }}
+        error={!!errors.unit_price?.message}
+        required
+        helperText={errors.unit_price?.message}
+        multiline
+        maxRows={8}
+      />
+      <TextField
+        id="unit"
+        label="Đơn vị tính"
+        inputProps={{ ...register("unit") }}
+        error={!!errors.unit?.message}
+        required
+        helperText={errors.unit?.message}
+        multiline
+        maxRows={8}
       />
       <TextField
         id="description"

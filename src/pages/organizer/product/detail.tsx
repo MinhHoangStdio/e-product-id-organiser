@@ -13,6 +13,7 @@ import { toUpperFirstLetter } from "../../../utils/string/toUpperFirstLetter";
 import LoadingPage from "../../../components/LoadingPage";
 import ProductStatus from "../../../components/organizer/product/ProductStatus";
 import { EApprovalStatus } from "../../../types/enum/product";
+import { formatVNDCurrency } from "../../../utils/formatCurrency";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -79,10 +80,17 @@ const ProductDetail = () => {
             </Stack>
 
             <Stack spacing={2} sx={{ mt: 3 }}>
+              <TextDetail
+                label="Đơn giá"
+                value={
+                  formatVNDCurrency(product?.unit_price || 0) +
+                  ((product?.unit && " / " + product?.unit) || "")
+                }
+              />
               <TextDetail label="Mô tả sản phẩm" value={product?.description} />
               <TextDetail
                 label="Lượt xem"
-                value={(product?.view_count || "") as string}
+                value={(product?.views || "0") as string}
               />
               <Divider />
               <Stack spacing={1}>

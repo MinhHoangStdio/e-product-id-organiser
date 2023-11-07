@@ -53,6 +53,13 @@ export default function OrdersTable() {
       fontSize: "15px",
     },
     {
+      id: "amount",
+      align: "center",
+      disablePadding: false,
+      label: "Số lượng",
+      fontSize: "15px",
+    },
+    {
       id: "status",
       align: "center",
       disablePadding: false,
@@ -122,6 +129,20 @@ export default function OrdersTable() {
           >
             {row?.consignment?.name}
           </TableCell>
+
+          <TableCell
+            align="center"
+            className="table-cell"
+            sx={{
+              minWidth: 200,
+              maxWidth: 200,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {row?.amount || 0}
+          </TableCell>
+
           <TableCell
             align="center"
             className="table-cell"

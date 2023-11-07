@@ -21,7 +21,7 @@ function* handleGetConsignmentDetail(action: Action) {
       consignmentResponse.data.organization_id
     );
     yield call(
-      publicConsignmentApi.updateViewCount,
+      publicConsignmentApi.createProductViews,
       consignmentResponse.data.product?.id
     );
 

@@ -7,6 +7,7 @@ export interface Order {
   note?: string;
   id: number;
   status: EOrderStatus;
+  amount?: number;
   created_at: string;
   product?: OrderProduct;
   consignment?: OrderConsignment;
@@ -15,6 +16,8 @@ export interface Order {
 export interface OrderProduct {
   name: string;
   id: number;
+  unit_price?: number;
+  unit?: string;
   images?: string[];
 }
 export interface OrderConsignment {
