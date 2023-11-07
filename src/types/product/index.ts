@@ -8,7 +8,9 @@ export interface Product {
   id: number;
   approval_status: string;
   organization_id?: number;
-  view_count?: number;
+  views?: number;
+  unit_price?: number;
+  unit?: string;
   category: {
     name: string;
     parent_id: number;

@@ -19,6 +19,7 @@ import Navbar from "../../components/landingPage/Navbar";
 import Footer from "../../components/landingPage/Footer";
 import ScrollToTopOnMount from "../../components/ScrollToTopOnMount";
 import { layoutActions } from "../../store/layout/layoutSlice";
+import { formatVNDCurrency } from "../../utils/formatCurrency";
 
 const PublicConsignment = () => {
   const { id } = useParams();
@@ -109,6 +110,11 @@ const PublicConsignment = () => {
                   </Typography>
                   <Typography sx={{ fontSize: "14px", mt: 1 }}>
                     <b>Danh mục:</b> {product?.category?.name}
+                  </Typography>
+                  <Typography sx={{ fontSize: "14px", mt: 1 }}>
+                    <b>Đơn giá:</b>{" "}
+                    {formatVNDCurrency(product?.unit_price || 0) +
+                      ((product?.unit && " / " + product?.unit) || "")}
                   </Typography>
                   <Typography sx={{ fontSize: "14px", mt: 1 }}>
                     <b>Mô tả sản phẩm:</b>
